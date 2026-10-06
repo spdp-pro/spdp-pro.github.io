@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sécurité & Protection des Données Personnelles | Guide Professionnel & Pédagogique</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+                    <i class="fa-solid fa-shield-halved text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-tight text-slate-900 block">SPDP</span>
+                    <span class="text-xs text-slate-500 font-medium">SENSIBILISATION À LA PROTECTION DES DONNÉES
+                        PERSONNELLES</span>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+                <a href="#definition" class="hover:text-brand-600 transition">Définition</a>
+                <a href="#pratiques" class="hover:text-brand-600 transition">Pratiques clés</a>
+                <a href="#outils" class="hover:text-brand-600 transition">Outils & RGPD</a>
+                <a href="#jeunes"
+                    class="hover:text-brand-600 transition text-pink-600 font-semibold flex items-center gap-1.5"><i
+                        class="fa-brands fa-tiktok"></i> Espace Jeunes</a>
+                <a href="#cnil" class="hover:text-brand-600 transition">CNIL</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <button onclick="openQuizModal()"
+                    class="hidden sm:inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-brand-600 text-white font-medium text-sm shadow-md shadow-brand-500/20 hover:bg-brand-700 transition">
+                    <i class="fa-solid fa-clipboard-check mr-2"></i> Quiz Pro & Checklist
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden text-slate-700 p-2 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-2">
+            <a href="#definition" onclick="toggleMobileMenu()"
+                class="block py-2 text-slate-700 font-medium">Définition</a>
+            <a href="#pratiques" onclick="toggleMobileMenu()" class="block py-2 text-slate-700 font-medium">Pratiques
+                clés</a>
+            <a href="#outils" onclick="toggleMobileMenu()" class="block py-2 text-slate-700 font-medium">Outils &
+                RGPD</a>
+            <a href="#jeunes" onclick="toggleMobileMenu()" class="block py-2 text-pink-600 font-semibold">Espace Jeunes
+                (TikTok)</a>
+            <a href="#cnil" onclick="toggleMobileMenu()" class="block py-2 text-slate-700 font-medium">CNIL</a>
+            <button onclick="openQuizModal(); toggleMobileMenu();"
+                class="w-full mt-2 py-2.5 rounded-xl bg-brand-600 text-white font-medium text-sm text-center">Quiz
+                Pro</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section
+        class="relative overflow-hidden pt-16 pb-24 lg:pt-24 lg:pb-32 bg-gradient-to-b from-white via-brand-50/40 to-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div
+                        class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-100 text-brand-700 text-xs font-semibold uppercase tracking-wider">
+                        <i class="fa-solid fa-lock"></i> Sensibilisation & Conformité
+                    </div>
+                    <h1
+                        class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                        Maîtrisez la <span
+                            class="text-brand-600 underline decoration-indigo-200 decoration-wavy">Protection des
+                            Données</span> au Quotidien
+                    </h1>
+                    <p class="text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0">
+                        Un guide complet, accessible et rigoureux conçu pour les <strong>professionnels</strong>
+                        (débutants comme confirmés) et sensibiliser les <strong>jeunes</strong> aux enjeux du numérique.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#outils"
+                            class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-slate-900 text-white font-semibold text-center hover:bg-slate-800 transition shadow-lg shadow-slate-900/10 flex items-center justify-center gap-2">
+                            <span>Explorer les outils</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                        <a href="#jeunes"
+                            class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-pink-600 text-white font-semibold text-center hover:bg-pink-700 transition shadow-lg shadow-pink-600/20 flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-tiktok"></i> <span>Découvrir le format Jeunes</span>
+                        </a>
+                    </div>
+                    <!-- Quick stats / trust -->
+                    <div class="pt-8 border-t border-slate-200/80 grid grid-cols-3 gap-4 text-center lg:text-left">
+                        <div>
+                            <div class="text-2xl font-bold text-slate-900">100%</div>
+                            <div class="text-xs text-slate-500 font-medium">Conforme RGPD</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-slate-900">Pro & Jeunes</div>
+                            <div class="text-xs text-slate-500 font-medium">Double approche</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-slate-900">CNIL</div>
+                            <div class="text-xs text-slate-500 font-medium">Référence officielle</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <div
+                            class="absolute -inset-4 bg-gradient-to-r from-brand-500 to-pink-500 rounded-3xl blur-2xl opacity-20 animate-pulse">
+                        </div>
+                        <div class="relative bg-white p-8 rounded-3xl border border-slate-200 shadow-2xl space-y-6">
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                    <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+                                    <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                                </div>
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Statut de
+                                    Sécurité</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div
+                                    class="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-start space-x-3">
+                                    <i class="fa-solid fa-shield-check text-emerald-600 text-xl mt-0.5"></i>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-emerald-900">Chiffrement Actif</h4>
+                                        <p class="text-xs text-emerald-700 mt-0.5">VPN & Connexion sécurisée recommandés
+                                            pour tout poste de travail pro.</p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="p-4 rounded-2xl bg-amber-50 border border-amber-100 flex items-start space-x-3">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xl mt-0.5"></i>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-amber-900">Vigilance Phishing</h4>
+                                        <p class="text-xs text-amber-700 mt-0.5">Vérifiez toujours l'expéditeur avant de
+                                            cliquer sur un lien professionnel.</p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="p-4 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-start space-x-3">
+                                    <i class="fa-solid fa-user-shield text-indigo-600 text-xl mt-0.5"></i>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-indigo-900">Authentification A2F</h4>
+                                        <p class="text-xs text-indigo-700 mt-0.5">Indispensable pour bloquer 99% des
+                                            accès non autorisés.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button onclick="openQuizModal()"
+                                class="w-full py-3 rounded-xl bg-slate-900 text-white font-medium text-sm hover:bg-brand-600 transition shadow">
+                                Évaluer mon niveau de sécurité
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Definition Section -->
+    <section id="definition" class="py-20 bg-white border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span
+                    class="text-brand-600 font-semibold text-xs uppercase tracking-wider bg-brand-50 px-3 py-1 rounded-full">Fondamentaux</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-3">Qu'est-ce qu'une Donnée Personnelle ?</h2>
+                <p class="text-slate-600 mt-3 text-base">
+                    Comprendre ce que couvre ce terme est la première étape indispensable pour tout professionnel ou
+                    citoyen numérique.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Def Card 1 -->
+                <div
+                    class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition group">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-indigo-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Identité</h3>
+                    <p class="text-sm text-slate-600">
+                        Nom, prénom, numéro de sécurité sociale, carte d'identité ou passeport permettant de vous
+                        identifier formellement.
+                    </p>
+                </div>
+
+                <!-- Def Card 2 -->
+                <div
+                    class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition group">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-indigo-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Contacts & Coordonnées</h3>
+                    <p class="text-sm text-slate-600">
+                        Adresse e-mail (pro ou perso), numéro de téléphone mobile ou fixe, et adresse postale de
+                        résidence ou de bureau.
+                    </p>
+                </div>
+
+                <!-- Def Card 3 -->
+                <div
+                    class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition group">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-indigo-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Localisation & Connexion</h3>
+                    <p class="text-sm text-slate-600">
+                        Adresse IP, données de géolocalisation GPS de votre smartphone, cookies de navigation et
+                        historiques de connexion.
+                    </p>
+                </div>
+
+                <!-- Def Card 4 -->
+                <div
+                    class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition group">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-indigo-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition">
+                        <i class="fa-solid fa-fingerprint"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Données Sensibles</h3>
+                    <p class="text-sm text-slate-600">
+                        Données de santé, opinions syndicales/politiques, convictions religieuses ou données
+                        biométriques (soumises à un régime strict).
+                    </p>
+                </div>
+            </div>
+
+            <div
+                class="mt-12 p-6 rounded-2xl bg-brand-50 border border-brand-100 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center space-x-4">
+                    <div
+                        class="w-12 h-12 rounded-full bg-brand-600 text-white flex items-center justify-center flex-shrink-0 text-xl font-bold">
+                        i
+                    </div>
+                    <div>
+                        <h4 class="text-base font-bold text-slate-900">Règle d'or</h4>
+                        <p class="text-sm text-slate-600">Toute information qui permet, directement ou indirectement,
+                            d'identifier une personne physique est une donnée personnelle protégée par la loi.</p>
+                    </div>
+                </div>
+                <a href="#outils"
+                    class="px-5 py-2.5 bg-brand-600 text-white rounded-xl text-sm font-semibold hover:bg-brand-700 transition flex-shrink-0">
+                    Découvrir comment les protéger
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Practices to Adopt Section -->
+    <section id="pratiques" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span
+                    class="text-brand-600 font-semibold text-xs uppercase tracking-wider bg-brand-100 px-3 py-1 rounded-full">Bons
+                    réflexes</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-3">Pratiques à Adopter (Pro & Non-Pro)</h2>
+                <p class="text-slate-600 mt-3 text-base">
+                    Des gestes simples mais redoutables pour sécuriser vos comptes, vos appareils et vos données
+                    professionnelles et personnelles.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Practice 1: A2F -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-6">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-indigo-50 text-brand-600 flex items-center justify-center text-2xl font-bold">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Pro &
+                            Non-Pro</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">L'A2F (Authentification à Deux Facteurs)</h3>
+                    <p class="text-sm text-slate-600 mb-6 leading-relaxed">
+                        Ne comptez plus seulement sur votre mot de passe. L'A2F ajoute une barrière de sécurité
+                        indispensable (code SMS, application d'authentification comme Google Authenticator ou clé
+                        physique) lors de chaque connexion.
+                    </p>
+                    <div class="space-y-2 border-t border-slate-100 pt-4">
+                        <div class="flex items-center text-xs text-slate-700 font-medium">
+                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Bloque 99% des attaques automatisées
+                            de comptes
+                        </div>
+                        <div class="flex items-center text-xs text-slate-700 font-medium">
+                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> À activer sur votre messagerie,
+                            réseaux sociaux et outils pros
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practice 2: Strong Passwords -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-6">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-indigo-50 text-brand-600 flex items-center justify-center text-2xl font-bold">
+                            <i class="fa-solid fa-shield-keyhole"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Pro &
+                            Non-Pro</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Mots de Passe Suffisamment Forts</h3>
+                    <p class="text-sm text-slate-600 mb-6 leading-relaxed">
+                        Fini les "123456" ou les dates de naissance. Utilisez une phrase secrète ou un gestionnaire de
+                        mots de passe (Bitwarden, Dashlane, KeePass) pour générer et retenir des clés complexes et
+                        uniques pour chaque service.
+                    </p>
+                    <div class="space-y-2 border-t border-slate-100 pt-4">
+                        <div class="flex items-center text-xs text-slate-700 font-medium">
+                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Minimum 12 caractères (majuscules,
+                            chiffres, symboles)
+                        </div>
+                        <div class="flex items-center text-xs text-slate-700 font-medium">
+                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Jamais le même mot de passe d'un
+                            site à l'autre
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practice 3: Phishing -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-6">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl font-bold">
+                            <i class="fa-solid fa-fish-fins"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Pro &
+                            Non-Pro</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Vigilance au Phishing (Hameçonnage)</h3>
+                    <p class="text-sm text-slate-600 mb-6 leading-relaxed">
+                        Faux e-mails des impôts, de votre banque ou de votre DSI professionnelle. Les escrocs cherchent
+                        à créer l'urgence. Inspectez toujours l'adresse réelle de l'expéditeur et ne téléchargez jamais
+                        de pièces jointes suspectes.
+                    </p>
+                    <div class="space-y-2 border-t border-slate-100 pt-4">
+                        <div class="flex items-center text-xs text-slate-700 font-medium">
+                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Ne cliquez jamais directement sur un
+                            lien urgent
+                        </div>
+                        <div class="flex items-center text-xs text-slate-700 font-medium">
+                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> En entreprise : alertez
+                            immédiatement le service informatique
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practice 4: Privacy Settings -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-6">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-indigo-50 text-brand-600 flex items-center justify-center text-2xl font-bold">
+                            <i class="fa-solid fa-sliders"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Pro &
+                            Non-Pro</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Gestion des Paramètres de Confidentialité</h3>
+                    <p class="text-sm text-slate-600 mb-6 leading-relaxed">
+                        Sur vos applications professionnelles comme personnelles, limitez le partage des données.
+                        Refusez les cookies publicitaires non essentiels, restreignez la visibilité de votre profil et
+                        limitez les accès aux géolocalisations superflues.
+                    </p>
+                    <div class="space-y-2 border-t border-slate-100 pt-4">
+                        <div class="flex items-center text-xs text-slate-700 font-medium">
+                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Paramétrez régulièrement les options
+                            de vie privée
+                        </div>
+                        <div class="flex items-center text-xs text-slate-700 font-medium">
+                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Principe de minimisation des données
+                            en entreprise
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools & RGPD Section -->
+    <section id="outils" class="py-20 bg-white border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span
+                    class="text-brand-600 font-semibold text-xs uppercase tracking-wider bg-brand-50 px-3 py-1 rounded-full">Arsenal
+                    de Sécurité</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-3">Outils Essentiels & Conformité RGPD</h2>
+                <p class="text-slate-600 mt-3 text-base">
+                    Découvrez comment utiliser les VPN, les antivirus et le cadre juridique du RGPD pour blinder votre
+                    environnement professionnel.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Tool 1: VPN -->
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-network-wired"></i>
+                            </div>
+                            <span class="text-xs font-bold text-brand-700 bg-brand-100 px-3 py-1 rounded-full">Pro &
+                                Personnel</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">Le VPN (Réseau Virtuel Privé)</h3>
+                        <p class="text-sm text-slate-600 mb-6">
+                            Chiffre votre connexion Internet de bout en bout. Indispensable en télétravail ou sur les
+                            réseaux Wi-Fi publics (gares, cafés, aéroports) pour empêcher l'interception de vos données
+                            sensibles.
+                        </p>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-start text-xs text-slate-700">
+                                <i class="fa-solid fa-circle-check text-brand-600 mt-0.5 mr-2"></i>
+                                <span><strong>Version Pro :</strong> VPN d'entreprise imposé (ex: WireGuard, OpenVPN,
+                                    NordLayer) pour accéder au réseau interne en sécurité.</span>
+                            </div>
+                            <div class="flex items-start text-xs text-slate-700">
+                                <i class="fa-solid fa-circle-check text-brand-600 mt-0.5 mr-2"></i>
+                                <span><strong>Version Grand Public :</strong> VPN fiable pour masquer votre adresse IP
+                                    et protéger votre vie privée sur le web.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-white rounded-2xl border border-slate-200 text-xs text-slate-500 font-medium">
+                        <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Conseil Pro : Ne vous connectez jamais
+                        aux outils de l'entreprise depuis un Wi-Fi public sans VPN actif.
+                    </div>
+                </div>
+
+                <!-- Tool 2: Antivirus -->
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-shield-virus"></i>
+                            </div>
+                            <span class="text-xs font-bold text-brand-700 bg-brand-100 px-3 py-1 rounded-full">Pro &
+                                Personnel</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">L'Antivirus & Détecteur de Menaces</h3>
+                        <p class="text-sm text-slate-600 mb-6">
+                            Première ligne de défense contre les logiciels malveillants (malwares, ransomwares,
+                            spywares). Il analyse en temps réel les fichiers téléchargés et les comportements suspects
+                            de vos postes.
+                        </p>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-start text-xs text-slate-700">
+                                <i class="fa-solid fa-circle-check text-brand-600 mt-0.5 mr-2"></i>
+                                <span><strong>Version Pro :</strong> Solutions centralisées (EDR/XDR) managées par le
+                                    service IT pour surveiller l'ensemble du parc informatique.</span>
+                            </div>
+                            <div class="flex items-start text-xs text-slate-700">
+                                <i class="fa-solid fa-circle-check text-brand-600 mt-0.5 mr-2"></i>
+                                <span><strong>Version Grand Public :</strong> Antivirus à jour (Windows Defender,
+                                    solutions certifiées) pour protéger vos ordinateurs personnels.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-white rounded-2xl border border-slate-200 text-xs text-slate-500 font-medium">
+                        <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Conseil Pro : Maintenez toujours votre
+                        système d'exploitation et vos logiciels à jour pour combler les failles.
+                    </div>
+                </div>
+
+                <!-- Tool 3: RGPD -->
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-indigo-900 text-white flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                            </div>
+                            <span
+                                class="text-xs font-bold text-indigo-800 bg-indigo-100 px-3 py-1 rounded-full">Professionnel
+                                Exclusif</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">Le RGPD (Règlement Général)</h3>
+                        <p class="text-sm text-slate-600 mb-6">
+                            Entré en vigueur en 2018, ce texte européen encadre strictement le traitement des données
+                            sur le territoire de l'UE. Il impose des obligations de transparence, de sécurité et de
+                            traçabilité aux entreprises.
+                        </p>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-start text-xs text-slate-700">
+                                <i class="fa-solid fa-circle-check text-indigo-600 mt-0.5 mr-2"></i>
+                                <span><strong>Registre des traitements :</strong> Cartographier les données collectées
+                                    par l'entreprise.</span>
+                            </div>
+                            <div class="flex items-start text-xs text-slate-700">
+                                <i class="fa-solid fa-circle-check text-indigo-600 mt-0.5 mr-2"></i>
+                                <span><strong>Droits des personnes :</strong> Assurer un accès facile à la modification
+                                    ou suppression des données clients/salariés.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-white rounded-2xl border border-slate-200 text-xs text-slate-500 font-medium">
+                        <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Sanctions : En cas de manquement
+                        grave, les amendes peuvent atteindre 20 millions d'euros ou 4% du CA mondial.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Youth & TikTok Space Section -->
+    <section id="jeunes"
+        class="py-20 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 text-white relative overflow-hidden">
+        <div
+            class="absolute inset-0 opacity-10 bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:16px_16px]">
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span
+                    class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/20 text-pink-400 border border-pink-500/30 text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-brands fa-tiktok"></i> Section Spéciale Jeunes
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">Concept de Vidéo TikTok Captivante</h2>
+                <p class="text-slate-400 mt-3 text-base">
+                    Parce que les jeunes connectés sont les professionnels et citoyens de demain, voici le storyboard
+                    interactif d'une vidéo courte, percutante et virale pour sensibiliser sans ennuyer.
+                </p>
+            </div>
+
+            <!-- TikTok Mockup Player Container -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Phone Mockup Frame -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div
+                        class="w-[300px] h-[600px] bg-black rounded-[40px] p-3 border-4 border-slate-700 shadow-2xl relative">
+                        <div
+                            class="w-full h-full bg-slate-900 rounded-[30px] overflow-hidden flex flex-col justify-between relative border border-slate-800">
+                            <!-- Top bar -->
+                            <div
+                                class="p-4 flex justify-between items-center text-xs text-slate-300 z-10 bg-gradient-to-b from-black/80 to-transparent">
+                                <span>9:41</span>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fa-solid fa-signal"></i>
+                                    <i class="fa-solid fa-wifi"></i>
+                                    <i class="fa-solid fa-battery-full"></i>
+                                </div>
+                            </div>
+
+                            <!-- Screen dynamic content -->
+                            <div class="absolute inset-0 flex flex-col justify-center items-center p-6 text-center z-0">
+                                <div id="tiktokSceneIcon"
+                                    class="w-20 h-20 rounded-full bg-pink-600/20 text-pink-500 flex items-center justify-center text-3xl mb-6 border border-pink-500/30 animate-bounce">
+                                    <i class="fa-solid fa-user-secret"></i>
+                                </div>
+                                <h3 id="tiktokSceneTitle" class="text-lg font-bold text-white mb-2">POV : Tu partages
+                                    ton géoloc en live 📍</h3>
+                                <p id="tiktokSceneDesc" class="text-xs text-slate-300 leading-relaxed">
+                                    "Tu penses que tout le monde s'en fout de savoir où tu es ? Spoiler : les arnaqueurs
+                                    adorent."
+                                </p>
+                            </div>
+
+                            <!-- Right TikTok actions sidebar -->
+                            <div
+                                class="absolute right-3 bottom-20 flex flex-col items-center space-y-4 z-10 text-white">
+                                <div class="flex flex-col items-center">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center mb-1">
+                                        <i class="fa-solid fa-heart text-pink-500"></i></div>
+                                    <span class="text-[10px]">128K</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center mb-1">
+                                        <i class="fa-solid fa-comment"></i></div>
+                                    <span class="text-[10px]">1.4K</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center mb-1">
+                                        <i class="fa-solid fa-bookmark"></i></div>
+                                    <span class="text-[10px]">45K</span>
+                                </div>
+                            </div>
+
+                            <!-- Bottom caption bar -->
+                            <div class="p-4 z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent text-left">
+                                <span class="text-xs font-bold block mb-1">@CyberJeune_Off</span>
+                                <p id="tiktokCaption" class="text-[11px] text-slate-300">Protège tes données perso avant
+                                    qu'elles ne soient publiques ! 🛑 #cybersecurity #rgpd</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storyboard controls & explanation -->
+                <div class="lg:col-span-7 space-y-6">
+                    <h3 class="text-2xl font-bold text-white">Storyboard Interactif de la Vidéo</h3>
+                    <p class="text-slate-400 text-sm">
+                        Cliquez sur les étapes du scénario pour visualiser le déroulé de la vidéo TikTok pensée pour
+                        capter l'attention des jeunes en moins de 30 secondes.
+                    </p>
+
+                    <div class="space-y-4">
+                        <!-- Scene 1 button -->
+                        <button onclick="setTikTokScene(1)" id="btnScene1"
+                            class="w-full text-left p-4 rounded-2xl bg-slate-800/80 border border-pink-500 transition flex items-center justify-between group">
+                            <div class="flex items-center space-x-4">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold">
+                                    01</div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">L'Accroche (0 - 5s) : Le piège de la
+                                        géolocalisation</h4>
+                                    <p class="text-xs text-slate-400">Mise en scène choc d'un partage de position en
+                                        direct.</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-play text-pink-400"></i>
+                        </button>
+
+                        <!-- Scene 2 button -->
+                        <button onclick="setTikTokScene(2)" id="btnScene2"
+                            class="w-full text-left p-4 rounded-2xl bg-slate-800/40 border border-slate-700 hover:border-slate-500 transition flex items-center justify-between group">
+                            <div class="flex items-center space-x-4">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
+                                    02</div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">Le Corps (5 - 20s) : Le Phishing & Mots de
+                                        passe</h4>
+                                    <p class="text-xs text-slate-400">Explication rapide des SMS frauduleux et du danger
+                                        du mot de passe "123456".</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-play text-slate-500 group-hover:text-white transition"></i>
+                        </button>
+
+                        <!-- Scene 3 button -->
+                        <button onclick="setTikTokScene(3)" id="btnScene3"
+                            class="w-full text-left p-4 rounded-2xl bg-slate-800/40 border border-slate-700 hover:border-slate-500 transition flex items-center justify-between group">
+                            <div class="flex items-center space-x-4">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
+                                    03</div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">L'Appel à l'action (20 - 30s) : Les
+                                        super-pouvoirs</h4>
+                                    <p class="text-xs text-slate-400">Activation de l'A2F, installation d'un antivirus
+                                        et réglage de la confidentialité.</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-play text-slate-500 group-hover:text-white transition"></i>
+                        </button>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-slate-800/50 border border-slate-700 flex items-center space-x-3">
+                        <i class="fa-solid fa-bullhorn text-pink-400 text-xl"></i>
+                        <span class="text-xs text-slate-300">Format idéal pour les réseaux (TikTok, Instagram Reels,
+                            YouTube Shorts) afin d'atteindre la génération connectée.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CNIL Reference Section -->
+    <section id="cnil" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+                class="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div class="space-y-4 max-w-2xl">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-indigo-200 text-xs font-semibold uppercase tracking-wider">
+                        <i class="fa-solid fa-landmark"></i> Autorité de Régulation
+                    </div>
+                    <h2 class="text-3xl font-bold">Vers qui se tourner ? La CNIL</h2>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        La <strong>Commission Nationale de l’Informatique et des Libertés (CNIL)</strong> est l'autorité
+                        administrative indépendante française garante de la protection des données personnelles. En cas
+                        de doute, de violation de données ou pour vous former officiellement, c'est l'organisme de
+                        référence incontournable.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer"
+                            class="px-6 py-3 rounded-xl bg-brand-600 text-white font-medium text-sm hover:bg-brand-500 transition shadow flex items-center gap-2">
+                            <span>Visiter cnil.fr</span> <i class="fa-solid fa-external-link text-xs"></i>
+                        </a>
+                        <a href="https://www.cnil.fr/fr/rgpd-de-quoi-parle-t-on" target="_blank"
+                            rel="noopener noreferrer"
+                            class="px-6 py-3 rounded-xl bg-white/10 text-white font-medium text-sm hover:bg-white/20 transition flex items-center gap-2">
+                            <span>Guides pratiques officiels</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="w-full lg:w-auto flex justify-center flex-shrink-0">
+                    <div
+                        class="w-32 h-32 rounded-3xl bg-white/10 border border-white/20 flex flex-col items-center justify-center p-6 text-center">
+                        <i class="fa-solid fa-building-columns text-4xl text-brand-400 mb-2"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider">CNIL France</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold">
+                    <i class="fa-solid fa-shield-halved text-sm"></i>
+                </div>
+                <span class="text-white font-bold text-base">CyberGuard Pro</span>
+            </div>
+            <p class="text-xs text-slate-500 text-center md:text-left">
+                © 2026 Sensibilisation à la Protection des Données Personnelles. Conçu pour les professionnels et les
+                jeunes.
+            </p>
+            <div class="flex space-x-6 text-sm">
+                <a href="#definition" class="hover:text-white transition">Définition</a>
+                <a href="#pratiques" class="hover:text-white transition">Pratiques</a>
+                <a href="#outils" class="hover:text-white transition">Outils</a>
+                <a href="#cnil" class="hover:text-white transition">CNIL</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Quiz & Checklist Modal -->
+    <div id="quizModal"
+        class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-8 shadow-2xl relative border border-slate-200">
+            <button onclick="closeQuizModal()"
+                class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 text-xl font-bold">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="mb-6">
+                <span class="text-xs font-semibold text-brand-600 bg-brand-50 px-3 py-1 rounded-full uppercase">Audit
+                    Flash Sécurité</span>
+                <h3 class="text-2xl font-bold text-slate-900 mt-2">Checklist & Quiz Pro</h3>
+                <p class="text-sm text-slate-600 mt-1">Cochez les mesures déjà en place dans votre organisation ou votre
+                    pratique quotidienne :</p>
+            </div>
+
+            <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                <label
+                    class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-brand-50/50 transition">
+                    <input type="checkbox"
+                        class="mt-1 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                    <span class="text-xs text-slate-700 font-medium">J'utilise un gestionnaire de mots de passe et mes
+                        codes font au moins 12 caractères.</span>
+                </label>
+                <label
+                    class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-brand-50/50 transition">
+                    <input type="checkbox"
+                        class="mt-1 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                    <span class="text-xs text-slate-700 font-medium">L'Authentification à Double Facteur (A2F) est
+                        activée sur mes comptes professionnels et e-mails.</span>
+                </label>
+                <label
+                    class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-brand-50/50 transition">
+                    <input type="checkbox"
+                        class="mt-1 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                    <span class="text-xs text-slate-700 font-medium">Un antivirus professionnel ou grand public mis à
+                        jour protège mon poste.</span>
+                </label>
+                <label
+                    class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-brand-50/50 transition">
+                    <input type="checkbox"
+                        class="mt-1 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                    <span class="text-xs text-slate-700 font-medium">J'utilise un VPN sécurisé lors de mes connexions en
+                        déplacement ou sur Wi-Fi public.</span>
+                </label>
+                <label
+                    class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-brand-50/50 transition">
+                    <input type="checkbox"
+                        class="mt-1 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                    <span class="text-xs text-slate-700 font-medium">Je connais la procédure interne pour signaler un
+                        e-mail de phishing suspect.</span>
+                </label>
+            </div>
+
+            <div class="mt-8 flex justify-end space-x-3">
+                <button onclick="closeQuizModal()"
+                    class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-medium text-sm hover:bg-slate-200 transition">
+                    Fermer
+                </button>
+                <button onclick="submitQuiz()"
+                    class="px-5 py-2.5 rounded-xl bg-brand-600 text-white font-medium text-sm hover:bg-brand-700 transition shadow">
+                    Valider mon audit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Interactive Logic -->
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function openQuizModal() {
+            document.getElementById('quizModal').classList.remove('hidden');
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quizModal').classList.add('hidden');
+        }
+
+        function submitQuiz() {
+            alert('Audit enregistré ! Pensez à maintenir ces bonnes pratiques de sécurité au quotidien.');
+            closeQuizModal();
+        }
+
+        function setTikTokScene(sceneNumber) {
+            const icon = document.getElementById('tiktokSceneIcon');
+            const title = document.getElementById('tiktokSceneTitle');
+            const desc = document.getElementById('tiktokSceneDesc');
+            const caption = document.getElementById('tiktokCaption');
+
+            const btn1 = document.getElementById('btnScene1');
+            const btn2 = document.getElementById('btnScene2');
+            const btn3 = document.getElementById('btnScene3');
+
+            // Reset buttons
+            [btn1, btn2, btn3].forEach(b => {
+                b.className = "w-full text-left p-4 rounded-2xl bg-slate-800/40 border border-slate-700 hover:border-slate-500 transition flex items-center justify-between group";
+                b.querySelector('i.fa-play').className = "fa-solid fa-play text-slate-500 group-hover:text-white transition";
+            });
+
+            if (sceneNumber === 1) {
+                icon.innerHTML = '<i class="fa-solid fa-user-secret"></i>';
+                title.innerText = "POV : Tu partages ton géoloc en live 📍";
+                desc.innerText = `"Tu penses que tout le monde s'en fout de savoir où tu es ? Spoiler : les arnaqueurs adorent."`;
+                caption.innerText = "Protège tes données perso avant qu'elles ne soient publiques ! 🛑 #cybersecurity #rgpd";
+
+                btn1.className = "w-full text-left p-4 rounded-2xl bg-slate-800/80 border border-pink-500 transition flex items-center justify-between group";
+                btn1.querySelector('i.fa-play').className = "fa-solid fa-play text-pink-400";
+            } else if (sceneNumber === 2) {
+                icon.innerHTML = '<i class="fa-solid fa-fish-fins text-amber-400"></i>';
+                title.innerText = "ALERTE SMS : 'Votre colis est bloqué' 📦";
+                desc.innerText = `"Le faux lien cliquable qui vole ton mot de passe en 2 secondes chrono. Ne tombe pas dans le panneau !"`;
+                caption.innerText = "Le phishing fait des milliers de victimes chaque jour. Ouvre l'œil ! 🎣 #phishing #securite";
+
+                btn2.className = "w-full text-left p-4 rounded-2xl bg-slate-800/80 border border-indigo-500 transition flex items-center justify-between group";
+                btn2.querySelector('i.fa-play').className = "fa-solid fa-play text-indigo-400";
+            } else if (sceneNumber === 3) {
+                icon.innerHTML = '<i class="fa-solid fa-shield-check text-emerald-400"></i>';
+                title.innerText = "Le Pack Anti-Hack : A2F & VPN 🛡️";
+                desc.innerText = `"Active la double authentification, blinde ton mot de passe et installe un antivirus. T'es invincible."`;
+                caption.innerText = "Dis-moi en commentaire si tu as activé ton A2F ! 👇 #a2f #cnil #tech";
+
+                btn3.className = "w-full text-left p-4 rounded-2xl bg-slate-800/80 border border-emerald-500 transition flex items-center justify-between group";
+                btn3.querySelector('i.fa-play').className = "fa-solid fa-play text-emerald-400";
+            }
+        }
+    </script>
+</body>
+
+</html>
