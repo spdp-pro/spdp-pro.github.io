@@ -1,903 +1,783 @@
-<!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
-
+<!doctype html>
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sécurité & Protection des Données Personnelles | Guide Professionnel & Pédagogique</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            900: '#312e81',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SPDP Protection des données</title>
+<meta name="description" content="Guide pratique de protection des données personnelles pour les professionnels : bons réflexes, obligations RGPD, audit flash et vidéo de sensibilisation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout : un dossier de conformité — colonne de lecture large, fiches et registres en encart, une bande sombre pour le kit vidéo */
+:root {
+  --bg: #F3F5FA; --surface: #FFFFFF; --surface-2: #E8ECF6; --ink: #0D1530; --muted: #4B5677; --line: #D3DAE9;
+  --eu: #2241C9; --eu-soft: #E2E7FB; --on-eu: #FFFFFF;
+  --gold: #F2B300; --gold-soft: #FFF2C6; --on-gold: #2A1E00;
+  --ok: #11804A; --ok-soft: #DCF2E6; --warn: #A65806; --warn-soft: #FCEAD2; --bad: #C2283C; --bad-soft: #FBE0E4;
+  --band: #0A1130; --band-2: #131D48; --band-fg: #EAEEFB; --band-muted: #A9B3D8; --band-line: #2A3566;
+  --device: #05070F; --device-edge: #2B3352;
+  --shadow: 0 1px 2px rgb(13 21 48 / .06), 0 18px 40px -18px rgb(13 21 48 / .28);
+  --f-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --r: 14px; --wrap: 1180px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #090E1F; --surface: #111933; --surface-2: #18213F; --ink: #E7EBF7; --muted: #A1ACCB; --line: #27314F;
+    --eu: #8298FF; --eu-soft: #1B2552; --on-eu: #08102F;
+    --gold: #F6C744; --gold-soft: #3A2F0A; --on-gold: #211800;
+    --ok: #43CF88; --ok-soft: #0F3524; --warn: #F2A54A; --warn-soft: #3A260C; --bad: #FF6F82; --bad-soft: #3D1620;
+    --band: #050918; --band-2: #0E1636; --band-line: #253060;
+    --shadow: 0 1px 2px rgb(0 0 0 / .35), 0 18px 40px -18px rgb(0 0 0 / .7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #090E1F; --surface: #111933; --surface-2: #18213F; --ink: #E7EBF7; --muted: #A1ACCB; --line: #27314F;
+  --eu: #8298FF; --eu-soft: #1B2552; --on-eu: #08102F;
+  --gold: #F6C744; --gold-soft: #3A2F0A; --on-gold: #211800;
+  --ok: #43CF88; --ok-soft: #0F3524; --warn: #F2A54A; --warn-soft: #3A260C; --bad: #FF6F82; --bad-soft: #3D1620;
+  --band: #050918; --band-2: #0E1636; --band-line: #253060;
+  --shadow: 0 1px 2px rgb(0 0 0 / .35), 0 18px 40px -18px rgb(0 0 0 / .7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.6 var(--f-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+img, video { max-width: 100%; }
+a { color: var(--eu); }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: clamp(16px, 4vw, 40px); }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -.015em; }
+h2 { font-size: clamp(1.9rem, 3.6vw, 2.75rem); font-weight: 800; font-stretch: 108%; line-height: 1.08; }
+h3 { font-size: 1.22rem; font-weight: 700; line-height: 1.25; letter-spacing: 0; word-spacing: .06em; }
+p { margin: 0; }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 600 .78rem/1 var(--f-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--eu); }
+.eyebrow::before { content: ""; width: 10px; height: 10px; background: var(--gold); border-radius: 2px; }
+.lead { font-size: 1.12rem; color: var(--muted); max-width: 62ch; }
+.sec { padding-block: clamp(64px, 9vw, 112px); }
+.sec-head { display: grid; gap: 14px; margin-bottom: clamp(32px, 5vw, 52px); max-width: 760px; }
+.icon svg, svg.lucide { width: 1em; height: 1em; stroke-width: 2.1; flex: none; }
+
+/* boutons */
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 10px; font: 600 1rem/1 var(--f-body); text-decoration: none; border: 2px solid transparent; cursor: pointer; transition: transform .18s, background-color .18s, border-color .18s; }
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--eu); color: var(--on-eu); }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover { border-color: var(--ink); }
+.btn .lucide { transition: transform .2s; }
+.btn:hover .lucide { transform: translateX(3px); }
+
+/* en-tête */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid var(--line); }
+.top-in { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 70px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); min-width: 0; }
+.mark { width: 40px; height: 40px; border-radius: 10px; background: var(--eu); color: var(--on-eu); display: grid; place-items: center; font-size: 22px; flex: none; }
+.brand b { font: 800 1.2rem/1 var(--f-display); font-stretch: 118%; letter-spacing: .02em; display: block; }
+.brand small { font: 500 .72rem/1.3 var(--f-mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; display: block; margin-top: 4px; white-space: nowrap; }
+.nav { display: flex; gap: 4px; }
+.nav a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: .95rem; padding: 8px 12px; border-radius: 8px; transition: color .15s, background-color .15s; }
+.nav a:hover { color: var(--ink); background: var(--surface-2); }
+.nav a.on { color: var(--eu); background: var(--eu-soft); }
+.top .btn { padding: 11px 16px; font-size: .92rem; }
+.menu-btn { display: none; background: none; border: 1px solid var(--line); color: var(--ink); border-radius: 10px; width: 44px; height: 44px; font-size: 22px; place-items: center; cursor: pointer; }
+.mobile-nav { border-top: 1px solid var(--line); padding-block: 10px 16px; display: grid; gap: 2px; }
+.mobile-nav a { padding: 12px 4px; color: var(--ink); text-decoration: none; font-weight: 500; border-bottom: 1px solid var(--line); }
+.progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--gold); transform: scaleX(0); transform-origin: 0 50%; }
+@media (min-width: 981px) { .mobile-nav { display: none; } }
+@media (max-width: 980px) { .nav, .top .btn { display: none; } .menu-btn { display: grid; } }
+@media (max-width: 420px) { .hide-sm { display: none; } }
+
+/* hero */
+.hero { padding-block: clamp(40px, 7vw, 88px) clamp(48px, 7vw, 80px); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(32px, 5vw, 64px); align-items: center; }
+.hero h1 { font-size: clamp(2.3rem, 5vw, 4.1rem); font-weight: 800; font-stretch: 104%; line-height: 1.02; margin-top: 18px; }
+.hero h1 mark { color: inherit; background: linear-gradient(var(--gold), var(--gold)) 0 88% / 100% 34% no-repeat; padding-inline: 2px; animation: highlight 1s .5s cubic-bezier(.2,.7,.2,1) backwards; }
+@keyframes highlight { from { background-size: 0% 34%; } }
+.hero .lead { margin-top: 22px; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.audience { margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line); display: grid; gap: 12px; }
+.audience-label { font: 600 .74rem/1 var(--f-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-weight: 500; font-size: .93rem; }
+.chip .lucide { color: var(--eu); }
+.particulier { margin-top: 14px; font-size: .92rem; color: var(--muted); }
+
+/* fiche registre */
+.record { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); overflow: hidden; position: relative; }
+.record-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 20px; background: var(--eu); color: var(--on-eu); }
+.record-head b { font: 700 1rem/1.2 var(--f-display); font-stretch: 110%; }
+.record-head small { display: block; font: 500 .72rem/1.2 var(--f-mono); opacity: .85; margin-top: 4px; letter-spacing: .04em; }
+.tag-ex { font: 600 .7rem/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; padding: 6px 9px; border-radius: 6px; background: var(--gold); color: var(--on-gold); white-space: nowrap; }
+.record dl { margin: 0; padding: 8px 20px 4px; display: grid; }
+.record dl > div { display: grid; grid-template-columns: 118px minmax(0, 1fr) 22px; gap: 12px; align-items: start; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+.record dl > div:last-child { border-bottom: 0; }
+.record dt { font: 500 .78rem/1.5 var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.record dd { margin: 0; font-weight: 500; font-size: .96rem; line-height: 1.45; }
+.record .tick { color: var(--ok); font-size: 20px; margin-top: 1px; }
+.record .tick .lucide { animation: tick .45s cubic-bezier(.3,1.6,.5,1) backwards; animation-delay: calc(.6s + var(--i) * .18s); }
+@keyframes tick { from { transform: scale(0); } }
+.record-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 20px; background: var(--surface-2); font: 500 .8rem/1.3 var(--f-mono); color: var(--muted); flex-wrap: wrap; }
+.status { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; border-radius: 999px; background: var(--ok-soft); color: var(--ok); font: 600 .8rem/1 var(--f-body); }
+.status .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: pulse 2s infinite; }
+@keyframes pulse { 50% { opacity: .35; } }
+@media (max-width: 900px) { .hero { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 460px) { .record dl > div { grid-template-columns: minmax(0, 1fr) 22px; } .record dt { grid-column: 1 / -1; } }
+
+/* chiffres clés */
+.figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--line); }
+.fig { padding: 26px clamp(14px, 2vw, 26px); display: grid; gap: 8px; align-content: start; }
+.fig + .fig { border-left: 1px solid var(--line); }
+.fig strong { font: 800 clamp(2rem, 3.6vw, 2.8rem)/1 var(--f-display); font-stretch: 115%; font-variant-numeric: tabular-nums; color: var(--ink); }
+.fig strong small { font-size: .5em; font-weight: 700; margin-left: 4px; color: var(--eu); }
+.fig p { font-size: .93rem; color: var(--muted); line-height: 1.45; }
+.fig .ref { font: 500 .74rem/1 var(--f-mono); color: var(--eu); letter-spacing: .04em; }
+@media (max-width: 860px) { .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); } .fig:nth-child(3) { border-left: 0; } .fig:nth-child(n+3) { border-top: 1px solid var(--line); } }
+@media (max-width: 440px) { .figures { grid-template-columns: minmax(0, 1fr); } .fig + .fig { border-left: 0; border-top: 1px solid var(--line); } }
+
+/* données */
+.data-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.data-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 24px; display: grid; gap: 12px; align-content: start; transition: transform .25s, border-color .25s, box-shadow .25s; }
+.data-card:hover { transform: translateY(-4px); border-color: var(--eu); box-shadow: var(--shadow); }
+.ico { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; font-size: 22px; background: var(--eu-soft); color: var(--eu); }
+.data-card p { font-size: .95rem; color: var(--muted); }
+.chez-vous { margin-top: 4px; padding-top: 12px; border-top: 1px solid var(--line); font-size: .88rem; }
+.chez-vous b { display: block; font: 600 .72rem/1.4 var(--f-mono); color: var(--eu); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+.data-card.sensitive .ico { background: var(--bad-soft); color: var(--bad); }
+.golden { margin-top: 20px; display: flex; gap: 18px; align-items: center; padding: 22px 24px; border-radius: var(--r); background: var(--gold-soft); border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent); }
+.golden .ico { background: var(--gold); color: var(--on-gold); flex: none; }
+.golden p { font-size: 1rem; }
+@media (max-width: 1000px) { .data-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .data-grid { grid-template-columns: minmax(0, 1fr); } .golden { flex-direction: column; align-items: flex-start; } }
+
+/* réflexes */
+.alt { background: var(--surface); border-block: 1px solid var(--line); }
+.reflex-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.reflex { padding: clamp(22px, 3vw, 34px); display: grid; gap: 12px; align-content: start; background: var(--bg); position: relative; }
+.reflex:nth-child(odd) { border-right: 1px solid var(--line); }
+.reflex:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+.reflex-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.reflex .num { font: 600 .8rem/1 var(--f-mono); color: var(--muted); }
+.reflex p { color: var(--muted); font-size: .97rem; }
+.reflex ul { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.reflex li { display: flex; gap: 10px; font-size: .93rem; font-weight: 500; }
+.reflex li .lucide { color: var(--ok); margin-top: 4px; }
+.reflex .ico { transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
+.reflex:hover .ico { transform: rotate(-8deg) scale(1.08); }
+@media (max-width: 760px) { .reflex-grid { grid-template-columns: minmax(0, 1fr); } .reflex:nth-child(odd) { border-right: 0; } .reflex:not(:last-child) { border-bottom: 1px solid var(--line); } }
+
+/* exercice phishing */
+.phish { margin-top: 28px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 24px; align-items: start; }
+.mail { background: var(--bg); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
+.mail-bar { display: flex; gap: 8px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); background: var(--surface-2); font: 500 .8rem/1 var(--f-mono); color: var(--muted); }
+.mail-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.mail-body { padding: 20px; display: grid; gap: 12px; font-size: .97rem; }
+.mail-meta { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); }
+.mail-meta b { color: var(--ink); font-weight: 600; }
+.mail-subject { font: 700 1.1rem/1.3 var(--f-body); }
+.spot { all: unset; cursor: pointer; border-radius: 6px; padding: 1px 4px; margin-inline: -4px; background: transparent; box-shadow: inset 0 -2px 0 var(--line); transition: background-color .2s, box-shadow .2s; }
+.spot:hover { background: var(--surface-2); box-shadow: inset 0 -2px 0 var(--muted); }
+.spot:focus-visible { outline: 3px solid var(--gold); }
+.spot.found { background: var(--bad-soft); box-shadow: inset 0 -2px 0 var(--bad); color: var(--bad); }
+.fake-link { color: var(--eu); text-decoration: underline; word-break: break-all; }
+.phish-side { display: grid; gap: 14px; }
+.phish-score { display: flex; align-items: baseline; gap: 10px; font: 800 2.4rem/1 var(--f-display); font-stretch: 115%; }
+.phish-score .lbl { font: 500 .95rem/1.3 var(--f-body); color: var(--muted); }
+.note { padding: 14px 16px; border-radius: 12px; background: var(--bad-soft); border-left: 4px solid var(--bad); font-size: .93rem; animation: drop .35s cubic-bezier(.2,.7,.2,1); }
+.note b { display: block; color: var(--bad); margin-bottom: 2px; }
+@keyframes drop { from { transform: translateY(-8px); opacity: 0; } }
+.phish-done { padding: 14px 16px; border-radius: 12px; background: var(--ok-soft); color: var(--ok); font-weight: 600; font-size: .95rem; }
+.link-btn { all: unset; cursor: pointer; color: var(--eu); font-weight: 600; font-size: .93rem; text-decoration: underline; text-underline-offset: 3px; justify-self: start; }
+@media (max-width: 860px) { .phish { grid-template-columns: minmax(0, 1fr); } }
+
+/* outils */
+.tools { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 26px; display: grid; gap: 14px; grid-template-rows: auto auto 1fr auto; }
+.tool p { color: var(--muted); font-size: .96rem; }
+.uses { display: grid; gap: 10px; }
+.use { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 10px; font-size: .9rem; }
+.use b { font: 600 .72rem/1.6 var(--f-mono); color: var(--eu); text-transform: uppercase; letter-spacing: .05em; }
+.tip { display: flex; gap: 10px; padding: 12px 14px; border-radius: 10px; background: var(--surface-2); font-size: .87rem; color: var(--muted); }
+.tip .lucide { color: var(--gold); flex: none; margin-top: 3px; }
+@media (max-width: 980px) { .tools { grid-template-columns: minmax(0, 1fr); } }
+
+/* RGPD */
+.rgpd { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+.rgpd-intro { position: sticky; top: 100px; display: grid; gap: 18px; }
+.protect { display: grid; gap: 10px; padding: 20px; border-radius: var(--r); background: var(--eu); color: var(--on-eu); }
+.protect b { font: 700 1.05rem/1.3 var(--f-display); font-stretch: 108%; }
+.protect p { font-size: .94rem; opacity: .92; }
+.stars { display: flex; gap: 6px; color: var(--gold); font-size: 15px; }
+.stars .lucide { fill: currentColor; }
+.oblig-wrap { position: relative; }
+.oblig { margin: 0; padding: 0 0 0 46px; list-style: none; display: grid; }
+.oblig-track, .oblig-fill { position: absolute; left: 15px; top: 18px; bottom: 18px; width: 2px; background: var(--line); }
+.oblig-fill { background: var(--eu); transform-origin: 50% 0; transform: scaleY(0); }
+.oblig li { position: relative; padding: 14px 0 22px; display: grid; gap: 6px; }
+.oblig li::before { content: ""; position: absolute; left: -38px; top: 18px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line); transition: background-color .3s, border-color .3s, transform .3s; }
+.oblig li.done::before { background: var(--gold); border-color: var(--gold); transform: scale(1.15); }
+.art { font: 600 .76rem/1 var(--f-mono); color: var(--eu); letter-spacing: .05em; }
+.oblig h3 { font-size: 1.15rem; }
+.oblig p { color: var(--muted); font-size: .96rem; }
+.oblig li.fine h3 { color: var(--bad); }
+@media (max-width: 900px) { .rgpd { grid-template-columns: minmax(0, 1fr); } .rgpd-intro { position: static; } }
+
+/* kit vidéo (bande sombre dans les deux thèmes) */
+.band { background: var(--band); color: var(--band-fg); position: relative; overflow: hidden; }
+.band::before { content: ""; position: absolute; inset: 0; background: radial-gradient(600px 400px at 18% 30%, color-mix(in srgb, var(--eu) 30%, transparent), transparent 70%), radial-gradient(500px 380px at 85% 80%, color-mix(in srgb, var(--gold) 14%, transparent), transparent 70%); pointer-events: none; }
+.band .eyebrow { color: var(--gold); }
+.band .lead { color: var(--band-muted); }
+.kit { position: relative; display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 80px); align-items: center; }
+.phone-wrap { display: grid; justify-items: center; gap: 14px; }
+.phone { width: min(320px, 100%); padding: 26px 11px 14px; border-radius: 46px; background: var(--device); box-shadow: 0 0 0 2px var(--device-edge), 0 40px 80px -30px rgb(0 0 0 / .8), 0 0 90px -20px color-mix(in srgb, var(--eu) 60%, transparent); position: relative; }
+.phone::before { content: ""; position: absolute; top: 10px; left: 50%; width: 64px; height: 6px; margin-left: -32px; border-radius: 6px; background: var(--device-edge); }
+.screen { position: relative; aspect-ratio: 9 / 16; border-radius: 32px; overflow: hidden; background: var(--device); cursor: pointer; }
+.screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.ph-play { position: absolute; inset: 0; display: grid; place-items: center; background: rgb(0 0 0 / .35); opacity: 0; transition: opacity .25s; pointer-events: none; }
+.ph-play span { width: 76px; height: 76px; border-radius: 50%; background: rgb(255 255 255 / .92); color: #0A1130; display: grid; place-items: center; font-size: 32px; box-shadow: 0 10px 30px rgb(0 0 0 / .4); }
+.phone.paused .ph-play { opacity: 1; }
+.ph-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgb(255 255 255 / .2); }
+.ph-bar i { position: absolute; inset: 0; background: var(--gold); transform: scaleX(0); transform-origin: 0 50%; }
+.ph-sound { position: absolute; right: 12px; bottom: 16px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgb(0 0 0 / .55); color: #fff; display: grid; place-items: center; font-size: 20px; cursor: pointer; backdrop-filter: blur(6px); }
+.ph-hint { font: 500 .8rem/1.3 var(--f-mono); color: var(--band-muted); text-align: center; }
+.chapters { margin-top: 28px; display: grid; gap: 6px; padding: 0; list-style: none; }
+.chap { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; display: grid; grid-template-columns: 54px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--band-line); background: color-mix(in srgb, var(--band-2) 70%, transparent); position: relative; overflow: hidden; transition: border-color .2s, background-color .2s, transform .2s; --p: 0; }
+.chap::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--gold); transform: scaleX(var(--p)); transform-origin: 0 50%; }
+.chap:hover { border-color: var(--band-muted); transform: translateX(4px); }
+.chap:focus-visible { outline: 3px solid var(--gold); }
+.chap.on { border-color: var(--gold); background: var(--band-2); }
+.chap time { font: 600 .82rem/1 var(--f-mono); color: var(--gold); font-variant-numeric: tabular-nums; }
+.chap span { font-weight: 600; font-size: .98rem; }
+.chap .lucide { color: var(--band-muted); }
+.chap.on .lucide { color: var(--gold); }
+.kit-note { margin-top: 18px; display: flex; gap: 10px; font-size: .9rem; color: var(--band-muted); }
+.kit-note .lucide { color: var(--gold); margin-top: 4px; }
+@media (max-width: 900px) { .kit { grid-template-columns: minmax(0, 1fr); } }
+
+/* audit */
+.audit { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 24px; align-items: start; }
+.checks { display: grid; gap: 10px; }
+.check { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px 18px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); cursor: pointer; transition: border-color .2s, background-color .2s; }
+.check:hover { border-color: var(--eu); }
+.check input { appearance: none; width: 24px; height: 24px; margin: 0; border-radius: 7px; border: 2px solid var(--line); background: var(--bg); display: grid; place-items: center; cursor: pointer; transition: background-color .2s, border-color .2s; }
+.check input::after { content: ""; width: 7px; height: 12px; border: solid var(--on-eu); border-width: 0 3px 3px 0; transform: rotate(45deg) scale(0); margin-top: -3px; transition: transform .2s cubic-bezier(.3,1.6,.5,1); }
+.check input:checked { background: var(--eu); border-color: var(--eu); }
+.check input:checked::after { transform: rotate(45deg) scale(1); }
+.check:has(input:checked) { background: var(--eu-soft); border-color: color-mix(in srgb, var(--eu) 45%, transparent); }
+.check span { font-size: .96rem; font-weight: 500; }
+.check small { display: block; color: var(--muted); font-weight: 400; font-size: .85rem; margin-top: 2px; }
+.result { position: sticky; top: 96px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 24px; display: grid; gap: 18px; box-shadow: var(--shadow); --lvl: var(--bad); --lvl-soft: var(--bad-soft); }
+.result[data-level="mid"] { --lvl: var(--warn); --lvl-soft: var(--warn-soft); }
+.result[data-level="good"] { --lvl: var(--ok); --lvl-soft: var(--ok-soft); }
+.gauge { display: flex; align-items: center; gap: 20px; }
+.gauge svg { width: 124px; height: 124px; transform: rotate(-90deg); flex: none; }
+.gauge circle { fill: none; stroke-width: 12; }
+.gauge .bg { stroke: var(--surface-2); }
+.gauge .fg { stroke: var(--lvl); stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.2,.7,.2,1), stroke .3s; }
+.gauge-num { font: 800 2.6rem/1 var(--f-display); font-stretch: 115%; font-variant-numeric: tabular-nums; }
+.gauge-num small { font-size: .45em; color: var(--muted); font-weight: 600; }
+.level { display: inline-block; margin-top: 8px; padding: 6px 12px; border-radius: 999px; background: var(--lvl-soft); color: var(--lvl); font-weight: 700; font-size: .88rem; }
+.next h3 { font-size: 1rem; margin-bottom: 8px; }
+.next ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: .92rem; }
+.next a { font-weight: 600; }
+.next .all-good { color: var(--ok); font-weight: 600; font-size: .95rem; }
+@media (max-width: 900px) { .audit { grid-template-columns: minmax(0, 1fr); } .result { position: static; } }
+
+/* CNIL */
+.cnil { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+.res { display: grid; gap: 10px; }
+.res a { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 16px 18px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); text-decoration: none; color: var(--ink); transition: border-color .2s, transform .2s; }
+.res a:hover { border-color: var(--eu); transform: translateX(4px); }
+.res b { display: block; font-weight: 600; }
+.res small { display: block; color: var(--muted); font-size: .86rem; }
+.res .url { font: 500 .78rem/1 var(--f-mono); color: var(--eu); }
+@media (max-width: 900px) { .cnil { grid-template-columns: minmax(0, 1fr); } }
+
+footer { border-top: 1px solid var(--line); padding-block: 36px; }
+.foot { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center; font-size: .88rem; color: var(--muted); }
+.foot nav { display: flex; flex-wrap: wrap; gap: 18px; }
+.foot nav a { color: var(--muted); text-decoration: none; }
+.foot nav a:hover { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
 </head>
+<body>
 
-<body class="bg-slate-50 text-slate-800 antialiased">
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#top" aria-label="SPDP, retour en haut">
+      <span class="mark"><i data-lucide="shield-check"></i></span>
+      <span><b>SPDP</b><small>Protection des données<span class="hide-sm"> · Guide pro</span></small></span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#donnees">Données</a>
+      <a href="#reflexes">Réflexes</a>
+      <a href="#outils">Outils</a>
+      <a href="#rgpd">RGPD</a>
+      <a href="#kit">Vidéo</a>
+      <a href="#cnil">CNIL</a>
+    </nav>
+    <a class="btn btn-primary" href="#audit"><i data-lucide="list-checks"></i>Faire l'audit</a>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Ouvrir le menu"><i data-lucide="menu"></i></button>
+  </div>
+  <nav class="wrap mobile-nav" id="mobile-nav" aria-label="Menu mobile" hidden>
+    <a href="#donnees">Ce qu'est une donnée personnelle</a>
+    <a href="#reflexes">Les 4 réflexes</a>
+    <a href="#outils">Vos outils</a>
+    <a href="#rgpd">Vos obligations RGPD</a>
+    <a href="#kit">Vidéo de sensibilisation</a>
+    <a href="#audit">Audit flash</a>
+    <a href="#cnil">La CNIL</a>
+  </nav>
+  <div class="progress" id="read-progress"></div>
+</header>
 
-    <!-- Navigation Bar -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div
-                    class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
-                    <i class="fa-solid fa-shield-halved text-xl"></i>
-                </div>
-                <div>
-                    <span class="text-xl font-bold tracking-tight text-slate-900 block">SPDP</span>
-                    <span class="text-xs text-slate-500 font-medium">SENSIBILISATION À LA PROTECTION DES DONNÉES
-                        PERSONNELLES</span>
-                </div>
-            </div>
+<main id="top">
 
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
-                <a href="#definition" class="hover:text-brand-600 transition">Définition</a>
-                <a href="#pratiques" class="hover:text-brand-600 transition">Pratiques clés</a>
-                <a href="#outils" class="hover:text-brand-600 transition">Outils & RGPD</a>
-                <a href="#jeunes"
-                    class="hover:text-brand-600 transition text-pink-600 font-semibold flex items-center gap-1.5"><i
-                        class="fa-brands fa-tiktok"></i> Espace Jeunes</a>
-                <a href="#cnil" class="hover:text-brand-600 transition">CNIL</a>
-            </nav>
-
-            <div class="flex items-center space-x-4">
-                <button onclick="openQuizModal()"
-                    class="hidden sm:inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-brand-600 text-white font-medium text-sm shadow-md shadow-brand-500/20 hover:bg-brand-700 transition">
-                    <i class="fa-solid fa-clipboard-check mr-2"></i> Quiz Pro & Checklist
-                </button>
-                <button onclick="toggleMobileMenu()" class="md:hidden text-slate-700 p-2 focus:outline-none">
-                    <i class="fa-solid fa-bars text-xl"></i>
-                </button>
-            </div>
+  <section class="wrap hero">
+    <div>
+      <span class="eyebrow">Guide pratique pour les professionnels</span>
+      <h1>Les données de vos clients sont sous <mark>votre responsabilité.</mark></h1>
+      <p class="lead">Dès que vous enregistrez un nom, un e-mail ou un numéro de téléphone, le RGPD s'applique à votre activité. Ce guide vous donne les bons réflexes et vos obligations, expliqués simplement, même sans connaissances en informatique.</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="#audit">Évaluer ma protection en 2 min <i data-lucide="arrow-right"></i></a>
+        <a class="btn btn-ghost" href="#rgpd">Voir mes obligations</a>
+      </div>
+      <div class="audience">
+        <span class="audience-label">Ce guide s'adresse à</span>
+        <div class="chips">
+          <span class="chip"><i data-lucide="store"></i>Commerçants</span>
+          <span class="chip"><i data-lucide="hammer"></i>Artisans</span>
+          <span class="chip"><i data-lucide="briefcase"></i>Professions libérales</span>
+          <span class="chip"><i data-lucide="building-2"></i>TPE et PME</span>
+          <span class="chip"><i data-lucide="hand-heart"></i>Associations</span>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-2">
-            <a href="#definition" onclick="toggleMobileMenu()"
-                class="block py-2 text-slate-700 font-medium">Définition</a>
-            <a href="#pratiques" onclick="toggleMobileMenu()" class="block py-2 text-slate-700 font-medium">Pratiques
-                clés</a>
-            <a href="#outils" onclick="toggleMobileMenu()" class="block py-2 text-slate-700 font-medium">Outils &
-                RGPD</a>
-            <a href="#jeunes" onclick="toggleMobileMenu()" class="block py-2 text-pink-600 font-semibold">Espace Jeunes
-                (TikTok)</a>
-            <a href="#cnil" onclick="toggleMobileMenu()" class="block py-2 text-slate-700 font-medium">CNIL</a>
-            <button onclick="openQuizModal(); toggleMobileMenu();"
-                class="w-full mt-2 py-2.5 rounded-xl bg-brand-600 text-white font-medium text-sm text-center">Quiz
-                Pro</button>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section
-        class="relative overflow-hidden pt-16 pb-24 lg:pt-24 lg:pb-32 bg-gradient-to-b from-white via-brand-50/40 to-slate-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                    <div
-                        class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-100 text-brand-700 text-xs font-semibold uppercase tracking-wider">
-                        <i class="fa-solid fa-lock"></i> Sensibilisation & Conformité
-                    </div>
-                    <h1
-                        class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                        Maîtrisez la <span
-                            class="text-brand-600 underline decoration-indigo-200 decoration-wavy">Protection des
-                            Données</span> au Quotidien
-                    </h1>
-                    <p class="text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0">
-                        Un guide complet, accessible et rigoureux conçu pour les <strong>professionnels</strong>
-                        (débutants comme confirmés) et sensibiliser les <strong>jeunes</strong> aux enjeux du numérique.
-                    </p>
-                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-                        <a href="#outils"
-                            class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-slate-900 text-white font-semibold text-center hover:bg-slate-800 transition shadow-lg shadow-slate-900/10 flex items-center justify-center gap-2">
-                            <span>Explorer les outils</span> <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </a>
-                        <a href="#jeunes"
-                            class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-pink-600 text-white font-semibold text-center hover:bg-pink-700 transition shadow-lg shadow-pink-600/20 flex items-center justify-center gap-2">
-                            <i class="fa-brands fa-tiktok"></i> <span>Découvrir le format Jeunes</span>
-                        </a>
-                    </div>
-                    <!-- Quick stats / trust -->
-                    <div class="pt-8 border-t border-slate-200/80 grid grid-cols-3 gap-4 text-center lg:text-left">
-                        <div>
-                            <div class="text-2xl font-bold text-slate-900">100%</div>
-                            <div class="text-xs text-slate-500 font-medium">Conforme RGPD</div>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold text-slate-900">Pro & Jeunes</div>
-                            <div class="text-xs text-slate-500 font-medium">Double approche</div>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold text-slate-900">CNIL</div>
-                            <div class="text-xs text-slate-500 font-medium">Référence officielle</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-5">
-                    <div class="relative mx-auto max-w-md lg:max-w-none">
-                        <div
-                            class="absolute -inset-4 bg-gradient-to-r from-brand-500 to-pink-500 rounded-3xl blur-2xl opacity-20 animate-pulse">
-                        </div>
-                        <div class="relative bg-white p-8 rounded-3xl border border-slate-200 shadow-2xl space-y-6">
-                            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                                    <div class="w-3 h-3 rounded-full bg-amber-400"></div>
-                                    <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
-                                </div>
-                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Statut de
-                                    Sécurité</span>
-                            </div>
-
-                            <div class="space-y-4">
-                                <div
-                                    class="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-start space-x-3">
-                                    <i class="fa-solid fa-shield-check text-emerald-600 text-xl mt-0.5"></i>
-                                    <div>
-                                        <h4 class="text-sm font-semibold text-emerald-900">Chiffrement Actif</h4>
-                                        <p class="text-xs text-emerald-700 mt-0.5">VPN & Connexion sécurisée recommandés
-                                            pour tout poste de travail pro.</p>
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="p-4 rounded-2xl bg-amber-50 border border-amber-100 flex items-start space-x-3">
-                                    <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xl mt-0.5"></i>
-                                    <div>
-                                        <h4 class="text-sm font-semibold text-amber-900">Vigilance Phishing</h4>
-                                        <p class="text-xs text-amber-700 mt-0.5">Vérifiez toujours l'expéditeur avant de
-                                            cliquer sur un lien professionnel.</p>
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="p-4 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-start space-x-3">
-                                    <i class="fa-solid fa-user-shield text-indigo-600 text-xl mt-0.5"></i>
-                                    <div>
-                                        <h4 class="text-sm font-semibold text-indigo-900">Authentification A2F</h4>
-                                        <p class="text-xs text-indigo-700 mt-0.5">Indispensable pour bloquer 99% des
-                                            accès non autorisés.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button onclick="openQuizModal()"
-                                class="w-full py-3 rounded-xl bg-slate-900 text-white font-medium text-sm hover:bg-brand-600 transition shadow">
-                                Évaluer mon niveau de sécurité
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Definition Section -->
-    <section id="definition" class="py-20 bg-white border-y border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span
-                    class="text-brand-600 font-semibold text-xs uppercase tracking-wider bg-brand-50 px-3 py-1 rounded-full">Fondamentaux</span>
-                <h2 class="text-3xl font-bold text-slate-900 mt-3">Qu'est-ce qu'une Donnée Personnelle ?</h2>
-                <p class="text-slate-600 mt-3 text-base">
-                    Comprendre ce que couvre ce terme est la première étape indispensable pour tout professionnel ou
-                    citoyen numérique.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Def Card 1 -->
-                <div
-                    class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition group">
-                    <div
-                        class="w-12 h-12 rounded-xl bg-indigo-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition">
-                        <i class="fa-solid fa-id-card"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900 mb-2">Identité</h3>
-                    <p class="text-sm text-slate-600">
-                        Nom, prénom, numéro de sécurité sociale, carte d'identité ou passeport permettant de vous
-                        identifier formellement.
-                    </p>
-                </div>
-
-                <!-- Def Card 2 -->
-                <div
-                    class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition group">
-                    <div
-                        class="w-12 h-12 rounded-xl bg-indigo-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition">
-                        <i class="fa-solid fa-envelope-circle-check"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900 mb-2">Contacts & Coordonnées</h3>
-                    <p class="text-sm text-slate-600">
-                        Adresse e-mail (pro ou perso), numéro de téléphone mobile ou fixe, et adresse postale de
-                        résidence ou de bureau.
-                    </p>
-                </div>
-
-                <!-- Def Card 3 -->
-                <div
-                    class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition group">
-                    <div
-                        class="w-12 h-12 rounded-xl bg-indigo-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition">
-                        <i class="fa-solid fa-location-crosshairs"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900 mb-2">Localisation & Connexion</h3>
-                    <p class="text-sm text-slate-600">
-                        Adresse IP, données de géolocalisation GPS de votre smartphone, cookies de navigation et
-                        historiques de connexion.
-                    </p>
-                </div>
-
-                <!-- Def Card 4 -->
-                <div
-                    class="p-6 rounded-2xl bg-slate-50 border border-slate-200 hover:border-brand-500 hover:shadow-xl transition group">
-                    <div
-                        class="w-12 h-12 rounded-xl bg-indigo-100 text-brand-600 flex items-center justify-center text-xl mb-4 group-hover:bg-brand-600 group-hover:text-white transition">
-                        <i class="fa-solid fa-fingerprint"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900 mb-2">Données Sensibles</h3>
-                    <p class="text-sm text-slate-600">
-                        Données de santé, opinions syndicales/politiques, convictions religieuses ou données
-                        biométriques (soumises à un régime strict).
-                    </p>
-                </div>
-            </div>
-
-            <div
-                class="mt-12 p-6 rounded-2xl bg-brand-50 border border-brand-100 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="flex items-center space-x-4">
-                    <div
-                        class="w-12 h-12 rounded-full bg-brand-600 text-white flex items-center justify-center flex-shrink-0 text-xl font-bold">
-                        i
-                    </div>
-                    <div>
-                        <h4 class="text-base font-bold text-slate-900">Règle d'or</h4>
-                        <p class="text-sm text-slate-600">Toute information qui permet, directement ou indirectement,
-                            d'identifier une personne physique est une donnée personnelle protégée par la loi.</p>
-                    </div>
-                </div>
-                <a href="#outils"
-                    class="px-5 py-2.5 bg-brand-600 text-white rounded-xl text-sm font-semibold hover:bg-brand-700 transition flex-shrink-0">
-                    Découvrir comment les protéger
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Practices to Adopt Section -->
-    <section id="pratiques" class="py-20 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span
-                    class="text-brand-600 font-semibold text-xs uppercase tracking-wider bg-brand-100 px-3 py-1 rounded-full">Bons
-                    réflexes</span>
-                <h2 class="text-3xl font-bold text-slate-900 mt-3">Pratiques à Adopter (Pro & Non-Pro)</h2>
-                <p class="text-slate-600 mt-3 text-base">
-                    Des gestes simples mais redoutables pour sécuriser vos comptes, vos appareils et vos données
-                    professionnelles et personnelles.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Practice 1: A2F -->
-                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                    <div class="flex items-center justify-between mb-6">
-                        <div
-                            class="w-14 h-14 rounded-2xl bg-indigo-50 text-brand-600 flex items-center justify-center text-2xl font-bold">
-                            <i class="fa-solid fa-key"></i>
-                        </div>
-                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Pro &
-                            Non-Pro</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">L'A2F (Authentification à Deux Facteurs)</h3>
-                    <p class="text-sm text-slate-600 mb-6 leading-relaxed">
-                        Ne comptez plus seulement sur votre mot de passe. L'A2F ajoute une barrière de sécurité
-                        indispensable (code SMS, application d'authentification comme Google Authenticator ou clé
-                        physique) lors de chaque connexion.
-                    </p>
-                    <div class="space-y-2 border-t border-slate-100 pt-4">
-                        <div class="flex items-center text-xs text-slate-700 font-medium">
-                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Bloque 99% des attaques automatisées
-                            de comptes
-                        </div>
-                        <div class="flex items-center text-xs text-slate-700 font-medium">
-                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> À activer sur votre messagerie,
-                            réseaux sociaux et outils pros
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Practice 2: Strong Passwords -->
-                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                    <div class="flex items-center justify-between mb-6">
-                        <div
-                            class="w-14 h-14 rounded-2xl bg-indigo-50 text-brand-600 flex items-center justify-center text-2xl font-bold">
-                            <i class="fa-solid fa-shield-keyhole"></i>
-                        </div>
-                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Pro &
-                            Non-Pro</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Mots de Passe Suffisamment Forts</h3>
-                    <p class="text-sm text-slate-600 mb-6 leading-relaxed">
-                        Fini les "123456" ou les dates de naissance. Utilisez une phrase secrète ou un gestionnaire de
-                        mots de passe (Bitwarden, Dashlane, KeePass) pour générer et retenir des clés complexes et
-                        uniques pour chaque service.
-                    </p>
-                    <div class="space-y-2 border-t border-slate-100 pt-4">
-                        <div class="flex items-center text-xs text-slate-700 font-medium">
-                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Minimum 12 caractères (majuscules,
-                            chiffres, symboles)
-                        </div>
-                        <div class="flex items-center text-xs text-slate-700 font-medium">
-                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Jamais le même mot de passe d'un
-                            site à l'autre
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Practice 3: Phishing -->
-                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                    <div class="flex items-center justify-between mb-6">
-                        <div
-                            class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl font-bold">
-                            <i class="fa-solid fa-fish-fins"></i>
-                        </div>
-                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Pro &
-                            Non-Pro</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Vigilance au Phishing (Hameçonnage)</h3>
-                    <p class="text-sm text-slate-600 mb-6 leading-relaxed">
-                        Faux e-mails des impôts, de votre banque ou de votre DSI professionnelle. Les escrocs cherchent
-                        à créer l'urgence. Inspectez toujours l'adresse réelle de l'expéditeur et ne téléchargez jamais
-                        de pièces jointes suspectes.
-                    </p>
-                    <div class="space-y-2 border-t border-slate-100 pt-4">
-                        <div class="flex items-center text-xs text-slate-700 font-medium">
-                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Ne cliquez jamais directement sur un
-                            lien urgent
-                        </div>
-                        <div class="flex items-center text-xs text-slate-700 font-medium">
-                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> En entreprise : alertez
-                            immédiatement le service informatique
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Practice 4: Privacy Settings -->
-                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                    <div class="flex items-center justify-between mb-6">
-                        <div
-                            class="w-14 h-14 rounded-2xl bg-indigo-50 text-brand-600 flex items-center justify-center text-2xl font-bold">
-                            <i class="fa-solid fa-sliders"></i>
-                        </div>
-                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Pro &
-                            Non-Pro</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Gestion des Paramètres de Confidentialité</h3>
-                    <p class="text-sm text-slate-600 mb-6 leading-relaxed">
-                        Sur vos applications professionnelles comme personnelles, limitez le partage des données.
-                        Refusez les cookies publicitaires non essentiels, restreignez la visibilité de votre profil et
-                        limitez les accès aux géolocalisations superflues.
-                    </p>
-                    <div class="space-y-2 border-t border-slate-100 pt-4">
-                        <div class="flex items-center text-xs text-slate-700 font-medium">
-                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Paramétrez régulièrement les options
-                            de vie privée
-                        </div>
-                        <div class="flex items-center text-xs text-slate-700 font-medium">
-                            <i class="fa-solid fa-check text-emerald-500 mr-2"></i> Principe de minimisation des données
-                            en entreprise
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tools & RGPD Section -->
-    <section id="outils" class="py-20 bg-white border-y border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span
-                    class="text-brand-600 font-semibold text-xs uppercase tracking-wider bg-brand-50 px-3 py-1 rounded-full">Arsenal
-                    de Sécurité</span>
-                <h2 class="text-3xl font-bold text-slate-900 mt-3">Outils Essentiels & Conformité RGPD</h2>
-                <p class="text-slate-600 mt-3 text-base">
-                    Découvrez comment utiliser les VPN, les antivirus et le cadre juridique du RGPD pour blinder votre
-                    environnement professionnel.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Tool 1: VPN -->
-                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-4">
-                            <div
-                                class="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center text-xl">
-                                <i class="fa-solid fa-network-wired"></i>
-                            </div>
-                            <span class="text-xs font-bold text-brand-700 bg-brand-100 px-3 py-1 rounded-full">Pro &
-                                Personnel</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-3">Le VPN (Réseau Virtuel Privé)</h3>
-                        <p class="text-sm text-slate-600 mb-6">
-                            Chiffre votre connexion Internet de bout en bout. Indispensable en télétravail ou sur les
-                            réseaux Wi-Fi publics (gares, cafés, aéroports) pour empêcher l'interception de vos données
-                            sensibles.
-                        </p>
-                        <div class="space-y-3 mb-6">
-                            <div class="flex items-start text-xs text-slate-700">
-                                <i class="fa-solid fa-circle-check text-brand-600 mt-0.5 mr-2"></i>
-                                <span><strong>Version Pro :</strong> VPN d'entreprise imposé (ex: WireGuard, OpenVPN,
-                                    NordLayer) pour accéder au réseau interne en sécurité.</span>
-                            </div>
-                            <div class="flex items-start text-xs text-slate-700">
-                                <i class="fa-solid fa-circle-check text-brand-600 mt-0.5 mr-2"></i>
-                                <span><strong>Version Grand Public :</strong> VPN fiable pour masquer votre adresse IP
-                                    et protéger votre vie privée sur le web.</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 bg-white rounded-2xl border border-slate-200 text-xs text-slate-500 font-medium">
-                        <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Conseil Pro : Ne vous connectez jamais
-                        aux outils de l'entreprise depuis un Wi-Fi public sans VPN actif.
-                    </div>
-                </div>
-
-                <!-- Tool 2: Antivirus -->
-                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-4">
-                            <div
-                                class="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center text-xl">
-                                <i class="fa-solid fa-shield-virus"></i>
-                            </div>
-                            <span class="text-xs font-bold text-brand-700 bg-brand-100 px-3 py-1 rounded-full">Pro &
-                                Personnel</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-3">L'Antivirus & Détecteur de Menaces</h3>
-                        <p class="text-sm text-slate-600 mb-6">
-                            Première ligne de défense contre les logiciels malveillants (malwares, ransomwares,
-                            spywares). Il analyse en temps réel les fichiers téléchargés et les comportements suspects
-                            de vos postes.
-                        </p>
-                        <div class="space-y-3 mb-6">
-                            <div class="flex items-start text-xs text-slate-700">
-                                <i class="fa-solid fa-circle-check text-brand-600 mt-0.5 mr-2"></i>
-                                <span><strong>Version Pro :</strong> Solutions centralisées (EDR/XDR) managées par le
-                                    service IT pour surveiller l'ensemble du parc informatique.</span>
-                            </div>
-                            <div class="flex items-start text-xs text-slate-700">
-                                <i class="fa-solid fa-circle-check text-brand-600 mt-0.5 mr-2"></i>
-                                <span><strong>Version Grand Public :</strong> Antivirus à jour (Windows Defender,
-                                    solutions certifiées) pour protéger vos ordinateurs personnels.</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 bg-white rounded-2xl border border-slate-200 text-xs text-slate-500 font-medium">
-                        <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Conseil Pro : Maintenez toujours votre
-                        système d'exploitation et vos logiciels à jour pour combler les failles.
-                    </div>
-                </div>
-
-                <!-- Tool 3: RGPD -->
-                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-4">
-                            <div
-                                class="w-12 h-12 rounded-xl bg-indigo-900 text-white flex items-center justify-center text-xl">
-                                <i class="fa-solid fa-scale-balanced"></i>
-                            </div>
-                            <span
-                                class="text-xs font-bold text-indigo-800 bg-indigo-100 px-3 py-1 rounded-full">Professionnel
-                                Exclusif</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-3">Le RGPD (Règlement Général)</h3>
-                        <p class="text-sm text-slate-600 mb-6">
-                            Entré en vigueur en 2018, ce texte européen encadre strictement le traitement des données
-                            sur le territoire de l'UE. Il impose des obligations de transparence, de sécurité et de
-                            traçabilité aux entreprises.
-                        </p>
-                        <div class="space-y-3 mb-6">
-                            <div class="flex items-start text-xs text-slate-700">
-                                <i class="fa-solid fa-circle-check text-indigo-600 mt-0.5 mr-2"></i>
-                                <span><strong>Registre des traitements :</strong> Cartographier les données collectées
-                                    par l'entreprise.</span>
-                            </div>
-                            <div class="flex items-start text-xs text-slate-700">
-                                <i class="fa-solid fa-circle-check text-indigo-600 mt-0.5 mr-2"></i>
-                                <span><strong>Droits des personnes :</strong> Assurer un accès facile à la modification
-                                    ou suppression des données clients/salariés.</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-4 bg-white rounded-2xl border border-slate-200 text-xs text-slate-500 font-medium">
-                        <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Sanctions : En cas de manquement
-                        grave, les amendes peuvent atteindre 20 millions d'euros ou 4% du CA mondial.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Youth & TikTok Space Section -->
-    <section id="jeunes"
-        class="py-20 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 text-white relative overflow-hidden">
-        <div
-            class="absolute inset-0 opacity-10 bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:16px_16px]">
-        </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span
-                    class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/20 text-pink-400 border border-pink-500/30 text-xs font-semibold uppercase tracking-wider">
-                    <i class="fa-brands fa-tiktok"></i> Section Spéciale Jeunes
-                </span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold mt-4">Concept de Vidéo TikTok Captivante</h2>
-                <p class="text-slate-400 mt-3 text-base">
-                    Parce que les jeunes connectés sont les professionnels et citoyens de demain, voici le storyboard
-                    interactif d'une vidéo courte, percutante et virale pour sensibiliser sans ennuyer.
-                </p>
-            </div>
-
-            <!-- TikTok Mockup Player Container -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <!-- Phone Mockup Frame -->
-                <div class="lg:col-span-5 flex justify-center">
-                    <div
-                        class="w-[300px] h-[600px] bg-black rounded-[40px] p-3 border-4 border-slate-700 shadow-2xl relative">
-                        <div
-                            class="w-full h-full bg-slate-900 rounded-[30px] overflow-hidden flex flex-col justify-between relative border border-slate-800">
-                            <!-- Top bar -->
-                            <div
-                                class="p-4 flex justify-between items-center text-xs text-slate-300 z-10 bg-gradient-to-b from-black/80 to-transparent">
-                                <span>9:41</span>
-                                <div class="flex items-center space-x-1">
-                                    <i class="fa-solid fa-signal"></i>
-                                    <i class="fa-solid fa-wifi"></i>
-                                    <i class="fa-solid fa-battery-full"></i>
-                                </div>
-                            </div>
-
-                            <!-- Screen dynamic content -->
-                            <div class="absolute inset-0 flex flex-col justify-center items-center p-6 text-center z-0">
-                                <div id="tiktokSceneIcon"
-                                    class="w-20 h-20 rounded-full bg-pink-600/20 text-pink-500 flex items-center justify-center text-3xl mb-6 border border-pink-500/30 animate-bounce">
-                                    <i class="fa-solid fa-user-secret"></i>
-                                </div>
-                                <h3 id="tiktokSceneTitle" class="text-lg font-bold text-white mb-2">POV : Tu partages
-                                    ton géoloc en live 📍</h3>
-                                <p id="tiktokSceneDesc" class="text-xs text-slate-300 leading-relaxed">
-                                    "Tu penses que tout le monde s'en fout de savoir où tu es ? Spoiler : les arnaqueurs
-                                    adorent."
-                                </p>
-                            </div>
-
-                            <!-- Right TikTok actions sidebar -->
-                            <div
-                                class="absolute right-3 bottom-20 flex flex-col items-center space-y-4 z-10 text-white">
-                                <div class="flex flex-col items-center">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center mb-1">
-                                        <i class="fa-solid fa-heart text-pink-500"></i></div>
-                                    <span class="text-[10px]">128K</span>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center mb-1">
-                                        <i class="fa-solid fa-comment"></i></div>
-                                    <span class="text-[10px]">1.4K</span>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-slate-800/80 flex items-center justify-center mb-1">
-                                        <i class="fa-solid fa-bookmark"></i></div>
-                                    <span class="text-[10px]">45K</span>
-                                </div>
-                            </div>
-
-                            <!-- Bottom caption bar -->
-                            <div class="p-4 z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent text-left">
-                                <span class="text-xs font-bold block mb-1">@CyberJeune_Off</span>
-                                <p id="tiktokCaption" class="text-[11px] text-slate-300">Protège tes données perso avant
-                                    qu'elles ne soient publiques ! 🛑 #cybersecurity #rgpd</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Storyboard controls & explanation -->
-                <div class="lg:col-span-7 space-y-6">
-                    <h3 class="text-2xl font-bold text-white">Storyboard Interactif de la Vidéo</h3>
-                    <p class="text-slate-400 text-sm">
-                        Cliquez sur les étapes du scénario pour visualiser le déroulé de la vidéo TikTok pensée pour
-                        capter l'attention des jeunes en moins de 30 secondes.
-                    </p>
-
-                    <div class="space-y-4">
-                        <!-- Scene 1 button -->
-                        <button onclick="setTikTokScene(1)" id="btnScene1"
-                            class="w-full text-left p-4 rounded-2xl bg-slate-800/80 border border-pink-500 transition flex items-center justify-between group">
-                            <div class="flex items-center space-x-4">
-                                <div
-                                    class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold">
-                                    01</div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-white">L'Accroche (0 - 5s) : Le piège de la
-                                        géolocalisation</h4>
-                                    <p class="text-xs text-slate-400">Mise en scène choc d'un partage de position en
-                                        direct.</p>
-                                </div>
-                            </div>
-                            <i class="fa-solid fa-play text-pink-400"></i>
-                        </button>
-
-                        <!-- Scene 2 button -->
-                        <button onclick="setTikTokScene(2)" id="btnScene2"
-                            class="w-full text-left p-4 rounded-2xl bg-slate-800/40 border border-slate-700 hover:border-slate-500 transition flex items-center justify-between group">
-                            <div class="flex items-center space-x-4">
-                                <div
-                                    class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
-                                    02</div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-white">Le Corps (5 - 20s) : Le Phishing & Mots de
-                                        passe</h4>
-                                    <p class="text-xs text-slate-400">Explication rapide des SMS frauduleux et du danger
-                                        du mot de passe "123456".</p>
-                                </div>
-                            </div>
-                            <i class="fa-solid fa-play text-slate-500 group-hover:text-white transition"></i>
-                        </button>
-
-                        <!-- Scene 3 button -->
-                        <button onclick="setTikTokScene(3)" id="btnScene3"
-                            class="w-full text-left p-4 rounded-2xl bg-slate-800/40 border border-slate-700 hover:border-slate-500 transition flex items-center justify-between group">
-                            <div class="flex items-center space-x-4">
-                                <div
-                                    class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
-                                    03</div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-white">L'Appel à l'action (20 - 30s) : Les
-                                        super-pouvoirs</h4>
-                                    <p class="text-xs text-slate-400">Activation de l'A2F, installation d'un antivirus
-                                        et réglage de la confidentialité.</p>
-                                </div>
-                            </div>
-                            <i class="fa-solid fa-play text-slate-500 group-hover:text-white transition"></i>
-                        </button>
-                    </div>
-
-                    <div class="p-4 rounded-2xl bg-slate-800/50 border border-slate-700 flex items-center space-x-3">
-                        <i class="fa-solid fa-bullhorn text-pink-400 text-xl"></i>
-                        <span class="text-xs text-slate-300">Format idéal pour les réseaux (TikTok, Instagram Reels,
-                            YouTube Shorts) afin d'atteindre la génération connectée.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CNIL Reference Section -->
-    <section id="cnil" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div
-                class="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8">
-                <div class="space-y-4 max-w-2xl">
-                    <div
-                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-indigo-200 text-xs font-semibold uppercase tracking-wider">
-                        <i class="fa-solid fa-landmark"></i> Autorité de Régulation
-                    </div>
-                    <h2 class="text-3xl font-bold">Vers qui se tourner ? La CNIL</h2>
-                    <p class="text-slate-300 text-sm leading-relaxed">
-                        La <strong>Commission Nationale de l’Informatique et des Libertés (CNIL)</strong> est l'autorité
-                        administrative indépendante française garante de la protection des données personnelles. En cas
-                        de doute, de violation de données ou pour vous former officiellement, c'est l'organisme de
-                        référence incontournable.
-                    </p>
-                    <div class="flex flex-wrap gap-4 pt-2">
-                        <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer"
-                            class="px-6 py-3 rounded-xl bg-brand-600 text-white font-medium text-sm hover:bg-brand-500 transition shadow flex items-center gap-2">
-                            <span>Visiter cnil.fr</span> <i class="fa-solid fa-external-link text-xs"></i>
-                        </a>
-                        <a href="https://www.cnil.fr/fr/rgpd-de-quoi-parle-t-on" target="_blank"
-                            rel="noopener noreferrer"
-                            class="px-6 py-3 rounded-xl bg-white/10 text-white font-medium text-sm hover:bg-white/20 transition flex items-center gap-2">
-                            <span>Guides pratiques officiels</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-full lg:w-auto flex justify-center flex-shrink-0">
-                    <div
-                        class="w-32 h-32 rounded-3xl bg-white/10 border border-white/20 flex flex-col items-center justify-center p-6 text-center">
-                        <i class="fa-solid fa-building-columns text-4xl text-brand-400 mb-2"></i>
-                        <span class="text-xs font-bold uppercase tracking-wider">CNIL France</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
-        <div
-            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold">
-                    <i class="fa-solid fa-shield-halved text-sm"></i>
-                </div>
-                <span class="text-white font-bold text-base">CyberGuard Pro</span>
-            </div>
-            <p class="text-xs text-slate-500 text-center md:text-left">
-                © 2026 Sensibilisation à la Protection des Données Personnelles. Conçu pour les professionnels et les
-                jeunes.
-            </p>
-            <div class="flex space-x-6 text-sm">
-                <a href="#definition" class="hover:text-white transition">Définition</a>
-                <a href="#pratiques" class="hover:text-white transition">Pratiques</a>
-                <a href="#outils" class="hover:text-white transition">Outils</a>
-                <a href="#cnil" class="hover:text-white transition">CNIL</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Interactive Quiz & Checklist Modal -->
-    <div id="quizModal"
-        class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-xl w-full p-8 shadow-2xl relative border border-slate-200">
-            <button onclick="closeQuizModal()"
-                class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 text-xl font-bold">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="mb-6">
-                <span class="text-xs font-semibold text-brand-600 bg-brand-50 px-3 py-1 rounded-full uppercase">Audit
-                    Flash Sécurité</span>
-                <h3 class="text-2xl font-bold text-slate-900 mt-2">Checklist & Quiz Pro</h3>
-                <p class="text-sm text-slate-600 mt-1">Cochez les mesures déjà en place dans votre organisation ou votre
-                    pratique quotidienne :</p>
-            </div>
-
-            <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
-                <label
-                    class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-brand-50/50 transition">
-                    <input type="checkbox"
-                        class="mt-1 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
-                    <span class="text-xs text-slate-700 font-medium">J'utilise un gestionnaire de mots de passe et mes
-                        codes font au moins 12 caractères.</span>
-                </label>
-                <label
-                    class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-brand-50/50 transition">
-                    <input type="checkbox"
-                        class="mt-1 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
-                    <span class="text-xs text-slate-700 font-medium">L'Authentification à Double Facteur (A2F) est
-                        activée sur mes comptes professionnels et e-mails.</span>
-                </label>
-                <label
-                    class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-brand-50/50 transition">
-                    <input type="checkbox"
-                        class="mt-1 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
-                    <span class="text-xs text-slate-700 font-medium">Un antivirus professionnel ou grand public mis à
-                        jour protège mon poste.</span>
-                </label>
-                <label
-                    class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-brand-50/50 transition">
-                    <input type="checkbox"
-                        class="mt-1 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
-                    <span class="text-xs text-slate-700 font-medium">J'utilise un VPN sécurisé lors de mes connexions en
-                        déplacement ou sur Wi-Fi public.</span>
-                </label>
-                <label
-                    class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-brand-50/50 transition">
-                    <input type="checkbox"
-                        class="mt-1 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
-                    <span class="text-xs text-slate-700 font-medium">Je connais la procédure interne pour signaler un
-                        e-mail de phishing suspect.</span>
-                </label>
-            </div>
-
-            <div class="mt-8 flex justify-end space-x-3">
-                <button onclick="closeQuizModal()"
-                    class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-medium text-sm hover:bg-slate-200 transition">
-                    Fermer
-                </button>
-                <button onclick="submitQuiz()"
-                    class="px-5 py-2.5 rounded-xl bg-brand-600 text-white font-medium text-sm hover:bg-brand-700 transition shadow">
-                    Valider mon audit
-                </button>
-            </div>
-        </div>
+        <p class="particulier">Vous êtes un particulier ? Les mêmes réflexes vous protègent, et la <a href="#kit">vidéo plus bas</a> est faite pour vous.</p>
+      </div>
     </div>
 
-    <!-- JavaScript Interactive Logic -->
-    <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
-        }
+    <aside class="record" aria-label="Exemple de fiche du registre des traitements">
+      <div class="record-head">
+        <div><b>Registre des traitements</b><small>Fiche n° 01 · article 30 du RGPD</small></div>
+        <span class="tag-ex">Exemple</span>
+      </div>
+      <dl>
+        <div style="--i:0"><dt>Traitement</dt><dd>Fichier clients et prospects</dd><span class="tick"><i data-lucide="circle-check-big"></i></span></div>
+        <div style="--i:1"><dt>Finalité</dt><dd>Devis, factures et envoi d'offres commerciales</dd><span class="tick"><i data-lucide="circle-check-big"></i></span></div>
+        <div style="--i:2"><dt>Données</dt><dd>Nom, adresse, téléphone, e-mail</dd><span class="tick"><i data-lucide="circle-check-big"></i></span></div>
+        <div style="--i:3"><dt>Conservation</dt><dd>Prospects : 3 ans après le dernier contact</dd><span class="tick"><i data-lucide="circle-check-big"></i></span></div>
+        <div style="--i:4"><dt>Accès</dt><dd>Gérant et comptable uniquement</dd><span class="tick"><i data-lucide="circle-check-big"></i></span></div>
+        <div style="--i:5"><dt>Sécurité</dt><dd>Mot de passe fort, A2F, sauvegarde chiffrée</dd><span class="tick"><i data-lucide="circle-check-big"></i></span></div>
+      </dl>
+      <div class="record-foot"><span>Mise à jour : 13/10/2026</span><span class="status"><span class="dot"></span>Fiche complète</span></div>
+    </aside>
+  </section>
 
-        function openQuizModal() {
-            document.getElementById('quizModal').classList.remove('hidden');
-        }
+  <div class="wrap">
+    <div class="figures">
+      <div class="fig" data-reveal><strong><span data-count="72">72</span><small>h</small></strong><p>pour notifier une violation de données à la CNIL</p><span class="ref">Art. 33</span></div>
+      <div class="fig" data-reveal data-delay="80"><strong>1<small>mois</small></strong><p>pour répondre à un client qui demande à voir ses données</p><span class="ref">Art. 12</span></div>
+      <div class="fig" data-reveal data-delay="160"><strong><span data-count="20">20</span><small>M€</small></strong><p>ou 4 % du chiffre d'affaires mondial : l'amende maximale</p><span class="ref">Art. 83</span></div>
+      <div class="fig" data-reveal data-delay="240"><strong>2018</strong><p>entrée en application du RGPD dans toute l'Union européenne</p><span class="ref">25 mai 2018</span></div>
+    </div>
+  </div>
 
-        function closeQuizModal() {
-            document.getElementById('quizModal').classList.add('hidden');
-        }
+  <section class="sec wrap" id="donnees">
+    <div class="sec-head">
+      <span class="eyebrow">Les bases</span>
+      <h2>Ce qui compte comme donnée personnelle</h2>
+      <p class="lead">Dans une entreprise, il y en a partout : dans le fichier clients, les devis, les CV reçus, le planning du personnel. Voici les quatre familles à connaître.</p>
+    </div>
+    <div class="data-grid">
+      <article class="data-card" data-reveal>
+        <span class="ico"><i data-lucide="id-card"></i></span>
+        <h3>Identité</h3>
+        <p>Nom, prénom, date de naissance, numéro de sécurité sociale, copie de pièce d'identité.</p>
+        <div class="chez-vous"><b>Chez vous</b>Fichier clients, dossiers du personnel, contrats.</div>
+      </article>
+      <article class="data-card" data-reveal data-delay="80">
+        <span class="ico"><i data-lucide="mail"></i></span>
+        <h3>Coordonnées</h3>
+        <p>Adresse e-mail professionnelle ou personnelle, téléphone, adresse postale.</p>
+        <div class="chez-vous"><b>Chez vous</b>Devis, factures, liste d'envoi de la newsletter.</div>
+      </article>
+      <article class="data-card" data-reveal data-delay="160">
+        <span class="ico"><i data-lucide="map-pin"></i></span>
+        <h3>Connexion et localisation</h3>
+        <p>Adresse IP, cookies, géolocalisation du téléphone, historiques de connexion.</p>
+        <div class="chez-vous"><b>Chez vous</b>Site web, Wi-Fi invités, outils de mesure d'audience.</div>
+      </article>
+      <article class="data-card sensitive" data-reveal data-delay="240">
+        <span class="ico"><i data-lucide="heart-pulse"></i></span>
+        <h3>Données sensibles</h3>
+        <p>Santé, opinions politiques ou syndicales, religion, biométrie. Elles sont soumises à des règles renforcées.</p>
+        <div class="chez-vous"><b>Chez vous</b>Arrêts maladie, badge à empreinte digitale.</div>
+      </article>
+    </div>
+    <div class="golden" data-reveal>
+      <span class="ico"><i data-lucide="sparkles"></i></span>
+      <p><strong>La règle d'or :</strong> toute information qui permet d'identifier une personne, directement ou en croisant plusieurs informations, est une donnée personnelle protégée par la loi.</p>
+    </div>
+  </section>
 
-        function submitQuiz() {
-            alert('Audit enregistré ! Pensez à maintenir ces bonnes pratiques de sécurité au quotidien.');
-            closeQuizModal();
-        }
+  <section class="sec alt" id="reflexes">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Bons réflexes</span>
+        <h2>4 réflexes à adopter dès aujourd'hui</h2>
+        <p class="lead">Des gestes simples qui bloquent la grande majorité des attaques, pour vous comme pour vos salariés.</p>
+      </div>
+      <div class="reflex-grid">
+        <article class="reflex" data-reveal>
+          <div class="reflex-top"><span class="ico"><i data-lucide="key-round"></i></span><span class="num">1 / 4</span></div>
+          <h3>Activez la double authentification (A2F)</h3>
+          <p>En plus du mot de passe, un code reçu par SMS ou dans une application est demandé à chaque connexion. Un mot de passe volé ne suffit plus pour entrer.</p>
+          <ul><li><i data-lucide="circle-check-big"></i>Messagerie, banque en ligne, logiciel de caisse et de comptabilité</li><li><i data-lucide="circle-check-big"></i>Comptes des réseaux sociaux de l'entreprise</li></ul>
+        </article>
+        <article class="reflex" data-reveal data-delay="80">
+          <div class="reflex-top"><span class="ico"><i data-lucide="lock"></i></span><span class="num">2 / 4</span></div>
+          <h3>Un mot de passe long et unique par service</h3>
+          <p>Fini « 123456 » et les dates de naissance. Un gestionnaire de mots de passe (Bitwarden, KeePass…) les crée et les retient pour vous.</p>
+          <ul><li><i data-lucide="circle-check-big"></i>Au moins 12 caractères : majuscules, minuscules, chiffres et symboles</li><li><i data-lucide="circle-check-big"></i>Jamais le même d'un site à l'autre, jamais envoyé par e-mail</li></ul>
+        </article>
+        <article class="reflex" data-reveal>
+          <div class="reflex-top"><span class="ico"><i data-lucide="fish"></i></span><span class="num">3 / 4</span></div>
+          <h3>Méfiez-vous des messages urgents</h3>
+          <p>Fausse facture, faux changement de RIB d'un fournisseur, faux message de la banque : l'arnaque mise toujours sur la précipitation.</p>
+          <ul><li><i data-lucide="circle-check-big"></i>Vérifiez l'adresse réelle de l'expéditeur avant de cliquer</li><li><i data-lucide="circle-check-big"></i>Confirmez tout changement de RIB par téléphone, au numéro habituel</li></ul>
+        </article>
+        <article class="reflex" data-reveal data-delay="80">
+          <div class="reflex-top"><span class="ico"><i data-lucide="settings-2"></i></span><span class="num">4 / 4</span></div>
+          <h3>Réglez la confidentialité, faites les mises à jour</h3>
+          <p>Limitez ce que vos applications partagent et installez les mises à jour dès qu'elles sortent : elles corrigent des failles connues.</p>
+          <ul><li><i data-lucide="circle-check-big"></i>Refusez les cookies et accès à la localisation non nécessaires</li><li><i data-lucide="circle-check-big"></i>Activez les mises à jour automatiques sur tous les postes</li></ul>
+        </article>
+      </div>
 
-        function setTikTokScene(sceneNumber) {
-            const icon = document.getElementById('tiktokSceneIcon');
-            const title = document.getElementById('tiktokSceneTitle');
-            const desc = document.getElementById('tiktokSceneDesc');
-            const caption = document.getElementById('tiktokCaption');
+      <div class="phish" id="exercice">
+        <div class="mail" data-reveal>
+          <div class="mail-bar"><i></i><i></i><i></i><span>Boîte de réception · exercice</span></div>
+          <div class="mail-body">
+            <div class="mail-meta">
+              <div>De : <button class="spot" type="button" data-trap="from" aria-pressed="false"><b>Service Facturation</b> &lt;compta@fourniseur-paiements.net&gt;</button></div>
+              <div>À : contact@votre-entreprise.fr</div>
+            </div>
+            <div class="mail-subject"><button class="spot" type="button" data-trap="urgent" aria-pressed="false">URGENT : facture impayée, dernier avertissement</button></div>
+            <p>Bonjour,</p>
+            <p>Votre facture n° 2026-118 reste impayée. Sans règlement sous 24 heures, votre compte sera suspendu.</p>
+            <p><button class="spot" type="button" data-trap="rib" aria-pressed="false">Attention, nos coordonnées bancaires ont changé. Réglez dès maintenant ici : <span class="fake-link">paiement-facture-securise.top/regler</span></button></p>
+            <p>Cordialement,<br>Le service comptable</p>
+          </div>
+        </div>
+        <div class="phish-side">
+          <span class="eyebrow">Exercice</span>
+          <h3>Repérez les 3 pièges dans cet e-mail</h3>
+          <p class="lead" style="font-size:1rem">Cliquez sur les passages suspects. C'est le type de message que reçoivent chaque semaine les comptables et les gérants.</p>
+          <div class="phish-score"><span id="phish-count">0</span>/ 3 <span class="lbl">pièges trouvés</span></div>
+          <div class="note" id="note-from" hidden><b>Expéditeur douteux</b>Le nom affiché est rassurant, mais l'adresse contient une faute (« fourniseur ») et ne correspond pas à votre fournisseur.</div>
+          <div class="note" id="note-urgent" hidden><b>Urgence et menace</b>« 24 heures », « suspendu », « dernier avertissement » : la pression empêche de prendre le temps de vérifier.</div>
+          <div class="note" id="note-rib" hidden><b>Nouveau RIB et lien inconnu</b>Un changement de coordonnées bancaires annoncé par e-mail se vérifie toujours par téléphone. Ne cliquez pas sur le lien.</div>
+          <div class="phish-done" id="phish-done" hidden>Bravo, les 3 pièges sont trouvés. Dans le doute, ne répondez pas et signalez le message à votre responsable.</div>
+          <button class="link-btn" id="phish-reveal" type="button">Afficher les réponses</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            const btn1 = document.getElementById('btnScene1');
-            const btn2 = document.getElementById('btnScene2');
-            const btn3 = document.getElementById('btnScene3');
+  <section class="sec wrap" id="outils">
+    <div class="sec-head">
+      <span class="eyebrow">Équipement</span>
+      <h2>Vos outils de protection</h2>
+      <p class="lead">Trois outils couvrent l'essentiel des risques d'une petite structure. Ils existent en version entreprise et en version grand public.</p>
+    </div>
+    <div class="tools">
+      <article class="tool" data-reveal>
+        <span class="ico"><i data-lucide="globe-lock"></i></span>
+        <h3>Le VPN</h3>
+        <p>Il chiffre votre connexion Internet. Indispensable en télétravail et sur les Wi-Fi publics (gares, cafés, hôtels) pour que personne n'intercepte vos échanges.</p>
+        <div class="uses">
+          <div class="use"><b>Entreprise</b><span>VPN imposé pour accéder au réseau interne à distance.</span></div>
+          <div class="use"><b>Au quotidien</b><span>VPN fiable pour masquer votre adresse IP.</span></div>
+        </div>
+        <div class="tip"><i data-lucide="triangle-alert"></i>Jamais d'accès aux outils de l'entreprise depuis un Wi-Fi public sans VPN.</div>
+      </article>
+      <article class="tool" data-reveal data-delay="80">
+        <span class="ico"><i data-lucide="shield"></i></span>
+        <h3>L'antivirus</h3>
+        <p>Première ligne de défense contre les logiciels malveillants et les rançongiciels. Il analyse en continu les fichiers téléchargés et les comportements suspects.</p>
+        <div class="uses">
+          <div class="use"><b>Entreprise</b><span>Solution centralisée (EDR) suivie par votre prestataire informatique.</span></div>
+          <div class="use"><b>Au quotidien</b><span>Antivirus intégré (Windows Defender) activé et à jour.</span></div>
+        </div>
+        <div class="tip"><i data-lucide="triangle-alert"></i>Un antivirus n'est efficace que si le système est lui aussi à jour.</div>
+      </article>
+      <article class="tool" data-reveal data-delay="160">
+        <span class="ico"><i data-lucide="hard-drive"></i></span>
+        <h3>Les sauvegardes</h3>
+        <p>Si un rançongiciel chiffre vos fichiers, une sauvegarde récente vous permet de repartir sans payer. Appliquez la règle 3-2-1.</p>
+        <div class="uses">
+          <div class="use"><b>Règle 3-2-1</b><span>3 copies, sur 2 supports différents, dont 1 hors des locaux.</span></div>
+          <div class="use"><b>Rythme</b><span>Au moins une fois par semaine, et testez la restauration.</span></div>
+        </div>
+        <div class="tip"><i data-lucide="triangle-alert"></i>Débranchez le disque de sauvegarde une fois la copie terminée.</div>
+      </article>
+    </div>
+  </section>
 
-            // Reset buttons
-            [btn1, btn2, btn3].forEach(b => {
-                b.className = "w-full text-left p-4 rounded-2xl bg-slate-800/40 border border-slate-700 hover:border-slate-500 transition flex items-center justify-between group";
-                b.querySelector('i.fa-play').className = "fa-solid fa-play text-slate-500 group-hover:text-white transition";
-            });
+  <section class="sec alt" id="rgpd">
+    <div class="wrap rgpd">
+      <div class="rgpd-intro">
+        <span class="eyebrow">Cadre légal</span>
+        <h2>Le RGPD, article par article</h2>
+        <p class="lead">Le Règlement général sur la protection des données s'applique à toute entreprise, association ou administration qui traite des données personnelles dans l'Union européenne.</p>
+        <div class="protect">
+          <span class="stars" aria-hidden="true"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></span>
+          <b>Il protège tout le monde, y compris ceux qui n'y connaissent rien en informatique.</b>
+          <p>Vos clients n'ont pas à être experts pour être protégés : c'est à vous, professionnel, d'appliquer ces règles. Le texte complet et les guides pratiques sont gratuits sur cnil.fr.</p>
+        </div>
+      </div>
+      <div class="oblig-wrap">
+      <span class="oblig-track" aria-hidden="true"></span><span class="oblig-fill" id="oblig-fill" aria-hidden="true"></span>
+      <ol class="oblig" id="oblig">
+        <li><span class="art">Art. 5</span><h3>Ne collecter que le nécessaire</h3><p>Chaque donnée doit servir un objectif précis, et être supprimée au bout d'une durée de conservation définie à l'avance.</p></li>
+        <li><span class="art">Art. 13</span><h3>Informer les personnes</h3><p>Indiquez sur vos formulaires, votre site et vos devis à quoi servent les données, combien de temps vous les gardez et qui les reçoit.</p></li>
+        <li><span class="art">Art. 15 à 22</span><h3>Respecter leurs droits</h3><p>Accès, rectification, effacement, opposition, portabilité : une personne peut vous demander ses données, et vous avez un mois pour répondre.</p></li>
+        <li><span class="art">Art. 30</span><h3>Tenir un registre des traitements</h3><p>Une fiche par fichier de données : ce qu'il contient, pourquoi, qui y accède et combien de temps il est conservé.</p></li>
+        <li><span class="art">Art. 32</span><h3>Sécuriser les données</h3><p>Mots de passe robustes, A2F, accès limités aux seules personnes concernées, sauvegardes et mises à jour.</p></li>
+        <li><span class="art">Art. 33</span><h3>Notifier une violation sous 72 heures</h3><p>Piratage, perte d'un ordinateur, e-mail envoyé au mauvais destinataire : si des données sont exposées, prévenez la CNIL sous 72 heures.</p></li>
+        <li><span class="art">Art. 37</span><h3>Désigner un délégué à la protection des données si nécessaire</h3><p>Obligatoire pour les organismes publics et pour ceux qui traitent des données sensibles ou surveillent des personnes à grande échelle.</p></li>
+        <li class="fine"><span class="art">Art. 83</span><h3>Des sanctions lourdes en cas de manquement</h3><p>Jusqu'à 20 millions d'euros ou 4 % du chiffre d'affaires annuel mondial, le montant le plus élevé étant retenu.</p></li>
+      </ol>
+      </div>
+    </div>
+  </section>
 
-            if (sceneNumber === 1) {
-                icon.innerHTML = '<i class="fa-solid fa-user-secret"></i>';
-                title.innerText = "POV : Tu partages ton géoloc en live 📍";
-                desc.innerText = `"Tu penses que tout le monde s'en fout de savoir où tu es ? Spoiler : les arnaqueurs adorent."`;
-                caption.innerText = "Protège tes données perso avant qu'elles ne soient publiques ! 🛑 #cybersecurity #rgpd";
+  <section class="sec band" id="kit">
+    <div class="wrap kit">
+      <div class="phone-wrap">
+        <div class="phone paused" id="phone">
+          <div class="screen" id="screen" role="button" tabindex="0" aria-label="Lire ou mettre en pause la vidéo">
+            <video id="vid" src="video-spdp.mp4" poster="video-spdp-poster.jpg" muted loop playsinline preload="metadata"></video>
+            <div class="ph-play" aria-hidden="true"><span><i data-lucide="play"></i></span></div>
+            <div class="ph-bar"><i id="ph-bar"></i></div>
+          </div>
+          <button class="ph-sound" id="ph-sound" type="button" aria-label="Activer le son"><span id="ico-muted"><i data-lucide="volume-x"></i></span><span id="ico-sound" hidden><i data-lucide="volume-2"></i></span></button>
+        </div>
+        <span class="ph-hint">Format vertical · 54 s · son désactivé par défaut</span>
+      </div>
+      <div>
+        <span class="eyebrow">Kit de sensibilisation</span>
+        <h2 style="margin-top:14px">Formez vos équipes en 54 secondes</h2>
+        <p class="lead" style="margin-top:16px">Une vidéo courte au format TikTok et Reels, pensée pour vos salariés, alternants et stagiaires : ce sont souvent eux qui reçoivent les faux messages en premier. Diffusez-la en réunion ou sur vos réseaux.</p>
+        <ol class="chapters" aria-label="Chapitres de la vidéo">
+          <li><button class="chap" type="button" data-t="0"><time>0:00</time><span>Tes données personnelles valent de l'or</span><i data-lucide="play"></i></button></li>
+          <li><button class="chap" type="button" data-t="6.23"><time>0:06</time><span>Pourquoi le traçage ?</span><i data-lucide="play"></i></button></li>
+          <li><button class="chap" type="button" data-t="12.21"><time>0:12</time><span>Cookies et OSINT</span><i data-lucide="play"></i></button></li>
+          <li><button class="chap" type="button" data-t="17.62"><time>0:17</time><span>Attention au phishing</span><i data-lucide="play"></i></button></li>
+          <li><button class="chap" type="button" data-t="22.82"><time>0:22</time><span>Mot de passe et A2F</span><i data-lucide="play"></i></button></li>
+          <li><button class="chap" type="button" data-t="30.10"><time>0:30</time><span>VPN et antivirus</span><i data-lucide="play"></i></button></li>
+          <li><button class="chap" type="button" data-t="36.45"><time>0:36</time><span>Le RGPD te protège</span><i data-lucide="play"></i></button></li>
+          <li><button class="chap" type="button" data-t="46.40"><time>0:46</time><span>Un doute ? La CNIL</span><i data-lucide="play"></i></button></li>
+        </ol>
+        <p class="kit-note"><i data-lucide="sparkles"></i>Cliquez sur un chapitre pour y aller directement. La vidéo démarre seule quand elle apparaît à l'écran.</p>
+      </div>
+    </div>
+  </section>
 
-                btn1.className = "w-full text-left p-4 rounded-2xl bg-slate-800/80 border border-pink-500 transition flex items-center justify-between group";
-                btn1.querySelector('i.fa-play').className = "fa-solid fa-play text-pink-400";
-            } else if (sceneNumber === 2) {
-                icon.innerHTML = '<i class="fa-solid fa-fish-fins text-amber-400"></i>';
-                title.innerText = "ALERTE SMS : 'Votre colis est bloqué' 📦";
-                desc.innerText = `"Le faux lien cliquable qui vole ton mot de passe en 2 secondes chrono. Ne tombe pas dans le panneau !"`;
-                caption.innerText = "Le phishing fait des milliers de victimes chaque jour. Ouvre l'œil ! 🎣 #phishing #securite";
+  <section class="sec wrap" id="audit">
+    <div class="sec-head">
+      <span class="eyebrow">Audit flash</span>
+      <h2>Où en est votre entreprise ?</h2>
+      <p class="lead">Cochez ce qui est déjà en place. Le score et vos prochaines actions se mettent à jour au fur et à mesure. Rien n'est envoyé : tout reste dans votre navigateur.</p>
+    </div>
+    <div class="audit">
+      <div class="checks" id="checks">
+        <label class="check"><input type="checkbox" id="a-a2f" data-action="Activer la double authentification" data-href="#reflexes"><span>La double authentification est activée sur la messagerie et la banque en ligne.</span></label>
+        <label class="check"><input type="checkbox" id="a-mdp" data-action="Passer à un gestionnaire de mots de passe" data-href="#reflexes"><span>Chaque compte a un mot de passe unique d'au moins 12 caractères.<small>Idéalement rangé dans un gestionnaire de mots de passe.</small></span></label>
+        <label class="check"><input type="checkbox" id="a-maj" data-action="Activer les mises à jour automatiques et l'antivirus" data-href="#outils"><span>Les ordinateurs et téléphones se mettent à jour automatiquement, avec un antivirus actif.</span></label>
+        <label class="check"><input type="checkbox" id="a-save" data-action="Mettre en place une sauvegarde 3-2-1" data-href="#outils"><span>Une sauvegarde est faite au moins chaque semaine, dont une copie hors des locaux.</span></label>
+        <label class="check"><input type="checkbox" id="a-vpn" data-action="Équiper les connexions à distance d'un VPN" data-href="#outils"><span>Les connexions hors du bureau (télétravail, Wi-Fi public) passent par un VPN.</span></label>
+        <label class="check"><input type="checkbox" id="a-team" data-action="Sensibiliser l'équipe avec la vidéo" data-href="#kit"><span>L'équipe sait reconnaître un message de phishing et à qui le signaler.</span></label>
+        <label class="check"><input type="checkbox" id="a-reg" data-action="Créer votre registre des traitements" data-href="#rgpd"><span>Un registre liste vos fichiers de données, leur finalité et leur durée de conservation.</span></label>
+        <label class="check"><input type="checkbox" id="a-info" data-action="Ajouter les mentions d'information" data-href="#rgpd"><span>Vos clients sont informés de l'usage de leurs données.<small>Mentions sur le site, les formulaires et les devis.</small></span></label>
+        <label class="check"><input type="checkbox" id="a-72h" data-action="Préparer la procédure de violation (72 h)" data-href="#rgpd"><span>Vous savez qu'une violation de données se notifie à la CNIL sous 72 heures.</span></label>
+      </div>
+      <aside class="result" id="result" aria-live="polite">
+        <div class="gauge">
+          <svg viewBox="0 0 124 124" aria-hidden="true"><circle class="bg" cx="62" cy="62" r="52"></circle><circle class="fg" id="ring" cx="62" cy="62" r="52"></circle></svg>
+          <div><div class="gauge-num"><span id="score">0</span><small> / 9</small></div><span class="level" id="level">À renforcer</span></div>
+        </div>
+        <div class="next">
+          <h3>Vos prochaines actions</h3>
+          <ol id="actions"></ol>
+        </div>
+        <button class="link-btn" id="audit-reset" type="button"><i data-lucide="rotate-ccw"></i> Recommencer</button>
+      </aside>
+    </div>
+  </section>
 
-                btn2.className = "w-full text-left p-4 rounded-2xl bg-slate-800/80 border border-indigo-500 transition flex items-center justify-between group";
-                btn2.querySelector('i.fa-play').className = "fa-solid fa-play text-indigo-400";
-            } else if (sceneNumber === 3) {
-                icon.innerHTML = '<i class="fa-solid fa-shield-check text-emerald-400"></i>';
-                title.innerText = "Le Pack Anti-Hack : A2F & VPN 🛡️";
-                desc.innerText = `"Active la double authentification, blinde ton mot de passe et installe un antivirus. T'es invincible."`;
-                caption.innerText = "Dis-moi en commentaire si tu as activé ton A2F ! 👇 #a2f #cnil #tech";
+  <section class="sec alt" id="cnil">
+    <div class="wrap cnil">
+      <div class="sec-head" style="margin-bottom:0">
+        <span class="eyebrow">Autorité de contrôle</span>
+        <h2>Un doute ? Tournez-vous vers la CNIL</h2>
+        <p class="lead">La Commission nationale de l'informatique et des libertés est l'autorité française indépendante chargée de la protection des données personnelles. Elle conseille les professionnels, reçoit les plaintes et peut sanctionner.</p>
+      </div>
+      <div class="res">
+        <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer"><span class="ico"><i data-lucide="landmark"></i></span><span><b>Le site de la CNIL</b><small>Guides, modèles de registre, actualités</small></span><span class="url">cnil.fr</span></a>
+        <a href="https://www.cnil.fr/fr/rgpd-de-quoi-parle-t-on" target="_blank" rel="noopener noreferrer"><span class="ico"><i data-lucide="scale"></i></span><span><b>RGPD : de quoi parle-t-on ?</b><small>Les règles expliquées simplement</small></span><i data-lucide="external-link"></i></a>
+        <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener noreferrer"><span class="ico"><i data-lucide="gavel"></i></span><span><b>Faire valoir vos droits</b><small>Adresser une plainte à la CNIL</small></span><i data-lucide="external-link"></i></a>
+        <a href="https://www.cybermalveillance.gouv.fr" target="_blank" rel="noopener noreferrer"><span class="ico"><i data-lucide="life-buoy"></i></span><span><b>Victime d'une cyberattaque ?</b><small>Assistance et conseils pour les entreprises</small></span><span class="url">cybermalveillance.gouv.fr</span></a>
+      </div>
+    </div>
+  </section>
 
-                btn3.className = "w-full text-left p-4 rounded-2xl bg-slate-800/80 border border-emerald-500 transition flex items-center justify-between group";
-                btn3.querySelector('i.fa-play').className = "fa-solid fa-play text-emerald-400";
-            }
-        }
-    </script>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="#top"><span class="mark"><i data-lucide="shield-check"></i></span><span><b>SPDP</b><small>Sensibilisation à la protection des données personnelles</small></span></a>
+    <nav aria-label="Pied de page"><a href="#donnees">Données</a><a href="#reflexes">Réflexes</a><a href="#rgpd">RGPD</a><a href="#audit">Audit</a><a href="#cnil">CNIL</a></nav>
+    <p>© 2026 SPDP. Ce guide informe et ne remplace pas un conseil juridique.</p>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (window.lucide) lucide.createIcons();
+
+  // menu mobile
+  const menuBtn = document.getElementById('menu-btn'), mnav = document.getElementById('mobile-nav');
+  const closeMenu = () => { mnav.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); };
+  menuBtn.addEventListener('click', () => { const open = mnav.hidden; mnav.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open)); });
+  mnav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+  // barre de lecture + frise RGPD
+  const bar = document.getElementById('read-progress');
+  const oblig = document.getElementById('oblig'), fill = document.getElementById('oblig-fill');
+  const rows = [...oblig.querySelectorAll('li')];
+  function onScroll() {
+    const h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+    bar.style.transform = `scaleX(${max > 0 ? h.scrollTop / max : 0})`;
+    const r = oblig.getBoundingClientRect(), mark = innerHeight * .6;
+    fill.style.transform = `scaleY(${Math.min(1, Math.max(0, (mark - r.top) / r.height))})`;
+    rows.forEach(li => li.classList.toggle('done', li.getBoundingClientRect().top + 26 < mark));
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  onScroll();
+
+  // lien actif dans le menu
+  const links = [...document.querySelectorAll('.nav a')];
+  const secObs = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) links.forEach(l => l.classList.toggle('on', l.getAttribute('href') === '#' + e.target.id));
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  document.querySelectorAll('main section[id]').forEach(s => secObs.observe(s));
+
+  // apparition au défilement (le contenu reste visible sans script)
+  if (!reduce) {
+    const below = [...document.querySelectorAll('[data-reveal]')].filter(el => el.getBoundingClientRect().top > innerHeight * .92);
+    const ro = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      ro.unobserve(e.target);
+      e.target.animate([{ opacity: .15, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }],
+        { duration: 700, delay: +(e.target.dataset.delay || 0), easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
+    }), { threshold: .15 });
+    below.forEach(el => ro.observe(el));
+  }
+
+  // compteurs
+  const co = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting || reduce) return;
+    co.unobserve(e.target);
+    const el = e.target, to = +el.dataset.count, t0 = performance.now();
+    const step = now => { const k = Math.min(1, (now - t0) / 1100); el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }), { threshold: .6 });
+  document.querySelectorAll('[data-count]').forEach(el => co.observe(el));
+
+  // exercice phishing
+  const spots = [...document.querySelectorAll('.spot')], found = new Set();
+  const count = document.getElementById('phish-count'), done = document.getElementById('phish-done');
+  const reveal = s => {
+    if (found.has(s.dataset.trap)) return;
+    found.add(s.dataset.trap);
+    s.classList.add('found'); s.setAttribute('aria-pressed', 'true');
+    document.getElementById('note-' + s.dataset.trap).hidden = false;
+    count.textContent = found.size;
+    if (found.size === spots.length) done.hidden = false;
+  };
+  spots.forEach(s => s.addEventListener('click', () => reveal(s)));
+  document.getElementById('phish-reveal').addEventListener('click', () => spots.forEach(reveal));
+
+  // vidéo dans le téléphone
+  const v = document.getElementById('vid'), phone = document.getElementById('phone'), screen = document.getElementById('screen');
+  const phBar = document.getElementById('ph-bar'), sound = document.getElementById('ph-sound');
+  const chaps = [...document.querySelectorAll('.chap')], starts = chaps.map(b => +b.dataset.t);
+  let userPaused = false, raf = 0;
+  function sync() {
+    const t = v.currentTime, d = v.duration || 53.85;
+    let i = 0; starts.forEach((s, j) => { if (t >= s) i = j; });
+    chaps.forEach((b, j) => {
+      b.classList.toggle('on', j === i);
+      const s = starts[j], e = starts[j + 1] ?? d;
+      b.style.setProperty('--p', j < i ? 1 : j > i ? 0 : Math.min(1, (t - s) / (e - s)));
+    });
+    phBar.style.transform = `scaleX(${t / d})`;
+  }
+  const loop = () => { sync(); raf = requestAnimationFrame(loop); };
+  v.addEventListener('play', () => { phone.classList.remove('paused'); cancelAnimationFrame(raf); loop(); });
+  v.addEventListener('pause', () => { phone.classList.add('paused'); cancelAnimationFrame(raf); sync(); });
+  v.addEventListener('seeked', sync);
+  const toggle = () => { if (v.paused) { userPaused = false; v.play().catch(() => {}); } else { userPaused = true; v.pause(); } };
+  screen.addEventListener('click', toggle);
+  screen.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); } });
+  sound.addEventListener('click', () => {
+    v.muted = !v.muted;
+    document.getElementById('ico-muted').hidden = !v.muted;
+    document.getElementById('ico-sound').hidden = v.muted;
+    sound.setAttribute('aria-label', v.muted ? 'Activer le son' : 'Couper le son');
+    if (v.paused) { userPaused = false; v.play().catch(() => {}); }
+  });
+  chaps.forEach((b, j) => b.addEventListener('click', () => { v.currentTime = starts[j] + .05; userPaused = false; v.play().catch(() => {}); sync(); }));
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting && !userPaused && !reduce) v.play().catch(() => {});
+    else if (!e.isIntersecting && !v.paused) v.pause();
+  }, { threshold: .5 }).observe(screen);
+
+  // audit flash
+  const boxes = [...document.querySelectorAll('#checks input')];
+  const ring = document.getElementById('ring'), C = 2 * Math.PI * 52;
+  ring.style.strokeDasharray = C;
+  const KEY = 'spdp-audit';
+  try { const saved = JSON.parse(localStorage.getItem(KEY) || '[]'); boxes.forEach(b => { b.checked = saved.includes(b.id); }); } catch (e) {}
+  function renderAudit() {
+    const n = boxes.filter(b => b.checked).length, tot = boxes.length;
+    document.getElementById('score').textContent = n;
+    ring.style.strokeDashoffset = C * (1 - n / tot);
+    const res = document.getElementById('result'), lvl = document.getElementById('level');
+    const level = n <= 3 ? ['low', 'À renforcer'] : n <= 6 ? ['mid', 'En bonne voie'] : n < tot ? ['good', 'Solide'] : ['good', 'Exemplaire'];
+    res.dataset.level = level[0]; lvl.textContent = level[1];
+    const todo = boxes.filter(b => !b.checked).slice(0, 3);
+    const ol = document.getElementById('actions');
+    ol.innerHTML = '';
+    if (!todo.length) { ol.outerHTML = '<p class="all-good" id="actions">Tout est en place. Pensez à refaire cet audit chaque année.</p>'; return; }
+    todo.forEach(b => { const li = document.createElement('li'); const a = document.createElement('a'); a.href = b.dataset.href; a.textContent = b.dataset.action; li.appendChild(a); ol.appendChild(li); });
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(boxes.filter(b => b.checked).map(b => b.id))); } catch (e) {} }
+  boxes.forEach(b => b.addEventListener('change', () => { save(); restoreList(); renderAudit(); }));
+  function restoreList() { const el = document.getElementById('actions'); if (el && el.tagName !== 'OL') el.outerHTML = '<ol id="actions"></ol>'; }
+  document.getElementById('audit-reset').addEventListener('click', () => { boxes.forEach(b => { b.checked = false; }); save(); restoreList(); renderAudit(); });
+  renderAudit();
+})();
+</script>
 </body>
-
 </html>
