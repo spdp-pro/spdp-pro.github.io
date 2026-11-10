@@ -77,8 +77,9 @@ Détails techniques utiles :
 - En ligne : https://spdp-pro.github.io/diapo/ — page séparée, la page d'accueil du site n'y renvoie pas.
 - 16 diapos pour environ 11 minutes, 4 parties : Hugo (intro), Louison (vidéo), Solal (site), Thomas (adaptation et conclusion). Le texte est dans `diapo/TEXTE-ORAL.md`
   **et** dans les balises `<aside class="notes">` de `diapo/index.html` : si on change l'un, changer l'autre.
-- Fonctionnement : une « scène » fixe de 1920 x 1080 mise à l'échelle de l'écran (bandes noires si l'écran n'est pas
-  en 16:9). Animations en CSS (classes `up`, `pop`, `left`, `draw`… avec un délai `--d`), lancées quand la diapo
+- Fonctionnement : chaque diapo est dessinée sur une zone de 1920 x 1080, centrée dans une « scène » qui prend la
+  forme exacte de l'écran (16:9, 16:10 du Mac, 4:3 des vieux projecteurs, écran très large) : le fond remplit tout
+  l'écran, sans bandes noires, et le contenu garde ses proportions (fonction `fit()` du script). Animations en CSS (classes `up`, `pop`, `left`, `draw`… avec un délai `--d`), lancées quand la diapo
   reçoit la classe `on`. Fond animé dessiné dans un `<canvas>` (réseau de points). Aucune bibliothèque externe.
 - Commandes : flèches / Espace / clic = navigation, F = plein écran, N = notes de l'orateur, T = thème clair,
   ? = aide. Le numéro de diapo est dans l'adresse (`#5`).
