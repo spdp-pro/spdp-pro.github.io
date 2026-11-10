@@ -1,0 +1,1089 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPDP · Présentation</title>
+<meta name="description" content="Diaporama animé de la présentation orale du projet SPDP : sensibiliser à la protection des données personnelles.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/*
+  Diaporama SPDP : une « scène » fixe de 1920 x 1080 mise à l'échelle de l'écran.
+  Aucune bibliothèque : animations en CSS, navigation en JavaScript.
+  Sans Internet, seules les polices changent (polices du système à la place).
+*/
+:root {
+  --bg: #070C22; --bg-2: #0E1638; --card: rgb(19 29 72 / .78); --card-2: #18234F;
+  --ink: #EEF1FC; --muted: #A9B3D8; --line: #2A3566;
+  --eu: #6E86FF; --eu-deep: #2241C9; --eu-soft: rgb(110 134 255 / .16);
+  --gold: #F6C744; --gold-ink: #F6C744; --gold-soft: rgb(246 199 68 / .14); --on-gold: #211800;
+  --ok: #43CF88; --ok-soft: rgb(67 207 136 / .16); --bad: #FF6F82; --bad-soft: rgb(255 111 130 / .16);
+  --shadow: 0 30px 80px -30px rgb(0 0 0 / .8);
+  --f-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --spring: cubic-bezier(.3, 1.5, .5, 1);
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #F3F5FA; --bg-2: #E4E9F6; --card: rgb(255 255 255 / .9); --card-2: #FFFFFF;
+  --ink: #0D1530; --muted: #4B5677; --line: #D3DAE9;
+  --eu: #2241C9; --eu-deep: #2241C9; --eu-soft: #E2E7FB;
+  --gold: #F2B300; --gold-ink: #8A5F00; --gold-soft: #FFF2C6; --on-gold: #2A1E00;
+  --ok: #11804A; --ok-soft: #DCF2E6; --bad: #C2283C; --bad-soft: #FBE0E4;
+  --shadow: 0 30px 70px -34px rgb(13 21 48 / .4);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; overflow: hidden; }
+body { background: #000; color: var(--ink); font: 400 34px/1.45 var(--f-body); -webkit-font-smoothing: antialiased; cursor: default; }
+:root[data-theme="light"] body { background: #C9D0E2; }
+body.idle { cursor: none; }
+
+/* scène 16:9 */
+#stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; margin: -540px 0 0 -960px; background: var(--bg); overflow: hidden; transform-origin: 50% 50%; }
+#bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(900px 700px at 12% 18%, color-mix(in srgb, var(--eu) 22%, transparent), transparent 70%), radial-gradient(800px 600px at 92% 92%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 70%); transition: background .8s; }
+
+/* balayage entre deux diapos */
+.wipe { position: absolute; inset: -10% -30%; pointer-events: none; z-index: 20; display: flex; transform: translateX(-120%) skewX(-14deg); }
+.wipe i { flex: none; height: 100%; }
+.wipe i:nth-child(1) { width: 18%; background: var(--eu-deep); }
+.wipe i:nth-child(2) { width: 9%; background: var(--gold); }
+.wipe.go { animation: wipe .85s cubic-bezier(.7, 0, .3, 1) forwards; }
+.wipe.back { animation-name: wipe-back; }
+@keyframes wipe { from { transform: translateX(-60%) skewX(-14deg); } to { transform: translateX(160%) skewX(-14deg); } }
+@keyframes wipe-back { from { transform: translateX(160%) skewX(-14deg); } to { transform: translateX(-60%) skewX(-14deg); } }
+
+/* diapos */
+.slide { position: absolute; inset: 0; padding: 110px 150px 130px; opacity: 0; visibility: hidden; transform: translateX(90px) scale(.985); transition: opacity .45s, transform .6s var(--ease), visibility 0s .6s; z-index: 2; }
+.slide.past { transform: translateX(-90px) scale(.985); }
+.slide.on { opacity: 1; visibility: visible; transform: none; transition: opacity .55s .28s, transform .9s .28s var(--ease), visibility 0s; z-index: 3; }
+.slide:not(.on) * { animation-play-state: paused !important; }
+.notes { display: none; }
+
+h1, h2, h3 { margin: 0; font-family: var(--f-display); letter-spacing: -.015em; text-wrap: balance; }
+h2 { font-size: 84px; font-weight: 800; font-stretch: 108%; line-height: 1.04; }
+h3 { font-size: 40px; font-weight: 700; line-height: 1.15; }
+p { margin: 0; }
+.kicker { display: inline-flex; align-items: center; gap: 16px; font: 600 26px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--gold-ink); }
+.kicker::before { content: ""; width: 18px; height: 18px; border-radius: 4px; background: var(--gold); }
+.head { display: grid; gap: 22px; max-width: 1450px; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--f-mono); }
+.gold { color: var(--gold-ink); }
+mark { color: inherit; background: linear-gradient(var(--gold), var(--gold)) 0 90% / 100% 32% no-repeat; padding-inline: 4px; }
+.slide.on mark { animation: hl 1s var(--d, .9s) var(--ease) backwards; }
+@keyframes hl { from { background-size: 0% 32%; } }
+
+/* icônes (dessinées à la main, style trait) */
+.i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.ico { width: 96px; height: 96px; border-radius: 24px; display: grid; place-items: center; font-size: 48px; background: var(--eu-soft); color: var(--eu); flex: none; }
+.ico.gold { background: var(--gold-soft); color: var(--gold-ink); }
+.ico.bad { background: var(--bad-soft); color: var(--bad); }
+.ico.ok { background: var(--ok-soft); color: var(--ok); }
+.card { background: var(--card); border: 2px solid var(--line); border-radius: 28px; box-shadow: var(--shadow); backdrop-filter: blur(6px); }
+
+/* animations d'entrée (lancées quand la diapo devient active) */
+.slide.on .up    { animation: up .9s var(--d, 0s) var(--ease) both; }
+.slide.on .down  { animation: down .9s var(--d, 0s) var(--ease) both; }
+.slide.on .left  { animation: left .9s var(--d, 0s) var(--ease) both; }
+.slide.on .right { animation: right .9s var(--d, 0s) var(--ease) both; }
+.slide.on .pop   { animation: pop .75s var(--d, 0s) var(--spring) both; }
+.slide.on .fade  { animation: fade 1s var(--d, 0s) ease both; }
+.slide.on .grow  { animation: grow 1s var(--d, 0s) var(--ease) both; }
+.slide.on .growy { animation: growy 1s var(--d, 0s) var(--ease) both; }
+.draw { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.slide.on .draw { animation: draw 1.4s var(--d, 0s) var(--ease) both; }
+@keyframes up { from { opacity: 0; transform: translateY(60px); } }
+@keyframes down { from { opacity: 0; transform: translateY(-60px); } }
+@keyframes left { from { opacity: 0; transform: translateX(-100px); } }
+@keyframes right { from { opacity: 0; transform: translateX(100px); } }
+@keyframes pop { from { opacity: 0; transform: scale(.3); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes grow { from { transform: scaleX(0); } }
+@keyframes growy { from { transform: scaleY(0); } }
+@keyframes draw { from { stroke-dashoffset: 1; } }
+@keyframes float { 50% { transform: translateY(-16px); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin-r { to { transform: rotate(-360deg); } }
+@keyframes pulse { 0% { transform: scale(.8); opacity: .7; } 100% { transform: scale(1.9); opacity: 0; } }
+.float { animation: float 5s ease-in-out infinite; }
+
+/* ---------- 1. titre ---------- */
+.s-title { display: grid; grid-template-columns: 1fr 760px; align-items: center; gap: 60px; }
+.s-title h1 { white-space: nowrap; font-size: 250px; font-weight: 900; font-stretch: 125%; line-height: .9; letter-spacing: -.02em; }
+.s-title h1 span { display: inline-block; }
+.s-title .sub { font: 700 58px/1.12 var(--f-display); font-stretch: 105%; margin-top: 30px; max-width: 980px; }
+.s-title .duo { display: flex; gap: 18px; margin-top: 44px; flex-wrap: wrap; }
+.pill { display: inline-flex; align-items: center; gap: 14px; padding: 16px 26px; border-radius: 999px; border: 2px solid var(--line); background: var(--card); font-weight: 600; font-size: 30px; }
+.pill .i { color: var(--eu); font-size: 36px; }
+.s-title .meta { margin-top: 46px; font: 500 24px/1.4 var(--f-mono); color: var(--muted); letter-spacing: .05em; text-transform: uppercase; }
+.emblem { position: relative; width: 760px; height: 760px; display: grid; place-items: center; }
+.emblem .ring { position: absolute; border-radius: 50%; border: 2px dashed var(--line); }
+.emblem .r1 { inset: 40px; animation: spin 60s linear infinite; }
+.emblem .r2 { inset: 150px; border-style: solid; border-color: color-mix(in srgb, var(--eu) 40%, transparent); }
+.emblem .pulse { position: absolute; inset: 250px; border-radius: 50%; border: 3px solid var(--gold); animation: pulse 3s ease-out infinite; }
+.emblem .shield { width: 300px; height: 300px; color: var(--eu); filter: drop-shadow(0 0 50px color-mix(in srgb, var(--eu) 60%, transparent)); }
+.shield path { stroke-width: 1.6; }
+.shield .chk { stroke: var(--gold); stroke-width: 2; }
+.orbit { position: absolute; inset: 40px; animation: spin 40s linear infinite; }
+.orbit > span { position: absolute; left: 50%; top: 50%; width: 110px; height: 110px; margin: -55px; transform: rotate(var(--a)) translateY(-340px) rotate(calc(-1 * var(--a))); }
+.orbit > span b { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 30px; background: var(--card-2); border: 2px solid var(--line); color: var(--eu); font-size: 50px; box-shadow: var(--shadow); animation: spin-r 40s linear infinite; }
+.orbit > span:nth-child(even) b { color: var(--gold-ink); }
+
+/* ---------- 2. traces ---------- */
+.web { position: absolute; left: 260px; top: 350px; width: 1400px; height: 640px; }
+.web svg.lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.web svg.lines line { stroke: var(--eu); stroke-width: 3; stroke-dasharray: 10 12; opacity: .55; }
+.web .core { position: absolute; left: 700px; top: 320px; width: 250px; height: 250px; margin: -125px; }
+.web .core > div { width: 100%; height: 100%; border-radius: 50%; display: grid; place-items: center; background: var(--eu-deep); color: #fff; font-size: 120px; box-shadow: 0 0 0 16px color-mix(in srgb, var(--eu) 18%, transparent), 0 0 120px color-mix(in srgb, var(--eu) 60%, transparent); position: relative; }
+.web .core .pulse { position: absolute; inset: 0; border-radius: 50%; border: 3px solid var(--eu); animation: pulse 2.4s ease-out infinite; }
+.chip-at { position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%); }
+.chip { display: inline-flex; align-items: center; gap: 16px; padding: 20px 30px; border-radius: 22px; background: var(--card-2); border: 2px solid var(--line); font-weight: 600; font-size: 36px; box-shadow: var(--shadow); white-space: nowrap; }
+.chip .i { font-size: 42px; color: var(--gold-ink); }
+.chip-at .float { animation-delay: var(--fd, 0s); }
+.s2-foot { position: absolute; left: 150px; right: 150px; bottom: 110px; text-align: center; font-size: 34px; color: var(--muted); }
+
+/* ---------- 3. pourquoi ---------- */
+.why { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 70px; }
+.why .card { padding: 50px 54px; display: grid; gap: 26px; align-content: start; position: relative; overflow: hidden; min-height: 560px; }
+.why h3 { font-size: 52px; }
+.why ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 18px; }
+.why li { display: flex; gap: 18px; align-items: center; font-size: 34px; }
+.why li .i { color: var(--ok); font-size: 36px; }
+.why .bad-card li .i { color: var(--bad); }
+.coins { position: absolute; right: 40px; top: 0; width: 220px; height: 170px; overflow: hidden; pointer-events: none; }
+.coins i { position: absolute; top: -90px; width: 70px; height: 70px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #FFE79A, var(--gold) 55%, #B98500); box-shadow: inset 0 0 0 6px rgb(0 0 0 / .12); animation: fall 3.4s linear infinite; }
+.coins i::after { content: "€"; position: absolute; inset: 0; display: grid; place-items: center; font: 800 36px/1 var(--f-display); color: #7A5600; }
+@keyframes fall { to { transform: translateY(280px) rotate(300deg); } }
+.hook { position: absolute; right: 90px; top: -30px; width: 110px; height: 190px; transform-origin: 50% 0; animation: sway 3s ease-in-out infinite; color: var(--bad); }
+@keyframes sway { 50% { transform: rotate(9deg); } }
+
+/* ---------- 4. trois questions ---------- */
+.qs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 80px; position: relative; }
+.qs .link { position: absolute; left: 86px; width: 1106px; top: 76px; height: 4px; background: linear-gradient(90deg, var(--eu), var(--gold)); transform-origin: 0 50%; border-radius: 4px; }
+.q { padding: 0 10px; display: grid; gap: 26px; align-content: start; position: relative; }
+.q .n { width: 152px; height: 152px; border-radius: 50%; display: grid; place-items: center; background: var(--bg); border: 4px solid var(--eu); font: 900 76px/1 var(--f-display); font-stretch: 120%; color: var(--ink); position: relative; z-index: 1; }
+.q:nth-child(4) .n { border-color: var(--gold); }
+.q h3 { font-size: 50px; }
+.q p { color: var(--muted); font-size: 34px; }
+
+/* ---------- 5. deux publics ---------- */
+.split { position: absolute; inset: 300px 150px 140px; display: grid; grid-template-columns: 1fr 140px 1fr; }
+.side { display: grid; gap: 26px; align-content: start; }
+.side .ico { width: 130px; height: 130px; font-size: 68px; border-radius: 32px; }
+.side h3 { font-size: 58px; }
+.side .who { font-size: 32px; color: var(--muted); }
+.side .exp { font-size: 32px; padding: 22px 28px; border-radius: 20px; background: var(--card); border: 2px solid var(--line); }
+.side .exp b { display: block; font: 600 22px/1.4 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--gold-ink); }
+.side .to { display: inline-flex; align-items: center; gap: 14px; justify-self: start; padding: 18px 30px; border-radius: 999px; background: var(--eu-deep); color: #fff; font-weight: 700; font-size: 34px; }
+.mid { position: relative; display: grid; place-items: center; }
+.mid .bar { position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; margin-left: -2px; background: linear-gradient(var(--eu), var(--gold)); transform-origin: 50% 0; }
+.mid .badge { position: relative; writing-mode: vertical-rl; transform: rotate(180deg); padding: 26px 16px; border-radius: 999px; background: var(--gold); color: var(--on-gold); font: 700 26px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; }
+
+/* ---------- 6. vidéo ---------- */
+.s-video { display: grid; grid-template-columns: 560px 1fr; gap: 110px; align-items: center; padding-top: 70px; padding-bottom: 90px; }
+.phone { width: 500px; padding: 34px 16px 20px; border-radius: 68px; background: #05070F; box-shadow: 0 0 0 3px #2B3352, 0 50px 100px -30px rgb(0 0 0 / .8), 0 0 140px -30px color-mix(in srgb, var(--eu) 70%, transparent); position: relative; justify-self: center; }
+.phone::before { content: ""; position: absolute; top: 14px; left: 50%; width: 90px; height: 8px; margin-left: -45px; border-radius: 8px; background: #2B3352; }
+.screen { position: relative; aspect-ratio: 9 / 16; border-radius: 48px; overflow: hidden; background: #05070F; }
+.screen img, .screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.screen .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: rgb(255 255 255 / .2); }
+.screen .bar i { position: absolute; inset: 0; background: var(--gold); transform: scaleX(0); transform-origin: 0 50%; }
+.snd { position: absolute; right: 18px; bottom: 26px; display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 999px; border: 0; background: rgb(0 0 0 / .6); color: #fff; font: 600 22px/1 var(--f-body); cursor: pointer; backdrop-filter: blur(6px); }
+.snd .i { font-size: 28px; }
+.stats { display: flex; gap: 60px; margin-top: 40px; }
+.stat strong { display: block; font: 900 110px/1 var(--f-display); font-stretch: 118%; font-variant-numeric: tabular-nums; }
+.stat > span { font: 500 24px/1.3 var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.chaps { margin: 46px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; }
+.chaps li { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; padding: 16px 22px; border-radius: 18px; border: 2px solid var(--line); background: var(--card); font-weight: 600; font-size: 28px; position: relative; overflow: hidden; transition: border-color .3s, background-color .3s; }
+.chaps li time { font: 600 24px/1 var(--f-mono); color: var(--gold-ink); }
+.chaps li.on { border-color: var(--gold); background: var(--gold-soft); }
+
+/* ---------- 7. accrocher ---------- */
+.s-hook { display: grid; grid-template-columns: 1fr 600px; gap: 90px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 50px; }
+.tile { padding: 30px 34px; display: grid; gap: 20px; align-content: start; }
+.tile h3 { font-size: 35px; }
+.tile p { font-size: 27px; color: var(--muted); }
+.sms-wrap { display: grid; align-content: center; gap: 30px; }
+.sms-phone { border-radius: 56px; padding: 40px 34px; background: var(--card-2); border: 3px solid var(--line); box-shadow: var(--shadow); display: grid; gap: 24px; min-height: 620px; align-content: start; }
+.sms-top { display: flex; align-items: center; gap: 18px; padding-bottom: 22px; border-bottom: 2px solid var(--line); font-weight: 700; font-size: 30px; }
+.sms-top .av { width: 64px; height: 64px; border-radius: 50%; background: var(--line); display: grid; place-items: center; font-size: 34px; color: var(--muted); }
+.sms-top small { display: block; font: 500 20px/1.2 var(--f-mono); color: var(--muted); }
+.bubble { justify-self: start; max-width: 92%; padding: 22px 28px; border-radius: 30px 30px 30px 8px; background: var(--bg-2); font-size: 32px; line-height: 1.35; }
+.bubble u { color: var(--eu); word-break: break-all; }
+.typing { display: inline-flex; gap: 10px; padding: 24px 30px; }
+.typing i { width: 14px; height: 14px; border-radius: 50%; background: var(--muted); animation: dots 1s infinite; }
+.typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes dots { 50% { transform: translateY(-10px); opacity: .4; } }
+.slide.on .typing { animation: typing-out 2.2s .6s both; }
+@keyframes typing-out { 0% { opacity: 0; } 10%, 85% { opacity: 1; } 100% { opacity: 0; height: 0; padding-block: 0; margin-top: -24px; } }
+.trap { display: flex; align-items: center; gap: 16px; padding: 18px 24px; border-radius: 18px; background: var(--bad-soft); color: var(--bad); font-weight: 700; font-size: 28px; border-left: 6px solid var(--bad); }
+.trap .i { font-size: 34px; }
+
+/* ---------- 8. site ---------- */
+.s-site { display: grid; grid-template-columns: 1fr 960px; gap: 80px; align-items: center; }
+.s-site ul { margin: 48px 0 0; padding: 0; list-style: none; display: grid; gap: 22px; }
+.s-site li { display: flex; gap: 20px; align-items: center; font-size: 34px; }
+.s-site li .i { color: var(--ok); font-size: 38px; }
+.url { display: inline-flex; align-items: center; gap: 14px; margin-top: 44px; padding: 18px 28px; border-radius: 16px; background: var(--gold); color: var(--on-gold); font: 600 32px/1 var(--f-mono); }
+.browser { overflow: hidden; }
+.browser .bar { display: flex; align-items: center; gap: 12px; padding: 20px 26px; border-bottom: 2px solid var(--line); background: var(--bg-2); }
+.browser .bar i { width: 16px; height: 16px; border-radius: 50%; background: var(--line); }
+.browser .bar span { margin-left: 16px; flex: 1; padding: 10px 20px; border-radius: 12px; background: var(--card); font: 500 24px/1 var(--f-mono); color: var(--muted); }
+.flow { margin: 0; padding: 34px 40px 40px 116px; list-style: none; display: grid; gap: 14px; position: relative; counter-reset: f; }
+.flow::before { content: ""; position: absolute; left: 70px; top: 60px; bottom: 64px; width: 4px; background: var(--line); }
+.flow .fill { position: absolute; left: 70px; top: 60px; bottom: 64px; width: 4px; background: linear-gradient(var(--eu), var(--gold)); transform-origin: 50% 0; }
+.flow li { display: flex; align-items: center; gap: 22px; padding: 16px 24px; border-radius: 18px; border: 2px solid var(--line); background: var(--card); font-weight: 600; font-size: 30px; position: relative; }
+.flow li::before { content: ""; position: absolute; left: -56px; width: 24px; height: 24px; border-radius: 50%; background: var(--bg); border: 4px solid var(--eu); }
+.flow li .i { color: var(--eu); font-size: 36px; }
+.flow li small { margin-left: auto; font: 500 20px/1 var(--f-mono); color: var(--muted); }
+.slide.on .flow li { animation: lit .6s var(--d) both; }
+@keyframes lit { from { opacity: .25; transform: translateX(20px); } }
+
+/* ---------- 9. réflexes + phishing ---------- */
+.s-reflex { display: grid; grid-template-columns: 760px 1fr; gap: 80px; }
+.rx { margin-top: 56px; display: grid; gap: 22px; }
+.rx > div { display: grid; grid-template-columns: 96px 1fr; gap: 26px; align-items: center; padding: 22px 26px; }
+.rx h3 { font-size: 34px; }
+.rx p { font-size: 26px; color: var(--muted); margin-top: 4px; }
+.mail { overflow: hidden; align-self: center; }
+.mail .bar { display: flex; gap: 12px; align-items: center; padding: 20px 26px; border-bottom: 2px solid var(--line); background: var(--bg-2); font: 500 22px/1 var(--f-mono); color: var(--muted); }
+.mail .bar i { width: 16px; height: 16px; border-radius: 50%; background: var(--line); }
+.mail .body { padding: 34px 40px 40px; display: grid; gap: 20px; font-size: 30px; }
+.mail .meta { color: var(--muted); font-size: 27px; }
+.mail .subj { font-weight: 700; font-size: 36px; }
+.spot { border-radius: 10px; padding: 2px 8px; margin-inline: -8px; box-shadow: inset 0 -3px 0 var(--line); position: relative; }
+.slide.on .spot { animation: caught .6s var(--d) both; }
+@keyframes caught { from { background: transparent; color: inherit; box-shadow: inset 0 -3px 0 var(--line); } to { background: var(--bad-soft); color: var(--bad); box-shadow: inset 0 -3px 0 var(--bad); } }
+.spot em { position: absolute; right: -18px; top: -26px; width: 52px; height: 52px; border-radius: 50%; background: var(--bad); color: #fff; display: grid; place-items: center; font: 800 28px/1 var(--f-display); font-style: normal; box-shadow: 0 8px 20px rgb(0 0 0 / .35); }
+.slide.on .spot em { animation: pop .6s var(--d) var(--spring) both; }
+.found { display: flex; align-items: center; gap: 18px; margin-top: 26px; font: 700 32px/1.2 var(--f-body); color: var(--ok); }
+
+/* ---------- 10. RGPD ---------- */
+.figs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; margin-top: 60px; }
+.fig { padding: 40px 44px; display: grid; gap: 14px; }
+.fig strong { font: 900 140px/1 var(--f-display); font-stretch: 118%; font-variant-numeric: tabular-nums; }
+.fig strong small { font-size: .42em; font-weight: 800; color: var(--eu); margin-left: 8px; }
+.fig p { font-size: 30px; color: var(--muted); line-height: 1.35; }
+.fig .ref { font: 600 24px/1 var(--f-mono); color: var(--gold-ink); letter-spacing: .06em; }
+.arts { position: relative; margin-top: 80px; display: grid; grid-template-columns: repeat(8, 1fr); }
+.arts .track, .arts .fill { position: absolute; left: 6.25%; right: 6.25%; top: 21px; height: 4px; background: var(--line); }
+.arts .fill { background: linear-gradient(90deg, var(--eu), var(--gold)); transform-origin: 0 50%; }
+.art { display: grid; justify-items: center; gap: 14px; text-align: center; position: relative; }
+.art i { width: 46px; height: 46px; border-radius: 50%; background: var(--bg); border: 4px solid var(--eu); }
+.slide.on .art i { animation: dot .5s var(--d) var(--spring) both; }
+@keyframes dot { from { background: var(--bg); border-color: var(--line); transform: scale(.6); } to { background: var(--gold); border-color: var(--gold); } }
+.art b { font: 600 22px/1 var(--f-mono); color: var(--eu); }
+.art span { font-size: 24px; line-height: 1.25; font-weight: 600; max-width: 200px; }
+.art.fine span { color: var(--bad); }
+
+/* ---------- 11. audit ---------- */
+.s-audit { display: grid; grid-template-columns: 1fr 640px; gap: 80px; }
+.checks { margin-top: 40px; display: grid; gap: 11px; }
+.check { display: grid; grid-template-columns: 44px 1fr; gap: 22px; align-items: center; padding: 10px 24px; border-radius: 18px; border: 2px solid var(--line); background: var(--card); font-size: 27px; font-weight: 500; }
+.box { width: 40px; height: 40px; border-radius: 12px; border: 3px solid var(--line); display: grid; place-items: center; color: #fff; font-size: 30px; }
+.box .i { stroke-width: 3.2; opacity: 0; }
+.slide.on .check.y .box { animation: tick-box .4s var(--t) both; }
+.slide.on .check.y .box .i { animation: tick-i .4s var(--t) var(--spring) both; }
+@keyframes tick-box { to { background: var(--eu-deep); border-color: var(--eu-deep); } }
+@keyframes tick-i { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: none; } }
+.slide.on .check.y { animation: up .9s var(--d) var(--ease) both, tick-row .4s var(--t) both; }
+@keyframes tick-row { to { border-color: color-mix(in srgb, var(--eu) 50%, transparent); background: var(--eu-soft); } }
+.result { padding: 50px; display: grid; gap: 34px; justify-items: center; text-align: center; align-self: center; }
+.gauge { position: relative; width: 380px; height: 380px; }
+.gauge svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.gauge circle { fill: none; stroke-width: 26; }
+.gauge .bgc { stroke: var(--bg-2); }
+.gauge .fgc { stroke: var(--ok); stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: .222; }
+.slide.on .gauge .fgc { animation: gauge 3s .5s var(--ease) both; }
+@keyframes gauge { 0% { stroke-dashoffset: 1; stroke: var(--bad); } 45% { stroke: #F2A54A; } 100% { stroke-dashoffset: .222; stroke: var(--ok); } }
+.gauge .num { position: absolute; inset: 0; display: grid; place-content: center; font: 900 140px/1 var(--f-display); font-stretch: 115%; font-variant-numeric: tabular-nums; }
+.gauge .num small { font-size: 40px; color: var(--muted); font-weight: 700; }
+.level { padding: 14px 30px; border-radius: 999px; background: var(--ok-soft); color: var(--ok); font-weight: 700; font-size: 34px; }
+.private { display: flex; align-items: center; gap: 14px; font-size: 26px; color: var(--muted); }
+.private .i { color: var(--gold-ink); font-size: 32px; }
+
+/* ---------- 12. adapter ---------- */
+.tbl { margin-top: 56px; display: grid; gap: 14px; }
+.row { display: grid; grid-template-columns: 330px 1fr 1fr; gap: 14px; }
+.row > div { padding: 18px 30px; border-radius: 18px; background: var(--card); border: 2px solid var(--line); font-size: 29px; line-height: 1.3; }
+.row > div:first-child { background: transparent; border-color: transparent; font: 700 34px/1.2 var(--f-display); font-stretch: 108%; display: flex; align-items: center; }
+.row.th > div { background: transparent; border: 0; padding-block: 6px; display: flex; align-items: center; gap: 16px; font: 600 26px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--gold-ink); }
+.row.th .i { font-size: 38px; color: var(--eu); }
+
+/* ---------- 13. stratégies ---------- */
+.strats { margin-top: 60px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+.st { padding: 30px 28px; display: grid; gap: 14px; align-content: start; min-height: 300px; position: relative; overflow: hidden; }
+.st b { font: 900 64px/1 var(--f-display); font-stretch: 120%; color: var(--eu); }
+.st h3 { font-size: 31px; }
+.st p { font-size: 24px; color: var(--muted); line-height: 1.35; }
+.st.hi { border-color: var(--gold); }
+.st.hi b { color: var(--gold-ink); }
+
+/* ---------- 14. outils et équipe ---------- */
+.s-team { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+.tools2, .roles { margin-top: 50px; display: grid; gap: 22px; }
+.tool2 { display: grid; grid-template-columns: 96px 1fr; gap: 28px; align-items: center; padding: 26px 30px; }
+.tool2 h3 { font-size: 36px; }
+.tool2 p { font-size: 27px; color: var(--muted); margin-top: 4px; }
+.roles { grid-template-columns: 1fr 1fr; }
+.role { padding: 40px 36px; display: grid; gap: 20px; justify-items: start; }
+.role .ico { width: 110px; height: 110px; font-size: 58px; }
+.role h3 { font-size: 40px; }
+.role p { font-size: 26px; color: var(--muted); }
+.role .tag { font: 600 22px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--gold-ink); }
+
+/* ---------- 15. conclusion ---------- */
+.merge { position: absolute; left: 150px; right: 150px; top: 330px; height: 560px; }
+.merge > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.merge path.stream { fill: none; stroke-width: 6; }
+.merge .src { position: absolute; left: 0; display: flex; align-items: center; gap: 22px; }
+.merge .src .ico { width: 120px; height: 120px; font-size: 62px; }
+.merge .src b { display: block; font: 800 44px/1.1 var(--f-display); }
+.merge .src span { font-size: 28px; color: var(--muted); }
+.merge .dst { position: absolute; right: 0; top: 50%; width: 620px; transform: translateY(-50%); padding: 46px 50px; display: grid; gap: 22px; }
+.merge .dst .i.big { font-size: 110px; color: var(--eu); }
+.merge .dst p { font: 700 46px/1.15 var(--f-display); font-stretch: 105%; }
+.runner { position: absolute; left: 0; top: 0; width: 26px; height: 26px; margin: -13px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 24px var(--gold); offset-rotate: 0deg; animation: run 2.6s linear infinite; }
+.runner.b { background: var(--eu); box-shadow: 0 0 24px var(--eu); }
+@keyframes run { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+
+/* ---------- 16. merci ---------- */
+.s-end { display: grid; place-items: center; text-align: center; }
+.s-end h1 { font-size: 230px; font-weight: 900; font-stretch: 122%; line-height: .95; }
+.s-end .q { font: 700 70px/1.1 var(--f-display); margin-top: 26px; color: var(--muted); display: block; }
+.s-end .url { margin-top: 60px; font-size: 40px; padding: 24px 40px; }
+.s-end .mini { width: 170px; height: 170px; color: var(--eu); margin: 0 auto 30px; filter: drop-shadow(0 0 40px color-mix(in srgb, var(--eu) 60%, transparent)); }
+.confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.confetti i { position: absolute; top: -40px; left: var(--x); width: 18px; height: 30px; border-radius: 4px; background: var(--c); animation: conf var(--t) var(--d) linear infinite; opacity: .85; }
+@keyframes conf { to { transform: translateY(1160px) rotate(720deg); } }
+
+/* ---------- interface (hors scène) ---------- */
+.progress { position: fixed; left: 0; top: 0; height: 5px; width: 100%; background: var(--gold); transform-origin: 0 50%; transform: scaleX(0); transition: transform .6s var(--ease); z-index: 30; }
+.hud { position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 20px; z-index: 30; pointer-events: none; font: 500 15px/1 var(--f-mono); }
+.hud > * { pointer-events: auto; }
+.who-now { display: inline-flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 999px; background: rgb(7 12 34 / .78); color: #EEF1FC; letter-spacing: .04em; transition: opacity .4s; }
+.who-now i { width: 10px; height: 10px; border-radius: 50%; background: #F6C744; }
+.ctrls { display: flex; align-items: center; gap: 8px; }
+.ctrls button { all: unset; cursor: pointer; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: rgb(7 12 34 / .78); color: #EEF1FC; font-size: 20px; transition: background-color .2s, opacity .4s; }
+.ctrls button:hover { background: #2241C9; }
+.ctrls button:focus-visible { outline: 3px solid #F6C744; }
+.ctrls button[aria-pressed="true"] { background: #2241C9; }
+.count { padding: 12px 14px; border-radius: 12px; background: rgb(7 12 34 / .78); color: #EEF1FC; font-variant-numeric: tabular-nums; letter-spacing: .06em; }
+body.idle .who-now, body.idle .ctrls button { opacity: 0; }
+body.idle .count { opacity: .55; }
+
+.notes-panel { position: fixed; left: 50%; bottom: 70px; width: min(980px, calc(100vw - 32px)); max-height: 44vh; overflow: auto; transform: translateX(-50%); padding: 22px 26px; border-radius: 18px; background: rgb(7 12 34 / .94); color: #EEF1FC; border: 1px solid #2A3566; box-shadow: 0 30px 80px -20px rgb(0 0 0 / .8); z-index: 40; font: 400 19px/1.55 var(--f-body); backdrop-filter: blur(10px); }
+.notes-panel header { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; font: 600 14px/1.3 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: #F6C744; }
+.notes-panel p + p { margin-top: 10px; }
+.notes-panel em { color: #A9B3D8; }
+
+.help { position: fixed; inset: 0; display: grid; place-items: center; background: rgb(0 0 0 / .6); z-index: 50; }
+.help > div { width: min(560px, calc(100vw - 32px)); padding: 28px 30px; border-radius: 18px; background: #0E1638; color: #EEF1FC; border: 1px solid #2A3566; font: 400 17px/1.5 var(--f-body); }
+.help h2 { font-size: 26px; margin-bottom: 14px; }
+.help dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 18px; margin: 0; }
+.help dt { font: 600 14px/1.9 var(--f-mono); }
+.help dt kbd { padding: 3px 8px; border-radius: 6px; background: #18234F; border: 1px solid #2A3566; }
+.help dd { margin: 0; color: #C6CDEA; }
+.toast { position: fixed; left: 50%; top: 22px; transform: translateX(-50%); padding: 12px 18px; border-radius: 12px; background: rgb(7 12 34 / .88); color: #EEF1FC; font: 500 15px/1.4 var(--f-mono); z-index: 45; transition: opacity .6s; text-align: center; max-width: calc(100vw - 32px); }
+.toast.gone { opacity: 0; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- icônes -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-id" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 14h4"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v12h14V9"/><path d="M10 21v-6h4v6"/></symbol>
+    <symbol id="i-cursor" viewBox="0 0 24 24"><path d="m4 4 7.07 17 2.51-7.39L21 11.07z"/></symbol>
+    <symbol id="i-coins" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></symbol>
+    <symbol id="i-hook" viewBox="0 0 24 24"><path d="M14 2v11a5 5 0 0 1-10 0v-1"/><path d="m4 12 3 3"/><circle cx="14" cy="2" r="1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="m22 8-6 4 6 4z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+    <symbol id="i-drive" viewBox="0 0 24 24"><path d="M22 12H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><path d="M6 16h.01M10 16h.01"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M3 7h18"/><path d="m6 7-3 7a3 3 0 0 0 6 0z"/><path d="m18 7-3 7a3 3 0 0 0 6 0z"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="m3 6 2 2 4-4M3 14l2 2 4-4M13 6h8M13 14h8M13 20h8"/></symbol>
+    <symbol id="i-landmark" viewBox="0 0 24 24"><path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2l8 5H4z"/></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+    <symbol id="i-cc" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M10 10.5a2 2 0 1 0 0 3M17 10.5a2 2 0 1 0 0 3"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/><path d="M19 17v4M17 19h4"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8M16 17H8M10 9H8"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><path d="m12 13 0 6M9 16l3-3 3 3"/></symbol>
+    <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m6 3 14 9-14 9z"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-max" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+    <symbol id="i-notes" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></symbol>
+    <symbol id="i-vol-x" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></symbol>
+    <symbol id="i-vol" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></symbol>
+  </defs>
+</svg>
+
+<div id="stage">
+  <canvas id="bg" width="1920" height="1080" aria-hidden="true"></canvas>
+  <div class="glow"></div>
+
+  <!-- 1 · Titre -->
+  <section class="slide s-title" data-part="1" data-time="30 s" aria-label="Diapo 1 : titre">
+    <div>
+      <span class="kicker up" style="--d:.2s">Projet de communication numérique</span>
+      <h1 style="margin-top:34px"><span class="up" style="--d:.35s">S</span><span class="up" style="--d:.45s">P</span><span class="up" style="--d:.55s">D</span><span class="up" style="--d:.65s">P</span></h1>
+      <p class="sub up" style="--d:.9s">Sensibiliser à la protection des <mark style="--d:1.6s">données personnelles</mark></p>
+      <div class="duo">
+        <span class="pill pop" style="--d:1.4s"><svg class="i"><use href="#i-video"/></svg>Une vidéo pour les non-experts</span>
+        <span class="pill pop" style="--d:1.6s"><svg class="i"><use href="#i-monitor"/></svg>Un site pour les professionnels</span>
+      </div>
+      <p class="meta fade" style="--d:2s">BUT Informatique · Semestre 1 · Hugo · Louison · Solal · Thomas</p>
+    </div>
+    <div class="emblem pop" style="--d:.3s">
+      <span class="ring r1"></span><span class="ring r2"></span><span class="pulse"></span>
+      <div class="orbit">
+        <span style="--a:0deg"><b><svg class="i"><use href="#i-mail"/></svg></b></span>
+        <span style="--a:60deg"><b><svg class="i"><use href="#i-key"/></svg></b></span>
+        <span style="--a:120deg"><b><svg class="i"><use href="#i-pin"/></svg></b></span>
+        <span style="--a:180deg"><b><svg class="i"><use href="#i-lock"/></svg></b></span>
+        <span style="--a:240deg"><b><svg class="i"><use href="#i-id"/></svg></b></span>
+        <span style="--a:300deg"><b><svg class="i"><use href="#i-phone"/></svg></b></span>
+      </div>
+      <svg class="i shield" viewBox="0 0 24 24"><path class="draw" pathLength="1" style="--d:.5s" d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path class="draw chk" pathLength="1" style="--d:1.5s" d="m9 12 2 2 4-4"/></svg>
+    </div>
+    <aside class="notes"><p>Bonjour à tous. Nous allons vous présenter SPDP, pour « Sensibilisation à la Protection des Données Personnelles ». C'est notre projet de communication numérique du semestre 1.</p><p>Le principe : faire passer un même message à deux publics très différents. Pour les non-experts, nous avons fait une vidéo courte. Pour les professionnels, un site web. Nous sommes quatre, et chacun va vous présenter la partie qu'il a réalisée.</p></aside>
+  </section>
+
+  <!-- 2 · Nos traces -->
+  <section class="slide" data-part="1" data-time="40 s" aria-label="Diapo 2 : nos traces en ligne">
+    <div class="head">
+      <span class="kicker up" style="--d:.2s">Le sujet</span>
+      <h2 class="up" style="--d:.35s">Chaque jour, on laisse des traces</h2>
+    </div>
+    <div class="web">
+      <svg class="lines" viewBox="0 0 1400 640" preserveAspectRatio="none" aria-hidden="true">
+        <line class="fade" style="--d:1.0s" x1="700" y1="320" x2="190" y2="110"/>
+        <line class="fade" style="--d:1.2s" x1="700" y1="320" x2="120" y2="430"/>
+        <line class="fade" style="--d:1.4s" x1="700" y1="320" x2="700" y2="10"/>
+        <line class="fade" style="--d:1.6s" x1="700" y1="320" x2="1210" y2="110"/>
+        <line class="fade" style="--d:1.8s" x1="700" y1="320" x2="1280" y2="430"/>
+        <line class="fade" style="--d:2.0s" x1="700" y1="320" x2="700" y2="620"/>
+      </svg>
+      <div class="core pop" style="--d:.6s"><div><span class="pulse"></span><svg class="i"><use href="#i-user"/></svg></div></div>
+      <div class="chip-at" style="--x:190px;--y:110px"><div class="pop" style="--d:1.0s"><span class="chip float" style="--fd:0s"><svg class="i"><use href="#i-id"/></svg>Nom</span></div></div>
+      <div class="chip-at" style="--x:120px;--y:430px"><div class="pop" style="--d:1.2s"><span class="chip float" style="animation-delay:-1.5s"><svg class="i"><use href="#i-home"/></svg>Adresse</span></div></div>
+      <div class="chip-at" style="--x:700px;--y:10px"><div class="pop" style="--d:1.4s"><span class="chip float" style="animation-delay:-3s"><svg class="i"><use href="#i-mail"/></svg>E-mail</span></div></div>
+      <div class="chip-at" style="--x:1210px;--y:110px"><div class="pop" style="--d:1.6s"><span class="chip float" style="animation-delay:-.8s"><svg class="i"><use href="#i-phone"/></svg>Téléphone</span></div></div>
+      <div class="chip-at" style="--x:1280px;--y:430px"><div class="pop" style="--d:1.8s"><span class="chip float" style="animation-delay:-2.2s"><svg class="i"><use href="#i-pin"/></svg>Localisation</span></div></div>
+      <div class="chip-at" style="--x:700px;--y:620px"><div class="pop" style="--d:2.0s"><span class="chip float" style="animation-delay:-4s"><svg class="i"><use href="#i-cursor"/></svg>Habitudes de navigation</span></div></div>
+    </div>
+    <aside class="notes"><p>Commençons par le sujet. Chaque jour, sans y penser, nous laissons des traces en ligne : notre nom, notre adresse, notre e-mail, notre numéro de téléphone, notre localisation, et même nos habitudes de navigation.</p><p>Toutes ces informations sont des <strong>données personnelles</strong> : elles permettent de nous identifier, directement ou en les croisant. Et les sites et les applications les collectent, très souvent sans que l'on s'en rende compte.</p></aside>
+  </section>
+
+  <!-- 3 · Pourquoi -->
+  <section class="slide" data-part="1" data-time="40 s" aria-label="Diapo 3 : pourquoi nos données sont collectées">
+    <div class="head">
+      <span class="kicker up" style="--d:.2s">Pourquoi ?</span>
+      <h2 class="up" style="--d:.35s">Nos données valent de l'or…</h2>
+    </div>
+    <div class="why">
+      <div class="card left" style="--d:.6s">
+        <div class="coins" aria-hidden="true"><i style="left:20px;animation-delay:0s"></i><i style="left:120px;animation-delay:-1.2s"></i><i style="left:60px;animation-delay:-2.3s"></i></div>
+        <span class="ico gold"><svg class="i"><use href="#i-coins"/></svg></span>
+        <h3>…pour gagner de l'argent</h3>
+        <ul>
+          <li class="up" style="--d:1.0s"><svg class="i"><use href="#i-check"/></svg>Savoir ce qui nous intéresse</li>
+          <li class="up" style="--d:1.2s"><svg class="i"><use href="#i-check"/></svg>Publicités ciblées</li>
+          <li class="up" style="--d:1.4s"><svg class="i"><use href="#i-check"/></svg>Résultats de recherche adaptés</li>
+          <li class="up" style="--d:1.6s"><svg class="i"><use href="#i-check"/></svg>Revente des données</li>
+        </ul>
+      </div>
+      <div class="card bad-card right" style="--d:1.9s">
+        <svg class="i hook" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0v13"/><path d="M12 13v3a4 4 0 0 1-8 0v-1"/><path d="m4 15 2.5 2.5"/></svg>
+        <span class="ico bad"><svg class="i"><use href="#i-alert"/></svg></span>
+        <h3>…et pour les escrocs</h3>
+        <ul>
+          <li class="up" style="--d:2.3s"><svg class="i"><use href="#i-x"/></svg>Des arnaques plus crédibles</li>
+          <li class="up" style="--d:2.5s"><svg class="i"><use href="#i-x"/></svg>Le phishing : un faux message</li>
+          <li class="up" style="--d:2.7s"><svg class="i"><use href="#i-x"/></svg>Vol de mots de passe</li>
+          <li class="up" style="--d:2.9s"><svg class="i"><use href="#i-x"/></svg>Vol de coordonnées bancaires</li>
+        </ul>
+      </div>
+    </div>
+    <aside class="notes"><p>Pourquoi les collectent-ils ? D'abord <strong>pour gagner de l'argent</strong>. Nos données servent à savoir ce qui nous intéresse, à nous montrer des publicités ciblées, à adapter les résultats de recherche, ou bien elles sont revendues.</p><p>Mais elles intéressent aussi <strong>les escrocs</strong>. Avec quelques informations sur nous, ils peuvent monter des arnaques crédibles, comme le phishing : un faux message qui se fait passer pour un organisme connu, pour voler un mot de passe ou une carte bancaire.</p></aside>
+  </section>
+
+  <!-- 4 · Trois questions -->
+  <section class="slide" data-part="1" data-time="40 s" aria-label="Diapo 4 : nos trois questions">
+    <div class="head">
+      <span class="kicker up" style="--d:.2s">Notre démarche</span>
+      <h2 class="up" style="--d:.35s">Trois questions pour construire le message</h2>
+    </div>
+    <div class="qs">
+      <span class="link grow" style="--d:.8s"></span>
+      <div class="q up" style="--d:.7s"><span class="n">1</span><h3>À qui je parle ?</h3><p>À deux publics : les jeunes et les professionnels.</p></div>
+      <div class="q up" style="--d:1.3s"><span class="n">2</span><h3>Que doit-il comprendre ?</h3><p>Que ses données ont de la valeur, qu'elles sont collectées et peuvent être détournées.</p></div>
+      <div class="q up" style="--d:1.9s"><span class="n">3</span><h3>Que doit-il faire ensuite ?</h3><p>Adopter les bons réflexes, s'équiper, et savoir vers qui se tourner : la CNIL.</p></div>
+    </div>
+    <aside class="notes"><p>Pour construire notre message, nous sommes partis des trois questions vues en cours.</p><p><strong>À qui je parle ?</strong> À deux publics : les jeunes et les professionnels. <strong>Que doit-il comprendre ?</strong> Que ses données ont de la valeur, qu'elles sont collectées et qu'elles peuvent être détournées. <strong>Que doit-il faire ensuite ?</strong> Adopter des bons réflexes, s'équiper, et savoir vers qui se tourner : la CNIL.</p><p><em>Passage de parole :</em> « Je laisse la parole à Louison, qui a réalisé la vidéo. »</p></aside>
+  </section>
+
+  <!-- 5 · Deux publics -->
+  <section class="slide" data-part="2" data-time="50 s" aria-label="Diapo 5 : deux publics">
+    <div class="head">
+      <span class="kicker up" style="--d:.2s">Les publics cibles</span>
+      <h2 class="up" style="--d:.35s">Deux publics, deux supports</h2>
+    </div>
+    <div class="split">
+      <div class="side">
+        <span class="ico left" style="--d:.6s"><svg class="i"><use href="#i-phone"/></svg></span>
+        <h3 class="left" style="--d:.75s">Les non-experts</h3>
+        <p class="who left" style="--d:.9s">Collégiens, lycéens, étudiants, très présents sur les réseaux sociaux.</p>
+        <p class="exp left" style="--d:1.05s"><b>Leurs attentes</b>Simple, rapide, accrocheur dès les premières secondes.</p>
+        <span class="to pop" style="--d:1.4s"><svg class="i"><use href="#i-video"/></svg>Une vidéo courte</span>
+      </div>
+      <div class="mid"><span class="bar growy" style="--d:.5s"></span><span class="badge pop" style="--d:2.6s">Même message</span></div>
+      <div class="side">
+        <span class="ico gold right" style="--d:1.6s"><svg class="i"><use href="#i-monitor"/></svg></span>
+        <h3 class="right" style="--d:1.75s">Les professionnels</h3>
+        <p class="who right" style="--d:1.9s">Commerçants, artisans, professions libérales, TPE et PME, associations.</p>
+        <p class="exp right" style="--d:2.05s"><b>Leurs attentes</b>Précision, références aux textes, chiffres, actions concrètes.</p>
+        <span class="to pop" style="--d:2.4s"><svg class="i"><use href="#i-globe"/></svg>Un site web</span>
+      </div>
+    </div>
+    <aside class="notes"><p>Le projet demandait un support pour un public novice et un support pour un public expert.</p><p>Notre <strong>public novice</strong>, ce sont les jeunes : collégiens, lycéens, étudiants. Ils sont sur les réseaux sociaux tous les jours, mais savent rarement que leurs données sont collectées. Ils attendent quelque chose de simple, de rapide, qui accroche tout de suite.</p><p>Notre <strong>public expert</strong>, ce sont les professionnels : commerçants, artisans, professions libérales, petites entreprises, associations. Ils ne sont pas forcément informaticiens, mais le RGPD leur impose des obligations précises. Eux attendent de la précision, des chiffres et des actions concrètes.</p><p>Pour les premiers, une vidéo. Pour les seconds, un site.</p></aside>
+  </section>
+
+  <!-- 6 · La vidéo -->
+  <section class="slide s-video" data-part="2" data-time="60 s (avec ~15 s de vidéo)" data-video aria-label="Diapo 6 : la vidéo">
+    <div class="phone pop" style="--d:.3s">
+      <div class="screen">
+        <video src="../video-spdp.mp4" poster="../video-spdp-poster.jpg" muted playsinline preload="metadata"></video>
+        <div class="bar"><i></i></div>
+        <button class="snd" type="button" aria-label="Activer le son"><svg class="i"><use href="#i-vol-x"/></svg><span>Son</span></button>
+      </div>
+    </div>
+    <div>
+      <span class="kicker up" style="--d:.4s">Pour les non-experts</span>
+      <h2 class="up" style="--d:.55s;margin-top:22px">La vidéo, format TikTok / Reels</h2>
+      <div class="stats">
+        <div class="stat up" style="--d:.8s"><strong>9:16</strong><span>format vertical</span></div>
+        <div class="stat up" style="--d:.95s"><strong><span data-count="54">54</span> s</strong><span>au total</span></div>
+        <div class="stat up" style="--d:1.1s"><strong><span data-count="8">8</span></strong><span>séquences</span></div>
+      </div>
+      <ol class="chaps">
+        <li class="up" style="--d:1.3s" data-t="0"><time>0:00</time>La valeur des données</li>
+        <li class="up" style="--d:1.38s" data-t="6.23"><time>0:06</time>Pourquoi le traçage ?</li>
+        <li class="up" style="--d:1.46s" data-t="12.21"><time>0:12</time>Cookies et OSINT</li>
+        <li class="up" style="--d:1.54s" data-t="17.62"><time>0:17</time>Attention au phishing</li>
+        <li class="up" style="--d:1.62s" data-t="22.82"><time>0:22</time>Mot de passe et A2F</li>
+        <li class="up" style="--d:1.7s" data-t="30.10"><time>0:30</time>VPN et antivirus</li>
+        <li class="up" style="--d:1.78s" data-t="36.45"><time>0:36</time>Le RGPD te protège</li>
+        <li class="up" style="--d:1.86s" data-t="46.40"><time>0:46</time>Un doute ? La CNIL</li>
+      </ol>
+    </div>
+    <aside class="notes"><p>Voici la vidéo. Elle est au format vertical, comme sur TikTok ou Instagram, et dure 54 secondes.</p><p>Elle est découpée en 8 séquences de quelques secondes, chacune avec un titre : la valeur des données, le traçage, les cookies et l'OSINT, le phishing, le mot de passe et la double authentification, le VPN et l'antivirus, le RGPD, et enfin la CNIL.</p><p>On va vous en montrer quelques secondes. <em>(La vidéo démarre seule, sans le son. Cliquer sur « Son » pour l'entendre. Laisser tourner 10 à 15 secondes, puis passer à la suite.)</em></p></aside>
+  </section>
+
+  <!-- 7 · Accrocher -->
+  <section class="slide s-hook" data-part="2" data-time="55 s" aria-label="Diapo 7 : comment la vidéo accroche">
+    <div>
+      <div class="head">
+        <span class="kicker up" style="--d:.2s">Nos choix pour la vidéo</span>
+        <h2 class="up" style="--d:.35s">Capter l'attention</h2>
+      </div>
+      <div class="tiles">
+        <div class="card tile up" style="--d:.6s"><span class="ico"><svg class="i"><use href="#i-cc"/></svg></span><h3>Voix off et sous-titres</h3><p>Synchronisés mot à mot : beaucoup regardent sans le son.</p></div>
+        <div class="card tile up" style="--d:.8s"><span class="ico gold"><svg class="i"><use href="#i-music"/></svg></span><h3>Rythme</h3><p>Animations colorées, icônes, musique et effets sonores.</p></div>
+        <div class="card tile up" style="--d:1.0s"><span class="ico"><svg class="i"><use href="#i-msg"/></svg></span><h3>Tutoiement</h3><p>Phrases courtes, mots du quotidien, termes techniques expliqués.</p></div>
+        <div class="card tile up" style="--d:1.2s"><span class="ico bad"><svg class="i"><use href="#i-hook"/></svg></span><h3>Une histoire</h3><p>On montre une arnaque au lieu de seulement l'expliquer.</p></div>
+      </div>
+    </div>
+    <div class="sms-wrap">
+      <div class="sms-phone right" style="--d:1.4s">
+        <div class="sms-top"><span class="av"><svg class="i"><use href="#i-user"/></svg></span><span>Colis-Info<small>numéro inconnu</small></span></div>
+        <div class="bubble typing" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="bubble pop" style="--d:3s">Ton colis est bloqué&nbsp;! Règle 1,99&nbsp;€ de frais ici&nbsp;: <u>colis-suivi-livraison.info</u></div>
+        <div class="trap pop" style="--d:4.2s"><svg class="i"><use href="#i-alert"/></svg>Lien vers une fausse page de connexion</div>
+      </div>
+    </div>
+    <aside class="notes"><p>Pour garder l'attention des jeunes, nous avons fait plusieurs choix.</p><p>Une <strong>voix off avec des sous-titres</strong> synchronisés mot à mot, car beaucoup de vidéos sont regardées sans le son. Des <strong>animations colorées</strong>, de la musique et des effets sonores pour donner du rythme. Le <strong>tutoiement</strong> et des phrases courtes.</p><p>Et <strong>une petite histoire</strong> : un téléphone reçoit un faux SMS, « Ton colis est bloqué, règle 1,99 € de frais », qui mène vers une fausse page de connexion. On montre l'arnaque au lieu de seulement l'expliquer.</p><p><em>Passage de parole :</em> « À toi, Solal, pour le site. »</p></aside>
+  </section>
+
+  <!-- 8 · Le site -->
+  <section class="slide s-site" data-part="3" data-time="45 s" aria-label="Diapo 8 : le site pour les professionnels">
+    <div>
+      <span class="kicker up" style="--d:.2s">Pour les professionnels</span>
+      <h2 class="up" style="--d:.35s;margin-top:22px">Un guide pratique en ligne</h2>
+      <ul>
+        <li class="up" style="--d:.7s"><svg class="i"><use href="#i-check"/></svg>Consultable à tout moment</li>
+        <li class="up" style="--d:.85s"><svg class="i"><use href="#i-check"/></svg>On revient sur une partie précise</li>
+        <li class="up" style="--d:1.0s"><svg class="i"><use href="#i-check"/></svg>Liens vers les sources officielles</li>
+        <li class="up" style="--d:1.15s"><svg class="i"><use href="#i-check"/></svg>Vouvoiement, ton sérieux mais accessible</li>
+      </ul>
+      <span class="url pop" style="--d:1.5s"><svg class="i"><use href="#i-globe"/></svg>spdp-pro.github.io</span>
+    </div>
+    <div class="card browser right" style="--d:.5s">
+      <div class="bar"><i></i><i></i><i></i><span>spdp-pro.github.io</span></div>
+      <ol class="flow">
+        <span class="fill growy" style="--d:1.2s"></span>
+        <li style="--d:1.2s"><svg class="i"><use href="#i-id"/></svg>Ce qu'est une donnée personnelle<small>les bases</small></li>
+        <li style="--d:1.45s"><svg class="i"><use href="#i-key"/></svg>4 bons réflexes + exercice</li>
+        <li style="--d:1.7s"><svg class="i"><use href="#i-shield"/></svg>Les outils : VPN, antivirus, sauvegardes</li>
+        <li style="--d:1.95s"><svg class="i"><use href="#i-scale"/></svg>Le RGPD article par article</li>
+        <li style="--d:2.2s"><svg class="i"><use href="#i-video"/></svg>La vidéo, kit de sensibilisation</li>
+        <li style="--d:2.45s"><svg class="i"><use href="#i-list"/></svg>Audit flash en 9 questions</li>
+        <li style="--d:2.7s"><svg class="i"><use href="#i-landmark"/></svg>La CNIL et l'aide aux victimes<small>les contacts</small></li>
+      </ol>
+    </div>
+    <aside class="notes"><p>Pour les professionnels, nous avons fait un site web, en ligne sur <strong>spdp-pro.github.io</strong>. Un professionnel peut le consulter quand il en a besoin, revenir sur une partie précise et accéder aux sources officielles.</p><p>Dès l'accueil, le public est annoncé : « Guide pratique pour les professionnels ». Le site avance étape par étape : ce qu'est une donnée personnelle, les bons réflexes, les outils, les obligations du RGPD, la vidéo, un audit, et enfin les contacts de la CNIL.</p></aside>
+  </section>
+
+  <!-- 9 · Réflexes + phishing -->
+  <section class="slide s-reflex" data-part="3" data-time="45 s" aria-label="Diapo 9 : réflexes et exercice de phishing">
+    <div>
+      <div class="head">
+        <span class="kicker up" style="--d:.2s">Bons réflexes</span>
+        <h2 class="up" style="--d:.35s">4 réflexes, et un exercice</h2>
+      </div>
+      <div class="rx">
+        <div class="card left" style="--d:.6s"><span class="ico"><svg class="i"><use href="#i-key"/></svg></span><div><h3>Double authentification</h3><p>Un mot de passe volé ne suffit plus</p></div></div>
+        <div class="card left" style="--d:.75s"><span class="ico"><svg class="i"><use href="#i-lock"/></svg></span><div><h3>Mot de passe long et unique</h3><p>12 caractères minimum, un par service</p></div></div>
+        <div class="card left" style="--d:.9s"><span class="ico bad"><svg class="i"><use href="#i-alert"/></svg></span><div><h3>Méfiance face à l'urgence</h3><p>Fausse facture, faux changement de RIB</p></div></div>
+        <div class="card left" style="--d:1.05s"><span class="ico ok"><svg class="i"><use href="#i-settings"/></svg></span><div><h3>Confidentialité et mises à jour</h3><p>Elles corrigent des failles connues</p></div></div>
+      </div>
+    </div>
+    <div class="right" style="--d:1.2s;align-self:center">
+      <div class="card mail">
+        <div class="bar"><i></i><i></i><i></i><span style="margin-left:10px">Exercice · repérez les 3 pièges</span></div>
+        <div class="body">
+          <div class="meta">De : <span class="spot" style="--d:2.2s">Service Facturation &lt;compta@fourniseur-paiements.net&gt;<em>1</em></span></div>
+          <div class="subj"><span class="spot" style="--d:3.2s">URGENT : facture impayée, dernier avertissement<em>2</em></span></div>
+          <p>Votre facture n° 2026-118 reste impayée. Sans règlement sous 24 heures, votre compte sera suspendu.</p>
+          <p><span class="spot" style="--d:4.2s">Nos coordonnées bancaires ont changé. Réglez ici : paiement-facture-securise.top<em>3</em></span></p>
+        </div>
+      </div>
+      <p class="found up" style="--d:5s"><svg class="i"><use href="#i-check"/></svg>Expéditeur douteux · urgence · nouveau RIB</p>
+    </div>
+    <aside class="notes"><p>On y trouve d'abord <strong>quatre réflexes</strong> à adopter : la double authentification, un mot de passe long et unique par service, la méfiance face aux messages urgents, et les réglages de confidentialité avec les mises à jour.</p><p>Pour que ce soit concret, nous avons ajouté <strong>un exercice</strong> : un faux e-mail de facture impayée. Le professionnel doit cliquer sur les trois pièges : l'adresse de l'expéditeur avec une faute, l'urgence et la menace, et le changement de RIB avec un lien inconnu.</p></aside>
+  </section>
+
+  <!-- 10 · RGPD -->
+  <section class="slide" data-part="3" data-time="50 s" aria-label="Diapo 10 : le RGPD et les chiffres clés">
+    <div class="head">
+      <span class="kicker up" style="--d:.2s">Cadre légal</span>
+      <h2 class="up" style="--d:.35s">Le RGPD, expliqué article par article</h2>
+    </div>
+    <div class="figs">
+      <div class="card fig up" style="--d:.6s"><strong><span data-count="72">72</span><small>h</small></strong><p>pour signaler une fuite de données à la CNIL</p><span class="ref">Article 33</span></div>
+      <div class="card fig up" style="--d:.8s"><strong><span data-count="1">1</span><small>mois</small></strong><p>pour répondre à un client qui demande ses données</p><span class="ref">Article 12</span></div>
+      <div class="card fig up" style="--d:1.0s"><strong><span data-count="20">20</span><small>M€</small></strong><p>ou 4 % du chiffre d'affaires mondial : l'amende maximale</p><span class="ref">Article 83</span></div>
+    </div>
+    <div class="arts">
+      <span class="track"></span><span class="fill grow" style="--d:1.6s;animation-duration:2.6s"></span>
+      <div class="art up" style="--d:1.5s"><i style="--d:1.7s"></i><b>Art. 5</b><span>Ne collecter que le nécessaire</span></div>
+      <div class="art up" style="--d:1.6s"><i style="--d:2.0s"></i><b>Art. 13</b><span>Informer les personnes</span></div>
+      <div class="art up" style="--d:1.7s"><i style="--d:2.3s"></i><b>Art. 15-22</b><span>Respecter leurs droits</span></div>
+      <div class="art up" style="--d:1.8s"><i style="--d:2.6s"></i><b>Art. 30</b><span>Tenir un registre</span></div>
+      <div class="art up" style="--d:1.9s"><i style="--d:2.9s"></i><b>Art. 32</b><span>Sécuriser les données</span></div>
+      <div class="art up" style="--d:2.0s"><i style="--d:3.2s"></i><b>Art. 33</b><span>Signaler une fuite sous 72 h</span></div>
+      <div class="art up" style="--d:2.1s"><i style="--d:3.5s"></i><b>Art. 37</b><span>Un délégué si nécessaire</span></div>
+      <div class="art fine up" style="--d:2.2s"><i style="--d:3.8s"></i><b>Art. 83</b><span>Des sanctions lourdes</span></div>
+    </div>
+    <aside class="notes"><p>Ensuite, le site explique <strong>le RGPD, article par article</strong>, avec des titres simples : ne collecter que le nécessaire, informer les personnes, respecter leurs droits, tenir un registre, sécuriser les données.</p><p>Nous avons mis en avant <strong>trois chiffres clés</strong> : 72 heures pour signaler une fuite de données à la CNIL, un mois pour répondre à un client qui demande ses données, et jusqu'à 20 millions d'euros ou 4 % du chiffre d'affaires mondial d'amende.</p></aside>
+  </section>
+
+  <!-- 11 · Audit flash -->
+  <section class="slide s-audit" data-part="3" data-time="40 s" aria-label="Diapo 11 : l'audit flash">
+    <div>
+      <div class="head">
+        <span class="kicker up" style="--d:.2s">Partie interactive</span>
+        <h2 class="up" style="--d:.35s">L'audit flash</h2>
+      </div>
+      <div class="checks">
+        <div class="check y up" style="--t:1.03s;--d:.5s"><span class="box"><svg class="i"><use href="#i-check"/></svg></span>Double authentification activée</div>
+        <div class="check y up" style="--t:1.36s;--d:.56s"><span class="box"><svg class="i"><use href="#i-check"/></svg></span>Mots de passe uniques de 12 caractères</div>
+        <div class="check y up" style="--t:1.69s;--d:.62s"><span class="box"><svg class="i"><use href="#i-check"/></svg></span>Mises à jour automatiques et antivirus</div>
+        <div class="check y up" style="--t:2.02s;--d:.68s"><span class="box"><svg class="i"><use href="#i-check"/></svg></span>Sauvegarde chaque semaine, une copie dehors</div>
+        <div class="check up" style="--d:.74s"><span class="box"><svg class="i"><use href="#i-check"/></svg></span>VPN pour les connexions à distance</div>
+        <div class="check y up" style="--t:2.35s;--d:.8s"><span class="box"><svg class="i"><use href="#i-check"/></svg></span>L'équipe sait repérer le phishing</div>
+        <div class="check y up" style="--t:2.68s;--d:.86s"><span class="box"><svg class="i"><use href="#i-check"/></svg></span>Un registre des traitements</div>
+        <div class="check y up" style="--t:3.01s;--d:.92s"><span class="box"><svg class="i"><use href="#i-check"/></svg></span>Les clients sont informés</div>
+        <div class="check up" style="--d:.98s"><span class="box"><svg class="i"><use href="#i-check"/></svg></span>Procédure en cas de fuite (72 h)</div>
+      </div>
+    </div>
+    <div class="card result right" style="--d:.4s">
+      <div class="gauge">
+        <svg viewBox="0 0 124 124" aria-hidden="true"><circle class="bgc" cx="62" cy="62" r="50"/><circle class="fgc" cx="62" cy="62" r="50" pathLength="1"/></svg>
+        <div class="num"><span><span data-count="7" data-dur="3000" data-delay="500">7</span><small> / 9</small></span></div>
+      </div>
+      <span class="level pop" style="--d:3.4s">Solide</span>
+      <p class="muted up" style="--d:3.6s;font-size:28px">+ les 3 prochaines actions à mener</p>
+      <p class="private up" style="--d:3.8s"><svg class="i"><use href="#i-lock"/></svg>Rien n'est envoyé : tout reste dans le navigateur</p>
+    </div>
+    <aside class="notes"><p>Enfin, la partie la plus utile pour un professionnel : <strong>l'audit flash</strong>. Il coche ce qui est déjà en place dans son entreprise, en 9 questions. Il obtient un score, un niveau, et ses trois prochaines actions, avec un lien vers la bonne partie du site. Rien n'est envoyé : tout reste dans son navigateur.</p><p>Et la vidéo est intégrée au site comme <strong>kit de sensibilisation</strong>, pour qu'il puisse former ses salariés.</p><p><em>Passage de parole :</em> « Thomas va maintenant vous expliquer comment nous avons adapté le message. »</p></aside>
+  </section>
+
+  <!-- 12 · Adapter -->
+  <section class="slide" data-part="4" data-time="45 s" aria-label="Diapo 12 : adapter le message">
+    <div class="head">
+      <span class="kicker up" style="--d:.2s">Adapter le message</span>
+      <h2 class="up" style="--d:.35s">Deux façons de le dire</h2>
+    </div>
+    <div class="tbl">
+      <div class="row th fade" style="--d:.5s"><div></div><div><svg class="i"><use href="#i-video"/></svg>Vidéo</div><div><svg class="i"><use href="#i-monitor"/></svg>Site</div></div>
+      <div class="row up" style="--d:.7s"><div>Vocabulaire</div><div>Mots du quotidien, termes expliqués en une phrase</div><div>Vocabulaire du RGPD : registre, finalité, conservation</div></div>
+      <div class="row up" style="--d:.9s"><div>Structure</div><div>8 séquences courtes, une idée chacune</div><div>Des sections, des bases aux obligations, avec un menu</div></div>
+      <div class="row up" style="--d:1.1s"><div>Ton</div><div>Tutoiement, rythme rapide</div><div>Vouvoiement, sérieux mais accessible</div></div>
+      <div class="row up" style="--d:1.3s"><div>Visuels</div><div>Animations, icônes, sous-titres animés</div><div>Icônes, fiche d'exemple, frise, jauge de score</div></div>
+      <div class="row up" style="--d:1.5s"><div>Niveau de détail</div><div>L'essentiel : un message par idée</div><div>Articles de loi, délais, sanctions, exemples d'entreprise</div></div>
+    </div>
+    <aside class="notes"><p>Le cours liste cinq éléments à adapter selon le public.</p><p><strong>Le vocabulaire</strong> : des mots du quotidien dans la vidéo, le vocabulaire du RGPD sur le site, comme « registre des traitements » ou « durée de conservation ». <strong>La structure</strong> : huit séquences courtes contre des sections avec un menu. <strong>Le ton</strong> : le tutoiement d'un côté, le vouvoiement de l'autre. <strong>Les visuels</strong> : des animations et des sous-titres pour la vidéo, des icônes, une frise et une jauge pour le site. Et <strong>le niveau de détail</strong> : l'essentiel pour les jeunes, les articles de loi et les délais pour les professionnels.</p></aside>
+  </section>
+
+  <!-- 13 · 10 stratégies -->
+  <section class="slide" data-part="4" data-time="45 s" aria-label="Diapo 13 : les dix stratégies de vulgarisation">
+    <div class="head">
+      <span class="kicker up" style="--d:.2s">Vulgarisation</span>
+      <h2 class="up" style="--d:.35s">Les 10 stratégies que nous avons utilisées</h2>
+    </div>
+    <div class="strats">
+      <div class="card st pop" style="--d:.5s"><b>1</b><h3>Reformuler</h3><p>« Ne collecter que le nécessaire » pour l'article 5</p></div>
+      <div class="card st hi pop" style="--d:.6s"><b>2</b><h3>Analogies</h3><p>« Tes données valent de l'or »</p></div>
+      <div class="card st pop" style="--d:.7s"><b>3</b><h3>Visuels</h3><p>Une animation ou une icône par idée</p></div>
+      <div class="card st pop" style="--d:.8s"><b>4</b><h3>L'essentiel</h3><p>54 secondes ; chiffres clés dès l'accueil</p></div>
+      <div class="card st pop" style="--d:.9s"><b>5</b><h3>Ton et canal</h3><p>TikTok et tutoiement ; site et vouvoiement</p></div>
+      <div class="card st pop" style="--d:1.0s"><b>6</b><h3>Anticiper</h3><p>A2F, OSINT expliqués ; encadrés « Chez vous »</p></div>
+      <div class="card st hi pop" style="--d:1.1s"><b>7</b><h3>Scénariser</h3><p>Le faux SMS du colis ; le faux e-mail de facture</p></div>
+      <div class="card st hi pop" style="--d:1.2s"><b>8</b><h3>Progresser</h3><p>Constat, risques, puis solutions</p></div>
+      <div class="card st pop" style="--d:1.3s"><b>9</b><h3>Humour, images</h3><p>Effets sonores ; animations légères sur le site</p></div>
+      <div class="card st hi pop" style="--d:1.4s"><b>10</b><h3>Blocs</h3><p>8 chapitres ; des cartes et des sections</p></div>
+    </div>
+    <aside class="notes"><p>Nous nous sommes aussi appuyés sur <strong>les dix stratégies de vulgarisation</strong> vues en cours. Quelques exemples (en jaune sur la diapo) :</p><p>Une <strong>analogie</strong> dans la vidéo : « tes données valent de l'or ». <strong>Scénariser une situation</strong> : le faux SMS du colis dans la vidéo, le faux e-mail de facture sur le site. <strong>Introduire progressivement</strong> : on part du constat, puis des risques, avant d'arriver aux solutions. Et <strong>regrouper les infos en blocs</strong> : huit chapitres dans la vidéo, des cartes et des sections sur le site.</p></aside>
+  </section>
+
+  <!-- 14 · Outils et équipe -->
+  <section class="slide s-team" data-part="4" data-time="30 s" aria-label="Diapo 14 : outils et répartition du travail">
+    <div>
+      <div class="head">
+        <span class="kicker up" style="--d:.2s">Les outils</span>
+        <h2 class="up" style="--d:.35s">Avec quoi ?</h2>
+      </div>
+      <div class="tools2">
+        <div class="card tool2 left" style="--d:.5s"><span class="ico"><svg class="i"><use href="#i-scissors"/></svg></span><div><h3>CapCut + IA</h3><p>Montage de la vidéo, voix et images générées</p></div></div>
+        <div class="card tool2 left" style="--d:.65s"><span class="ico"><svg class="i"><use href="#i-code"/></svg></span><div><h3>VS Code</h3><p>Le site en HTML, CSS et JavaScript</p></div></div>
+        <div class="card tool2 left" style="--d:.8s"><span class="ico"><svg class="i"><use href="#i-cloud"/></svg></span><div><h3>GitHub Pages</h3><p>Hébergement gratuit du site</p></div></div>
+        <div class="card tool2 left" style="--d:.95s"><span class="ico"><svg class="i"><use href="#i-file"/></svg></span><div><h3>Word</h3><p>Rédaction du rapport</p></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="head">
+        <span class="kicker up" style="--d:.4s">Le groupe</span>
+        <h2 class="up" style="--d:.55s">Qui a fait quoi ?</h2>
+      </div>
+      <div class="roles">
+        <div class="card role pop" style="--d:1.1s"><span class="ico"><svg class="i"><use href="#i-video"/></svg></span><span class="tag">Louison</span><h3>La vidéo</h3><p>Création et réalisation</p></div>
+        <div class="card role pop" style="--d:1.25s"><span class="ico gold"><svg class="i"><use href="#i-monitor"/></svg></span><span class="tag">Solal</span><h3>Le site</h3><p>Conception et mise en ligne</p></div>
+        <div class="card role pop" style="--d:1.4s"><span class="ico"><svg class="i"><use href="#i-file"/></svg></span><span class="tag">Hugo</span><h3>Le rapport</h3><p>Co-rédaction</p></div>
+        <div class="card role pop" style="--d:1.55s"><span class="ico"><svg class="i"><use href="#i-file"/></svg></span><span class="tag">Thomas</span><h3>Le rapport</h3><p>Co-rédaction</p></div>
+      </div>
+    </div>
+    <aside class="notes"><p>Côté outils : la vidéo a été montée avec <strong>CapCut</strong>, avec une voix et des images générées par IA. Le site est écrit en HTML, CSS et JavaScript, dans <strong>VS Code</strong>, et hébergé gratuitement sur <strong>GitHub Pages</strong>. Le rapport a été rédigé sur Word.</p><p>Pour la répartition : Louison a créé la vidéo, Solal a fait le site, et Hugo et moi avons rédigé le rapport.</p></aside>
+  </section>
+
+  <!-- 15 · Conclusion -->
+  <section class="slide" data-part="4" data-time="30 s" aria-label="Diapo 15 : conclusion">
+    <div class="head">
+      <span class="kicker up" style="--d:.2s">Conclusion</span>
+      <h2 class="up" style="--d:.35s">Deux supports qui se complètent</h2>
+    </div>
+    <div class="merge">
+      <svg viewBox="0 0 1620 560" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="var(--eu)"/><stop offset="1" stop-color="var(--gold)"/></linearGradient></defs>
+        <path class="stream draw" pathLength="1" style="--d:.8s;stroke:url(#g1)" d="M470 100 C 720 100, 760 280, 1000 280"/>
+        <path class="stream draw" pathLength="1" style="--d:1.0s;stroke:url(#g1)" d="M470 460 C 720 460, 760 280, 1000 280"/>
+      </svg>
+      <span class="runner" style="offset-path:path('M470 100 C 720 100, 760 280, 1000 280')"></span>
+      <span class="runner b" style="offset-path:path('M470 460 C 720 460, 760 280, 1000 280');animation-delay:-1.3s"></span>
+      <div class="src left" style="top:40px;--d:.5s"><span class="ico"><svg class="i"><use href="#i-video"/></svg></span><div><b>La vidéo</b><span>donne envie aux jeunes,<br>en moins d'une minute</span></div></div>
+      <div class="src left" style="top:400px;--d:.7s"><span class="ico gold"><svg class="i"><use href="#i-monitor"/></svg></span><div><b>Le site</b><span>permet aux professionnels<br>d'aller plus loin</span></div></div>
+      <div class="card dst pop" style="--d:1.9s"><svg class="i big"><use href="#i-shield"/></svg><p>Vos données ont de la valeur : <mark style="--d:2.6s">protégez-les.</mark></p><span class="muted" style="font-size:28px">Et la vidéo est intégrée au site, pour former les équipes.</span></div>
+    </div>
+    <aside class="notes"><p>Pour conclure : avec deux supports, nous transmettons <strong>le même message</strong> à deux publics qui n'ont ni les mêmes connaissances ni les mêmes besoins.</p><p>La vidéo donne envie aux jeunes de protéger leurs données en moins d'une minute. Le site permet aux professionnels d'aller plus loin, de vérifier leurs pratiques et de comprendre leurs obligations. Et les deux se complètent, puisque la vidéo est intégrée au site.</p></aside>
+  </section>
+
+  <!-- 16 · Merci -->
+  <section class="slide s-end" data-part="4" data-time="15 s" aria-label="Diapo 16 : merci">
+    <div class="confetti" aria-hidden="true">
+      <i style="--x:8%;--c:var(--gold);--t:6s;--d:-1s"></i><i style="--x:18%;--c:var(--eu);--t:7s;--d:-4s"></i><i style="--x:29%;--c:var(--gold);--t:5.5s;--d:-2s"></i><i style="--x:41%;--c:var(--eu);--t:8s;--d:-6s"></i><i style="--x:57%;--c:var(--gold);--t:6.5s;--d:-3s"></i><i style="--x:68%;--c:var(--eu);--t:7.5s;--d:-1.5s"></i><i style="--x:79%;--c:var(--gold);--t:6s;--d:-5s"></i><i style="--x:90%;--c:var(--eu);--t:7s;--d:-2.5s"></i>
+    </div>
+    <div>
+      <svg class="i mini pop" style="--d:.2s" viewBox="0 0 24 24"><path class="draw" pathLength="1" style="--d:.3s" d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path class="draw" pathLength="1" style="--d:1.1s;stroke:var(--gold)" d="m9 12 2 2 4-4"/></svg>
+      <h1 class="up" style="--d:.5s">Merci&nbsp;!</h1>
+      <span class="q up" style="--d:.8s">Des questions ?</span>
+      <span class="url pop" style="--d:1.2s"><svg class="i"><use href="#i-globe"/></svg>spdp-pro.github.io</span>
+    </div>
+    <aside class="notes"><p>Merci de votre attention. Le site et la vidéo sont en ligne sur <strong>spdp-pro.github.io</strong>. Nous sommes prêts à répondre à vos questions.</p></aside>
+  </section>
+
+  <div class="wipe" aria-hidden="true"><i></i><i></i></div>
+</div>
+
+<div class="progress" id="progress"></div>
+<div class="hud">
+  <span class="who-now" id="who"><i></i><span id="who-txt">Partie 1</span></span>
+  <div class="ctrls">
+    <button type="button" id="b-help" aria-label="Aide et raccourcis"><svg class="i"><use href="#i-help"/></svg></button>
+    <button type="button" id="b-theme" aria-label="Thème clair ou sombre (T)"><svg class="i"><use href="#i-sun"/></svg></button>
+    <button type="button" id="b-notes" aria-label="Notes de l'orateur (N)" aria-pressed="false"><svg class="i"><use href="#i-notes"/></svg></button>
+    <button type="button" id="b-full" aria-label="Plein écran (F)"><svg class="i"><use href="#i-max"/></svg></button>
+    <button type="button" id="b-prev" aria-label="Diapo précédente"><svg class="i"><use href="#i-left"/></svg></button>
+    <span class="count" id="count" aria-live="polite">01 / 16</span>
+    <button type="button" id="b-next" aria-label="Diapo suivante"><svg class="i"><use href="#i-right"/></svg></button>
+  </div>
+</div>
+
+<div class="notes-panel" id="notes" hidden>
+  <header><span id="notes-head">Diapo 1</span><span id="notes-time"></span></header>
+  <div id="notes-body"></div>
+</div>
+
+<div class="help" id="help" hidden>
+  <div>
+    <h2>Raccourcis</h2>
+    <dl>
+      <dt><kbd>→</kbd> <kbd>Espace</kbd> clic</dt><dd>Diapo suivante</dd>
+      <dt><kbd>←</kbd></dt><dd>Diapo précédente</dd>
+      <dt><kbd>Début</kbd> <kbd>Fin</kbd></dt><dd>Première / dernière diapo</dd>
+      <dt><kbd>F</kbd></dt><dd>Plein écran</dd>
+      <dt><kbd>N</kbd></dt><dd>Afficher / cacher le texte à dire</dd>
+      <dt><kbd>T</kbd></dt><dd>Thème clair (salle très éclairée) ou sombre</dd>
+      <dt><kbd>?</kbd> <kbd>Échap</kbd></dt><dd>Ouvrir / fermer cette aide</dd>
+    </dl>
+  </div>
+</div>
+
+<div class="toast" id="toast">→ ou Espace : suivante · N : texte à dire · F : plein écran · ? : aide</div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const root = document.documentElement;
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  const total = slides.length;
+  const wipe = stage.querySelector('.wipe');
+  const pad = n => String(n).padStart(2, '0');
+  const NAMES = { 1: 'Hugo', 2: 'Louison', 3: 'Solal', 4: 'Thomas' };
+  let cur = -1;
+
+  /* mise à l'échelle de la scène */
+  function fit() {
+    const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+    stage.style.transform = `scale(${s})`;
+  }
+  addEventListener('resize', fit); fit();
+
+  /* compteurs animés */
+  function countUp(el) {
+    const to = +el.dataset.count, dur = +(el.dataset.dur || 1300), delay = +(el.dataset.delay || 700);
+    if (reduce) { el.textContent = to; return; }
+    el.textContent = 0;
+    const t0 = performance.now() + delay;
+    const step = now => {
+      const k = Math.max(0, Math.min(1, (now - t0) / dur));
+      el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3)));
+      if (k < 1 && el.closest('.slide.on')) requestAnimationFrame(step); else el.textContent = to;
+    };
+    requestAnimationFrame(step);
+  }
+
+  /* vidéo de la diapo 6 */
+  const vSlide = slides.find(s => s.hasAttribute('data-video'));
+  const v = vSlide.querySelector('video'), vBar = vSlide.querySelector('.screen .bar i');
+  const chaps = [...vSlide.querySelectorAll('.chaps li')], starts = chaps.map(c => +c.dataset.t);
+  const snd = vSlide.querySelector('.snd');
+  let vRaf = 0;
+  function vSync() {
+    const t = v.currentTime, d = v.duration || 53.85;
+    let i = 0; starts.forEach((s, j) => { if (t >= s) i = j; });
+    chaps.forEach((c, j) => c.classList.toggle('on', j === i && !v.paused));
+    vBar.style.transform = `scaleX(${t / d})`;
+  }
+  const vLoop = () => { vSync(); vRaf = requestAnimationFrame(vLoop); };
+  v.addEventListener('play', () => { cancelAnimationFrame(vRaf); vLoop(); });
+  v.addEventListener('pause', () => { cancelAnimationFrame(vRaf); vSync(); });
+  snd.addEventListener('click', e => {
+    e.stopPropagation();
+    v.muted = !v.muted;
+    snd.querySelector('use').setAttribute('href', v.muted ? '#i-vol-x' : '#i-vol');
+    snd.setAttribute('aria-label', v.muted ? 'Activer le son' : 'Couper le son');
+    if (v.paused) v.play().catch(() => {});
+  });
+  chaps.forEach((c, j) => c.addEventListener('click', e => { e.stopPropagation(); v.currentTime = starts[j] + .05; v.play().catch(() => {}); }));
+  v.addEventListener('click', e => { e.stopPropagation(); v.paused ? v.play().catch(() => {}) : v.pause(); });
+
+  /* aller à une diapo */
+  function go(n) {
+    n = Math.max(0, Math.min(total - 1, n));
+    if (n === cur) return;
+    const back = n < cur;
+    if (cur >= 0 && !reduce) { wipe.classList.remove('go', 'back'); void wipe.offsetWidth; wipe.classList.add('go'); if (back) wipe.classList.add('back'); }
+    slides.forEach((s, i) => { s.classList.toggle('on', i === n); s.classList.toggle('past', i < n); s.setAttribute('aria-hidden', i === n ? 'false' : 'true'); });
+    const old = slides[cur];
+    if (old && old.hasAttribute('data-video')) v.pause();
+    cur = n;
+    const s = slides[n];
+    s.querySelectorAll('[data-count]').forEach(countUp);
+    if (s.hasAttribute('data-video')) { v.currentTime = 0; setTimeout(() => { if (slides[cur] === s) v.play().catch(() => {}); }, reduce ? 0 : 900); }
+    document.getElementById('count').textContent = `${pad(n + 1)} / ${total}`;
+    document.getElementById('progress').style.transform = `scaleX(${(n + 1) / total})`;
+    document.getElementById('who-txt').textContent = `Partie ${s.dataset.part} · ${NAMES[s.dataset.part]}`;
+    renderNotes();
+    try { history.replaceState(null, '', '#' + (n + 1)); } catch (e) {}
+  }
+  const next = () => go(cur + 1), prev = () => go(cur - 1);
+
+  /* notes de l'orateur */
+  const notes = document.getElementById('notes'), bNotes = document.getElementById('b-notes');
+  function renderNotes() {
+    const s = slides[cur];
+    document.getElementById('notes-head').textContent = `Diapo ${cur + 1} / ${total} · ${NAMES[s.dataset.part]} parle`;
+    document.getElementById('notes-time').textContent = '≈ ' + (s.dataset.time || '');
+    document.getElementById('notes-body').innerHTML = s.querySelector('.notes')?.innerHTML || '';
+  }
+  function toggleNotes(force) {
+    notes.hidden = force === undefined ? !notes.hidden : !force;
+    bNotes.setAttribute('aria-pressed', String(!notes.hidden));
+  }
+
+  /* plein écran, thème, aide */
+  function toggleFull() {
+    if (document.fullscreenElement) document.exitFullscreen?.();
+    else root.requestFullscreen?.().catch(() => {});
+  }
+  function setTheme(t) {
+    if (t === 'light') root.dataset.theme = 'light'; else delete root.dataset.theme;
+    try { localStorage.setItem('spdp-diapo-theme', t); } catch (e) {}
+    readColors();
+  }
+  const help = document.getElementById('help');
+  const toggleHelp = force => { help.hidden = force === undefined ? !help.hidden : !force; };
+
+  document.getElementById('b-next').addEventListener('click', e => { e.stopPropagation(); next(); });
+  document.getElementById('b-prev').addEventListener('click', e => { e.stopPropagation(); prev(); });
+  bNotes.addEventListener('click', e => { e.stopPropagation(); toggleNotes(); });
+  document.getElementById('b-full').addEventListener('click', e => { e.stopPropagation(); toggleFull(); });
+  document.getElementById('b-theme').addEventListener('click', e => { e.stopPropagation(); setTheme(root.dataset.theme === 'light' ? 'dark' : 'light'); });
+  document.getElementById('b-help').addEventListener('click', e => { e.stopPropagation(); toggleHelp(); });
+  help.addEventListener('click', () => toggleHelp(false));
+  notes.addEventListener('click', e => e.stopPropagation());
+
+  addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key;
+    if (!help.hidden && (k === 'Escape' || k === '?')) { toggleHelp(false); return; }
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); prev(); }
+    else if (k === 'Home') go(0);
+    else if (k === 'End') go(total - 1);
+    else if (k === 'f' || k === 'F') toggleFull();
+    else if (k === 'n' || k === 'N') toggleNotes();
+    else if (k === 't' || k === 'T') setTheme(root.dataset.theme === 'light' ? 'dark' : 'light');
+    else if (k === '?' || k === 'h' || k === 'H') toggleHelp();
+    else if (k === 'Escape') toggleNotes(false);
+  });
+  document.addEventListener('click', e => {
+    if (e.target.closest('button, a, video, .notes-panel, .help, .chaps li')) return;
+    if (e.clientX < innerWidth * .25) prev(); else next();
+  });
+  let tx = null;
+  addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+  });
+
+  /* interface masquée quand la souris ne bouge pas */
+  let idleT = 0;
+  const wake = () => { document.body.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(() => document.body.classList.add('idle'), 2500); };
+  addEventListener('mousemove', wake); wake();
+  const toast = document.getElementById('toast');
+  setTimeout(() => toast.classList.add('gone'), 5000);
+
+  /* fond animé : un réseau de points (les données qui circulent) */
+  const cv = document.getElementById('bg'), ctx = cv.getContext('2d');
+  let C = {};
+  function readColors() {
+    const cs = getComputedStyle(root);
+    C = { eu: cs.getPropertyValue('--eu').trim(), gold: cs.getPropertyValue('--gold').trim(), light: root.dataset.theme === 'light' };
+  }
+  const N = 64, pts = Array.from({ length: N }, (_, i) => ({
+    x: Math.random() * 1920, y: Math.random() * 1080,
+    vx: (Math.random() - .5) * .45, vy: (Math.random() - .5) * .45,
+    r: Math.random() * 2.4 + 1.6, g: i % 9 === 0
+  }));
+  function frame() {
+    ctx.clearRect(0, 0, 1920, 1080);
+    const a = C.light ? .5 : 1;
+    for (let i = 0; i < N; i++) {
+      const p = pts[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -20) p.x = 1940; if (p.x > 1940) p.x = -20;
+      if (p.y < -20) p.y = 1100; if (p.y > 1100) p.y = -20;
+      for (let j = i + 1; j < N; j++) {
+        const q = pts[j], dx = p.x - q.x, dy = p.y - q.y, d = dx * dx + dy * dy;
+        if (d < 200 * 200) {
+          ctx.globalAlpha = (1 - Math.sqrt(d) / 200) * .32 * a;
+          ctx.strokeStyle = C.eu; ctx.lineWidth = 1.4;
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+        }
+      }
+    }
+    for (const p of pts) {
+      ctx.globalAlpha = (p.g ? .9 : .55) * a;
+      ctx.fillStyle = p.g ? C.gold : C.eu;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    if (!reduce) requestAnimationFrame(frame);
+  }
+
+  /* départ */
+  try { if (localStorage.getItem('spdp-diapo-theme') === 'light') root.dataset.theme = 'light'; } catch (e) {}
+  readColors(); frame();
+  const start = parseInt(location.hash.slice(1), 10);
+  go(Number.isFinite(start) ? start - 1 : 0);
+  addEventListener('hashchange', () => { const n = parseInt(location.hash.slice(1), 10); if (Number.isFinite(n)) go(n - 1); });
+})();
+</script>
+</body>
+</html>
